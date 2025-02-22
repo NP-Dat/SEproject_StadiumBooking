@@ -8,7 +8,7 @@ function App() {
 
   return (
     <>
-      Hehe
+      <h1>We are coming soon</h1>
     </>
   )
 }
