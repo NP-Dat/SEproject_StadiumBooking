@@ -1,2 +1,1 @@
-# please put the database connecting files into the .
-.env
+# please put the database connecting files into the .gitignore
