@@ -52,6 +52,8 @@ CREATE TABLE Seats (
 
 CREATE TABLE Customers (  -- Renamed from Users
     id INT NOT NULL AUTO_INCREMENT,
+    userName VARCHAR(255) NOT NULL,
+    passWord VARCHAR(255) NOT NULL,    
     fullName VARCHAR(255) NOT NULL,
     birth DATE NOT NULL,
     phoneNumber VARCHAR(20) NOT NULL,
