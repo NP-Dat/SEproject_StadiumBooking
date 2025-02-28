@@ -1,1 +1,2 @@
 # please put the database connecting files into the .gitignore
+node_modules/
