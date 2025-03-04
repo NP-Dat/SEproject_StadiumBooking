@@ -40,7 +40,8 @@ class AuthController {
         return res.status(401).json({ message: 'Invalid credentials' });
       }
 
-      const validPassword = await UserModel.verifyPassword(password, user.password);
+      const hashedPassword = await UserModel.findPasswordByEmail(email);
+      const validPassword = await UserModel.verifyPassword(password, hashedPassword);
       if (!validPassword) {
         return res.status(401).json({ message: 'Invalid credentials' });
       }
