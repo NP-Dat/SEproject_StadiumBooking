@@ -1,1 +1,9 @@
 # please put the database connecting files into the .gitignore
+node_modules/
+.qodo/
+
+
+
+
+microservice/Auth/.env
+microservice/Auth/.env
