@@ -9,6 +9,7 @@ DROP TABLE IF EXISTS Seats;  -- No change needed, not a reserved word
 DROP TABLE IF EXISTS EventSchedules; -- Was Schedules
 DROP TABLE IF EXISTS EventList;      -- Was Events
 DROP TABLE IF EXISTS Stadiums;      -- No change needed
+DROP TABLE IF EXISTS Carts;			-- New
 
 
 CREATE TABLE Stadiums (
@@ -62,16 +63,28 @@ CREATE TABLE Customers (  -- Renamed from Users
     PRIMARY KEY (id)
 );
 
+CREATE TABLE Carts ( -- Handle for Payments
+    id INT NOT NULL AUTO_INCREMENT,
+    userID INT NOT NULL,
+    numberOfTicket INT NOT NULL,
+    totalPrice DECIMAL(10, 2) NOT NULL,
+	status VARCHAR(255) NOT NULL,  -- unPaid or Paid
+    PRIMARY KEY (id),
+    FOREIGN KEY (userID) REFERENCES Customers(id) ON DELETE CASCADE
+);
+
 CREATE TABLE Tickets ( -- Renamed from Ticket
     id INT NOT NULL AUTO_INCREMENT,
     userID INT NOT NULL,
     seatID INT NOT NULL,
     scheduleID INT NOT NULL,
+    cartID INT NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (userID) REFERENCES Customers(id) ON DELETE CASCADE,  -- Use new name
     FOREIGN KEY (scheduleID) REFERENCES EventSchedules(id) ON DELETE CASCADE,  -- Use new name
-    FOREIGN KEY (seatID) REFERENCES Seats(id) ON DELETE CASCADE
+    FOREIGN KEY (seatID) REFERENCES Seats(id) ON DELETE CASCADE,
+    FOREIGN KEY (cartID) REFERENCES Carts(id) ON DELETE CASCADE
 );
 
 CREATE TABLE Payments ( -- Renamed from Payment
@@ -80,16 +93,15 @@ CREATE TABLE Payments ( -- Renamed from Payment
     date DATE NOT NULL,
     service VARCHAR(255) NOT NULL,  -- Consider 'PaymentServices' table
     totalCost DECIMAL(10, 2) NOT NULL,
-    numberOfTicket INT NOT NULL,
     userID INT NOT NULL,
-    scheduleID INT NOT NULL,
+    cartID INT NOT NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (userID) REFERENCES Customers(id) ON DELETE CASCADE,  -- Use new name
-    FOREIGN KEY (scheduleID) REFERENCES EventSchedules(id) ON DELETE CASCADE  -- Use new name
+    FOREIGN KEY (cartID) REFERENCES Carts(id) ON DELETE CASCADE,
+    FOREIGN KEY (userID) REFERENCES Customers(id) ON DELETE CASCADE  -- Use new name
 );
 
 -- Indexes for performance (using new table names)
 CREATE INDEX idx_schedules_stadium_event ON EventSchedules (stadiumID, eventID);
 CREATE INDEX idx_ticket_user_schedule ON Tickets (userID, scheduleID);
-CREATE INDEX idx_payment_user_schedule ON Payments (userID, scheduleID);
 CREATE INDEX idx_seats_stadium ON Seats (stadiumID);
+
