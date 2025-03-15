@@ -6,5 +6,5 @@ node_modules/
 
 
 microservice/Auth/.env
-microservice/Auth/.env
 microservice/User/.env
+**/.env
