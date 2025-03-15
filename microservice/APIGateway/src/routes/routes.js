@@ -46,6 +46,17 @@ router.get('/users/profile', verifyToken, userProxy);
 router.put('/users/profile', verifyToken, userProxy);
 router.delete('/users/profile', verifyToken, userProxy);
 
+// Media Service Proxy (NEWLY ADDED)
+const mediaProxy = createProxyMiddleware({
+  target: services.media.url,
+  changeOrigin: true,
+  pathRewrite: { "^/media": "/api/media" },
+});
+
+// Media upload route
+router.post("/media/upload", mediaProxy);
+router.get("/media/images", mediaProxy); // Fetch all images
+
 // Health check endpoint
 router.get('/health', (req, res) => {
   res.json({ status: 'OK', message: 'API Gateway is running' });

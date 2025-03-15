@@ -6,6 +6,7 @@ const { authenticateToken } = require('../middleware/authMiddleware');
 // All routes require authentication
 router.use(authenticateToken);
 
+
 router.get('/profile', UserController.getProfile);
 router.put('/profile', UserController.updateProfile);
 router.delete('/profile', UserController.deleteProfile);

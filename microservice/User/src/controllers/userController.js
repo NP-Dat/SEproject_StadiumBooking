@@ -1,6 +1,7 @@
 const UserModel = require('../models/User');
 
 class UserController {
+  
   static async getProfile(req, res) {
     try {
       const profile = await UserModel.findById(req.user.userId);
@@ -16,7 +17,7 @@ class UserController {
 
   static async updateProfile(req, res) {
     try {
-      const { full_name, phone, address, preferences } = req.body;
+      const { fullName, phoneNumber, address, preferences } = req.body;
       const userId = req.user.userId;
 
       const existingProfile = await UserModel.findById(userId);
@@ -24,15 +25,15 @@ class UserController {
 
       if (existingProfile) {
         success = await UserModel.updateProfile(userId, {
-          full_name,
-          phone,
+          fullName,
+          phoneNumber,
           address,
           preferences
         });
       } else {
         success = await UserModel.createProfile(userId, {
-          full_name,
-          phone,
+          fullName,
+          phoneNumber,
           address,
           preferences
         });
