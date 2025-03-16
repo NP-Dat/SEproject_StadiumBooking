@@ -28,7 +28,12 @@ const services = {
       routes: [
         '/api/bookings'
       ]
-    }
+    },
+    media: {
+      url: process.env.MEDIA_SERVICE_URL || "http://localhost:8005", 
+      routes: ["/api/media"], 
+    },
+    
     // Add other services here as needed
   };
   
