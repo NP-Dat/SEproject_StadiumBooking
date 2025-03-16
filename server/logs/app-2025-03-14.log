@@ -1,0 +1,239 @@
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[NestFactory][39m [32mStarting Nest application...[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[InstanceLoader][39m [32mRedisModule dependencies initialized[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[InstanceLoader][39m [32mBullBoardModule dependencies initialized[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[InstanceLoader][39m [32mPassportModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[InstanceLoader][39m [32mMulterModule dependencies initialized[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[InstanceLoader][39m [32mJwtModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[InstanceLoader][39m [32mHttpModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[InstanceLoader][39m [32mHttpModule dependencies initialized[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[InstanceLoader][39m [32mConfigHostModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[InstanceLoader][39m [32mBullBoardFeatureModule dependencies initialized[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[InstanceLoader][39m [32mBullBoardFeatureModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[InstanceLoader][39m [32mDiscoveryModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[InstanceLoader][39m [32mBullBoardRootModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[InstanceLoader][39m [32mConfigModule dependencies initialized[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[InstanceLoader][39m [32mConfigModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[InstanceLoader][39m [32mBullModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[InstanceLoader][39m [32mBullModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[InstanceLoader][39m [32mEmailModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[InstanceLoader][39m [32mDatabaseModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[InstanceLoader][39m [32mRedisCoreModule dependencies initialized[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[InstanceLoader][39m [32mJwtModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[InstanceLoader][39m [32mAppModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[InstanceLoader][39m [32mCacheModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[InstanceLoader][39m [32mTokenModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[InstanceLoader][39m [32mTransactionModule dependencies initialized[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[InstanceLoader][39m [32mUserPreferenceModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[InstanceLoader][39m [32mBullModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[InstanceLoader][39m [32mBullModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[InstanceLoader][39m [32mImageModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[InstanceLoader][39m [32mUserActionModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[InstanceLoader][39m [32mUserModule dependencies initialized[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[InstanceLoader][39m [32mCarModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[InstanceLoader][39m [32mCategoryModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[InstanceLoader][39m [32mPaymentModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[InstanceLoader][39m [32mRecommendationModule dependencies initialized[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[InstanceLoader][39m [32mAuthModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[InstanceLoader][39m [32mReviewModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[InstanceLoader][39m [32mBookingModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RoutesResolver][39m [32mAppController {/}:[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/, GET} route[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RoutesResolver][39m [32mAuthController {/auth}:[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/auth/signup, POST} route[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/auth/login, POST} route[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/auth/me, GET} route[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/auth/refresh-token, POST} route[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/auth/reset-password, POST} route[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/auth/verify-account, POST} route[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/auth/email/forgot-password, POST} route[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/auth/email/verify-account, POST} route[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RoutesResolver][39m [32mUserController {/user}:[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/user/:id, GET} route[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/user/:id, PATCH} route[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/user/:id, DELETE} route[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RoutesResolver][39m [32mImageController {/image}:[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/image/upload, POST} route[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RoutesResolver][39m [32mCarController {/car}:[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/car, POST} route[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/car, GET} route[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/car/:id, GET} route[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/car/:id, PATCH} route[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/car/:id, DELETE} route[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RoutesResolver][39m [32mCategoryController {/category}:[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/category, POST} route[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/category, GET} route[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/category/:id, GET} route[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/category/:id, DELETE} route[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RoutesResolver][39m [32mBookingController {/booking}:[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/booking, POST} route[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/booking, GET} route[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/booking/:id, GET} route[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/booking/:id, PATCH} route[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RoutesResolver][39m [32mPaymentController {/payment}:[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/payment/test/procress, POST} route[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/payment/zalopay/callback, POST} route[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RoutesResolver][39m [32mTransactionController {/transaction}:[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RoutesResolver][39m [32mReviewController {/review}:[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/review, POST} route[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/review, GET} route[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/review/:id, GET} route[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/review/:id, DELETE} route[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RoutesResolver][39m [32mUserActionController {/user-action}:[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RoutesResolver][39m [32mUserPreferenceController {/user-preference}:[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RoutesResolver][39m [32mRecommendationController {/recommendation}:[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/recommendation, GET} route[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[DatabaseService][39m [32mConnected to database successfully[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[DatabaseService][39m [32mAdmin account is found[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[NestApplication][39m [32mNest application successfully started[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[bootstrap][39m [32mServer running on http://localhost:3000[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m45400[39m 14/03/25 12:17:12 [32m    LOG[39m [33m[bootstrap][39m [32mAPI Docs http://localhost:3000/api-docs[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[NestFactory][39m [32mStarting Nest application...[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[InstanceLoader][39m [32mRedisModule dependencies initialized[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[InstanceLoader][39m [32mBullBoardModule dependencies initialized[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[InstanceLoader][39m [32mPassportModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[InstanceLoader][39m [32mMulterModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[InstanceLoader][39m [32mJwtModule dependencies initialized[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[InstanceLoader][39m [32mHttpModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[InstanceLoader][39m [32mHttpModule dependencies initialized[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[InstanceLoader][39m [32mConfigHostModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[InstanceLoader][39m [32mBullBoardFeatureModule dependencies initialized[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[InstanceLoader][39m [32mBullBoardFeatureModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[InstanceLoader][39m [32mDiscoveryModule dependencies initialized[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[InstanceLoader][39m [32mBullBoardRootModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[InstanceLoader][39m [32mConfigModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[InstanceLoader][39m [32mConfigModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[InstanceLoader][39m [32mBullModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[InstanceLoader][39m [32mBullModule dependencies initialized[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[InstanceLoader][39m [32mEmailModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[InstanceLoader][39m [32mDatabaseModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[InstanceLoader][39m [32mRedisCoreModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[InstanceLoader][39m [32mJwtModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[InstanceLoader][39m [32mAppModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[InstanceLoader][39m [32mCacheModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[InstanceLoader][39m [32mTokenModule dependencies initialized[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[InstanceLoader][39m [32mTransactionModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[InstanceLoader][39m [32mUserPreferenceModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[InstanceLoader][39m [32mBullModule dependencies initialized[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[InstanceLoader][39m [32mBullModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[InstanceLoader][39m [32mImageModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[InstanceLoader][39m [32mUserActionModule dependencies initialized[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[InstanceLoader][39m [32mUserModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[InstanceLoader][39m [32mCarModule dependencies initialized[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[InstanceLoader][39m [32mCategoryModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[InstanceLoader][39m [32mPaymentModule dependencies initialized[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[InstanceLoader][39m [32mRecommendationModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[InstanceLoader][39m [32mAuthModule dependencies initialized[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[InstanceLoader][39m [32mReviewModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[InstanceLoader][39m [32mBookingModule dependencies initialized[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RoutesResolver][39m [32mAppController {/}:[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/, GET} route[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RoutesResolver][39m [32mAuthController {/auth}:[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/auth/signup, POST} route[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/auth/login, POST} route[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/auth/me, GET} route[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/auth/refresh-token, POST} route[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/auth/reset-password, POST} route[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/auth/verify-account, POST} route[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/auth/email/forgot-password, POST} route[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/auth/email/verify-account, POST} route[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RoutesResolver][39m [32mUserController {/user}:[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/user/:id, GET} route[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/user/:id, PATCH} route[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/user/:id, DELETE} route[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RoutesResolver][39m [32mImageController {/image}:[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/image/upload, POST} route[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RoutesResolver][39m [32mCarController {/car}:[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/car, POST} route[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/car, GET} route[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/car/:id, GET} route[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/car/:id, PATCH} route[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/car/:id, DELETE} route[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RoutesResolver][39m [32mCategoryController {/category}:[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/category, POST} route[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/category, GET} route[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/category/:id, GET} route[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/category/:id, DELETE} route[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RoutesResolver][39m [32mBookingController {/booking}:[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/booking, POST} route[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/booking, GET} route[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/booking/:id, GET} route[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/booking/:id, PATCH} route[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RoutesResolver][39m [32mPaymentController {/payment}:[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/payment/test/procress, POST} route[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/payment/zalopay/callback, POST} route[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RoutesResolver][39m [32mTransactionController {/transaction}:[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RoutesResolver][39m [32mReviewController {/review}:[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/review, POST} route[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/review, GET} route[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/review/:id, GET} route[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/review/:id, DELETE} route[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RoutesResolver][39m [32mUserActionController {/user-action}:[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RoutesResolver][39m [32mUserPreferenceController {/user-preference}:[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RoutesResolver][39m [32mRecommendationController {/recommendation}:[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[RouterExplorer][39m [32mMapped {/recommendation, GET} route[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[DatabaseService][39m [32mConnected to database successfully[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[DatabaseService][39m [32mAdmin account is found[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[NestApplication][39m [32mNest application successfully started[39m [33m+0ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[bootstrap][39m [32mServer running on http://localhost:3000[39m [33m+1ms[39m
+[32m[CAR-RENTAL][39m [32m11468[39m 14/03/25 12:19:47 [32m    LOG[39m [33m[bootstrap][39m [32mAPI Docs http://localhost:3000/api-docs[39m [33m+1ms[39m
+[31m[CAR-RENTAL][39m [31m11468[39m 14/03/25 12:37:17 [31m  ERROR[39m  [31mCannot read properties of null (reading 'password')[39m - {
+  stack: [32m"TypeError: Cannot read properties of null (reading 'password')\n"[39m +
+    [32m'    at AuthService.forgotPassword (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\src\\modules\\auth\\auth.service.ts:157:20)\n'[39m +
+    [32m'    at async AuthController.forgotPassword (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\src\\modules\\auth\\auth.controller.ts:116:12)'[39m,
+  path: [32m'/auth/email/forgot-password'[39m,
+  method: [32m'POST'[39m,
+  statusCode: [33m500[39m
+} [33m+17m[39m
+[31m[CAR-RENTAL][39m [31m11468[39m 14/03/25 12:37:17 [31m  ERROR[39m [33m[HTTP][39m [31mPOST /auth/email/forgot-password 500 - 54.932ms - 413[39m - { ip: [32m'::1'[39m } [33m+4ms[39m
+[31m[CAR-RENTAL][39m [31m11468[39m 14/03/25 12:37:27 [31m  ERROR[39m  [31mCannot GET /auth/email/forgot-password[39m - {
+  stack: [32m'NotFoundException: Cannot GET /auth/email/forgot-password\n'[39m +
+    [32m'    at callback (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\@nestjs\\core\\router\\routes-resolver.js:77:19)\n'[39m +
+    [32m'    at C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\@nestjs\\core\\router\\router-proxy.js:9:23\n'[39m +
+    [32m'    at Layer.handleRequest (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\lib\\layer.js:145:17)\n'[39m +
+    [32m'    at trimPrefix (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\index.js:336:13)\n'[39m +
+    [32m'    at C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\index.js:294:9\n'[39m +
+    [32m'    at processParams (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\index.js:574:12)\n'[39m +
+    [32m'    at next (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\index.js:288:5)\n'[39m +
+    [32m'    at LoggerMiddleware.use (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\src\\middlewares\\logger.middleware.ts:34:5)\n'[39m +
+    [32m'    at C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\@nestjs\\core\\router\\router-proxy.js:9:23\n'[39m +
+    [32m'    at Layer.handleRequest (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\lib\\layer.js:145:17)'[39m,
+  path: [32m'/auth/email/forgot-password'[39m,
+  method: [32m'GET'[39m,
+  statusCode: [33m404[39m
+} [33m+10s[39m
+[31m[CAR-RENTAL][39m [31m11468[39m 14/03/25 12:37:27 [31m  ERROR[39m [33m[HTTP][39m [31mGET /auth/email/forgot-password 404 - 9.531ms - 1430[39m - { ip: [32m'::1'[39m } [33m+7ms[39m
+[31m[CAR-RENTAL][39m [31m11468[39m 14/03/25 12:37:27 [31m  ERROR[39m  [31mCannot GET /favicon.ico[39m - {
+  stack: [32m'NotFoundException: Cannot GET /favicon.ico\n'[39m +
+    [32m'    at callback (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\@nestjs\\core\\router\\routes-resolver.js:77:19)\n'[39m +
+    [32m'    at C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\@nestjs\\core\\router\\router-proxy.js:9:23\n'[39m +
+    [32m'    at Layer.handleRequest (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\lib\\layer.js:145:17)\n'[39m +
+    [32m'    at trimPrefix (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\index.js:336:13)\n'[39m +
+    [32m'    at C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\index.js:294:9\n'[39m +
+    [32m'    at processParams (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\index.js:574:12)\n'[39m +
+    [32m'    at next (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\index.js:288:5)\n'[39m +
+    [32m'    at LoggerMiddleware.use (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\src\\middlewares\\logger.middleware.ts:34:5)\n'[39m +
+    [32m'    at C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\@nestjs\\core\\router\\router-proxy.js:9:23\n'[39m +
+    [32m'    at Layer.handleRequest (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\lib\\layer.js:145:17)'[39m,
+  path: [32m'/favicon.ico'[39m,
+  method: [32m'GET'[39m,
+  statusCode: [33m404[39m
+} [33m+66ms[39m
+[31m[CAR-RENTAL][39m [31m11468[39m 14/03/25 12:37:27 [31m  ERROR[39m [33m[HTTP][39m [31mGET /favicon.ico 404 - 3.816ms - 1385[39m - { ip: [32m'::1'[39m } [33m+3ms[39m
+[31m[CAR-RENTAL][39m [31m11468[39m 14/03/25 12:57:02 [31m  ERROR[39m  [31mCannot read properties of null (reading 'firstName')[39m - {
+  stack: [32m"TypeError: Cannot read properties of null (reading 'firstName')\n"[39m +
+    [32m'    at AuthService.sendVerificationEmail (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\src\\modules\\auth\\auth.service.ts:213:30)\n'[39m +
+    [32m'    at async AuthController.sendEmailVerify (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\src\\modules\\auth\\auth.controller.ts:121:12)'[39m,
+  path: [32m'/auth/email/verify-account'[39m,
+  method: [32m'POST'[39m,
+  statusCode: [33m500[39m
+} [33m+20m[39m
+[31m[CAR-RENTAL][39m [31m11468[39m 14/03/25 12:57:02 [31m  ERROR[39m [33m[HTTP][39m [31mPOST /auth/email/verify-account 500 - 160.567ms - 422[39m - { ip: [32m'::1'[39m } [33m+17ms[39m
+[31m[CAR-RENTAL][39m [31m11468[39m 14/03/25 12:57:05 [31m  ERROR[39m  [31mCannot read properties of null (reading 'firstName')[39m - {
+  stack: [32m"TypeError: Cannot read properties of null (reading 'firstName')\n"[39m +
+    [32m'    at AuthService.sendVerificationEmail (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\src\\modules\\auth\\auth.service.ts:213:30)\n'[39m +
+    [32m'    at async AuthController.sendEmailVerify (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\src\\modules\\auth\\auth.controller.ts:121:12)'[39m,
+  path: [32m'/auth/email/verify-account'[39m,
+  method: [32m'POST'[39m,
+  statusCode: [33m500[39m
+} [33m+3s[39m
+[31m[CAR-RENTAL][39m [31m11468[39m 14/03/25 12:57:05 [31m  ERROR[39m [33m[HTTP][39m [31mPOST /auth/email/verify-account 500 - 14.503ms - 422[39m - { ip: [32m'::1'[39m } [33m+2ms[39m

@@ -1,0 +1,245 @@
+[31m[CAR-RENTAL][39m [31m22564[39m 28/02/25 19:59:48 [31m  ERROR[39m [33m[DatabaseService][39m [31mAdmin account is not found. Creating admin account...[39m - { stack: [ [1mnull[22m ] } [33m+1ms[39m
+[31m[CAR-RENTAL][39m [31m8144[39m 01/03/25 10:48:40 [31m  ERROR[39m [33m[DatabaseService][39m [31mAdmin account is not found. Creating admin account...[39m - { stack: [ [1mnull[22m ] } [33m+0ms[39m
+[31m[CAR-RENTAL][39m [31m27752[39m 11/03/25 19:32:32 [31m  ERROR[39m  [31mUser not authenticated[39m - {
+  stack: [32m'UnauthorizedException: User not authenticated\n'[39m +
+    [32m'    at JwtAccessGuard.canActivate (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\src\\modules\\auth\\guards\\jwt\\jwtAccess.guard.ts:25:13)\n'[39m +
+    [32m'    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n'[39m +
+    [32m'    at async GuardsConsumer.tryActivate (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\@nestjs\\core\\guards\\guards-consumer.js:16:17)\n'[39m +
+    [32m'    at async canActivateFn (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\@nestjs\\core\\router\\router-execution-context.js:135:33)\n'[39m +
+    [32m'    at async C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\@nestjs\\core\\router\\router-execution-context.js:42:31\n'[39m +
+    [32m'    at async C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\@nestjs\\core\\router\\router-proxy.js:9:17'[39m,
+  path: [32m'/review'[39m,
+  method: [32m'POST'[39m,
+  statusCode: [33m401[39m
+} [33m+35m[39m
+[31m[CAR-RENTAL][39m [31m27752[39m 11/03/25 19:32:32 [31m  ERROR[39m [33m[HTTP][39m [31mPOST /review 401 - 10.028ms - 1015[39m - { ip: [32m'::1'[39m } [33m+6ms[39m
+[31m[CAR-RENTAL][39m [31m27752[39m 11/03/25 19:32:34 [31m  ERROR[39m  [31mUser not authenticated[39m - {
+  stack: [32m'UnauthorizedException: User not authenticated\n'[39m +
+    [32m'    at JwtAccessGuard.canActivate (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\src\\modules\\auth\\guards\\jwt\\jwtAccess.guard.ts:25:13)\n'[39m +
+    [32m'    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n'[39m +
+    [32m'    at async GuardsConsumer.tryActivate (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\@nestjs\\core\\guards\\guards-consumer.js:16:17)\n'[39m +
+    [32m'    at async canActivateFn (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\@nestjs\\core\\router\\router-execution-context.js:135:33)\n'[39m +
+    [32m'    at async C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\@nestjs\\core\\router\\router-execution-context.js:42:31\n'[39m +
+    [32m'    at async C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\@nestjs\\core\\router\\router-proxy.js:9:17'[39m,
+  path: [32m'/review'[39m,
+  method: [32m'POST'[39m,
+  statusCode: [33m401[39m
+} [33m+2s[39m
+[31m[CAR-RENTAL][39m [31m27752[39m 11/03/25 19:32:34 [31m  ERROR[39m [33m[HTTP][39m [31mPOST /review 401 - 4.907ms - 1015[39m - { ip: [32m'::1'[39m } [33m+4ms[39m
+[31m[CAR-RENTAL][39m [31m38968[39m 12/03/25 12:07:21 [31m  ERROR[39m  [31mUpload image failed: Upload image failed with error: "\n<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n<html>\n  <head>\n    <title>503 backend write error</title>\n  </head>\n  <body>\n    <h1>Error 503 backend write error</h1>\n    <p>backend write error</p>\n    <h3>Error 54113</h3>\n    <p>Details: cache-sjc10058-SJC 1741756041 79715009</p>\n    <hr>\n    <p>Varnish cache server</p>\n  </body>\n</html>\n"[39m - {
+  stack: [32m'InternalServerErrorException: Upload image failed: Upload image failed with error: "\\n<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>\\n<!DOCTYPE html PUBLIC \\"-//W3C//DTD XHTML 1.0 Strict//EN\\"\\n \\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\\">\\n<html>\\n  <head>\\n    <title>503 backend write error</title>\\n  </head>\\n  <body>\\n    <h1>Error 503 backend write error</h1>\\n    <p>backend write error</p>\\n    <h3>Error 54113</h3>\\n    <p>Details: cache-sjc10058-SJC 1741756041 79715009</p>\\n    <hr>\\n    <p>Varnish cache server</p>\\n  </body>\\n</html>\\n"\n'[39m +
+    [32m'    at ImageService.uploadImage (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\src\\modules\\image\\image.service.ts:53:13)\n'[39m +
+    [32m'    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)'[39m,
+  path: [32m'/image/upload'[39m,
+  method: [32m'POST'[39m,
+  statusCode: [33m500[39m
+} [33m+3m[39m
+[31m[CAR-RENTAL][39m [31m38968[39m 12/03/25 12:07:21 [31m  ERROR[39m [33m[HTTP][39m [31mPOST /image/upload 500 - 3812.654ms - 2056[39m - { ip: [32m'::1'[39m } [33m+4ms[39m
+[31m[CAR-RENTAL][39m [31m38968[39m 12/03/25 12:08:38 [31m  ERROR[39m  [31mUpload image failed: Upload image failed with error: "\n<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n<html>\n  <head>\n    <title>503 backend write error</title>\n  </head>\n  <body>\n    <h1>Error 503 backend write error</h1>\n    <p>backend write error</p>\n    <h3>Error 54113</h3>\n    <p>Details: cache-bfi-krnt7300070-BFI 1741756118 3775231754</p>\n    <hr>\n    <p>Varnish cache server</p>\n  </body>\n</html>\n"[39m - {
+  stack: [32m'InternalServerErrorException: Upload image failed: Upload image failed with error: "\\n<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>\\n<!DOCTYPE html PUBLIC \\"-//W3C//DTD XHTML 1.0 Strict//EN\\"\\n \\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\\">\\n<html>\\n  <head>\\n    <title>503 backend write error</title>\\n  </head>\\n  <body>\\n    <h1>Error 503 backend write error</h1>\\n    <p>backend write error</p>\\n    <h3>Error 54113</h3>\\n    <p>Details: cache-bfi-krnt7300070-BFI 1741756118 3775231754</p>\\n    <hr>\\n    <p>Varnish cache server</p>\\n  </body>\\n</html>\\n"\n'[39m +
+    [32m'    at ImageService.uploadImage (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\src\\modules\\image\\image.service.ts:53:13)\n'[39m +
+    [32m'    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)'[39m,
+  path: [32m'/image/upload'[39m,
+  method: [32m'POST'[39m,
+  statusCode: [33m500[39m
+} [33m+1m[39m
+[31m[CAR-RENTAL][39m [31m38968[39m 12/03/25 12:08:38 [31m  ERROR[39m [33m[HTTP][39m [31mPOST /image/upload 500 - 2380.543ms - 2083[39m - { ip: [32m'::1'[39m } [33m+2ms[39m
+[31m[CAR-RENTAL][39m [31m38968[39m 12/03/25 12:09:36 [31m  ERROR[39m  [31mCannot GET /image/upload[39m - {
+  stack: [32m'NotFoundException: Cannot GET /image/upload\n'[39m +
+    [32m'    at callback (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\@nestjs\\core\\router\\routes-resolver.js:77:19)\n'[39m +
+    [32m'    at C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\@nestjs\\core\\router\\router-proxy.js:9:23\n'[39m +
+    [32m'    at Layer.handleRequest (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\lib\\layer.js:145:17)\n'[39m +
+    [32m'    at trimPrefix (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\index.js:336:13)\n'[39m +
+    [32m'    at C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\index.js:294:9\n'[39m +
+    [32m'    at processParams (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\index.js:574:12)\n'[39m +
+    [32m'    at next (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\index.js:288:5)\n'[39m +
+    [32m'    at LoggerMiddleware.use (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\src\\middlewares\\logger.middleware.ts:34:5)\n'[39m +
+    [32m'    at C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\@nestjs\\core\\router\\router-proxy.js:9:23\n'[39m +
+    [32m'    at Layer.handleRequest (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\lib\\layer.js:145:17)'[39m,
+  path: [32m'/image/upload'[39m,
+  method: [32m'GET'[39m,
+  statusCode: [33m404[39m
+} [33m+57s[39m
+[31m[CAR-RENTAL][39m [31m38968[39m 12/03/25 12:09:36 [31m  ERROR[39m [33m[HTTP][39m [31mGET /image/upload 404 - 6.335ms - 1388[39m - { ip: [32m'::1'[39m } [33m+4ms[39m
+[31m[CAR-RENTAL][39m [31m38968[39m 12/03/25 12:09:36 [31m  ERROR[39m  [31mCannot GET /favicon.ico[39m - {
+  stack: [32m'NotFoundException: Cannot GET /favicon.ico\n'[39m +
+    [32m'    at callback (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\@nestjs\\core\\router\\routes-resolver.js:77:19)\n'[39m +
+    [32m'    at C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\@nestjs\\core\\router\\router-proxy.js:9:23\n'[39m +
+    [32m'    at Layer.handleRequest (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\lib\\layer.js:145:17)\n'[39m +
+    [32m'    at trimPrefix (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\index.js:336:13)\n'[39m +
+    [32m'    at C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\index.js:294:9\n'[39m +
+    [32m'    at processParams (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\index.js:574:12)\n'[39m +
+    [32m'    at next (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\index.js:288:5)\n'[39m +
+    [32m'    at LoggerMiddleware.use (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\src\\middlewares\\logger.middleware.ts:34:5)\n'[39m +
+    [32m'    at C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\@nestjs\\core\\router\\router-proxy.js:9:23\n'[39m +
+    [32m'    at Layer.handleRequest (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\lib\\layer.js:145:17)'[39m,
+  path: [32m'/favicon.ico'[39m,
+  method: [32m'GET'[39m,
+  statusCode: [33m404[39m
+} [33m+75ms[39m
+[31m[CAR-RENTAL][39m [31m38968[39m 12/03/25 12:09:36 [31m  ERROR[39m [33m[HTTP][39m [31mGET /favicon.ico 404 - 4.634ms - 1385[39m - { ip: [32m'::1'[39m } [33m+4ms[39m
+[31m[CAR-RENTAL][39m [31m6496[39m 13/03/25 12:29:10 [31m  ERROR[39m  [31mUpload image failed: Upload image failed with error: "\n<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n<html>\n  <head>\n    <title>503 backend write error</title>\n  </head>\n  <body>\n    <h1>Error 503 backend write error</h1>\n    <p>backend write error</p>\n    <h3>Error 54113</h3>\n    <p>Details: cache-bfi-kbfi7400099-BFI 1741843751 1684510514</p>\n    <hr>\n    <p>Varnish cache server</p>\n  </body>\n</html>\n"[39m - {
+  stack: [32m'InternalServerErrorException: Upload image failed: Upload image failed with error: "\\n<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>\\n<!DOCTYPE html PUBLIC \\"-//W3C//DTD XHTML 1.0 Strict//EN\\"\\n \\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\\">\\n<html>\\n  <head>\\n    <title>503 backend write error</title>\\n  </head>\\n  <body>\\n    <h1>Error 503 backend write error</h1>\\n    <p>backend write error</p>\\n    <h3>Error 54113</h3>\\n    <p>Details: cache-bfi-kbfi7400099-BFI 1741843751 1684510514</p>\\n    <hr>\\n    <p>Varnish cache server</p>\\n  </body>\\n</html>\\n"\n'[39m +
+    [32m'    at ImageService.uploadImage (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\src\\modules\\image\\image.service.ts:53:13)\n'[39m +
+    [32m'    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)'[39m,
+  path: [32m'/image/upload'[39m,
+  method: [32m'POST'[39m,
+  statusCode: [33m500[39m
+} [33m+17m[39m
+[31m[CAR-RENTAL][39m [31m6496[39m 13/03/25 12:29:10 [31m  ERROR[39m [33m[HTTP][39m [31mPOST /image/upload 500 - 2821.239ms - 2083[39m - { ip: [32m'::1'[39m } [33m+5ms[39m
+[31m[CAR-RENTAL][39m [31m6496[39m 13/03/25 12:30:50 [31m  ERROR[39m  [31mUpload image failed: Upload image failed with error: "response was empty"[39m - {
+  stack: [32m'InternalServerErrorException: Upload image failed: Upload image failed with error: "response was empty"\n'[39m +
+    [32m'    at ImageService.uploadImage (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\src\\modules\\image\\image.service.ts:53:13)\n'[39m +
+    [32m'    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)'[39m,
+  path: [32m'/image/upload'[39m,
+  method: [32m'POST'[39m,
+  statusCode: [33m500[39m
+} [33m+2m[39m
+[31m[CAR-RENTAL][39m [31m6496[39m 13/03/25 12:30:50 [31m  ERROR[39m [33m[HTTP][39m [31mPOST /image/upload 500 - 2263.901ms - 598[39m - { ip: [32m'::1'[39m } [33m+2ms[39m
+[31m[CAR-RENTAL][39m [31m6496[39m 13/03/25 12:30:57 [31m  ERROR[39m  [31mCannot GET /image/upload[39m - {
+  stack: [32m'NotFoundException: Cannot GET /image/upload\n'[39m +
+    [32m'    at callback (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\@nestjs\\core\\router\\routes-resolver.js:77:19)\n'[39m +
+    [32m'    at C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\@nestjs\\core\\router\\router-proxy.js:9:23\n'[39m +
+    [32m'    at Layer.handleRequest (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\lib\\layer.js:145:17)\n'[39m +
+    [32m'    at trimPrefix (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\index.js:336:13)\n'[39m +
+    [32m'    at C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\index.js:294:9\n'[39m +
+    [32m'    at processParams (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\index.js:574:12)\n'[39m +
+    [32m'    at next (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\index.js:288:5)\n'[39m +
+    [32m'    at LoggerMiddleware.use (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\src\\middlewares\\logger.middleware.ts:34:5)\n'[39m +
+    [32m'    at C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\@nestjs\\core\\router\\router-proxy.js:9:23\n'[39m +
+    [32m'    at Layer.handleRequest (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\lib\\layer.js:145:17)'[39m,
+  path: [32m'/image/upload'[39m,
+  method: [32m'GET'[39m,
+  statusCode: [33m404[39m
+} [33m+7s[39m
+[31m[CAR-RENTAL][39m [31m6496[39m 13/03/25 12:30:57 [31m  ERROR[39m [33m[HTTP][39m [31mGET /image/upload 404 - 4.657ms - 1388[39m - { ip: [32m'::1'[39m } [33m+3ms[39m
+[31m[CAR-RENTAL][39m [31m6496[39m 13/03/25 12:30:57 [31m  ERROR[39m  [31mCannot GET /favicon.ico[39m - {
+  stack: [32m'NotFoundException: Cannot GET /favicon.ico\n'[39m +
+    [32m'    at callback (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\@nestjs\\core\\router\\routes-resolver.js:77:19)\n'[39m +
+    [32m'    at C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\@nestjs\\core\\router\\router-proxy.js:9:23\n'[39m +
+    [32m'    at Layer.handleRequest (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\lib\\layer.js:145:17)\n'[39m +
+    [32m'    at trimPrefix (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\index.js:336:13)\n'[39m +
+    [32m'    at C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\index.js:294:9\n'[39m +
+    [32m'    at processParams (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\index.js:574:12)\n'[39m +
+    [32m'    at next (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\index.js:288:5)\n'[39m +
+    [32m'    at LoggerMiddleware.use (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\src\\middlewares\\logger.middleware.ts:34:5)\n'[39m +
+    [32m'    at C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\@nestjs\\core\\router\\router-proxy.js:9:23\n'[39m +
+    [32m'    at Layer.handleRequest (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\lib\\layer.js:145:17)'[39m,
+  path: [32m'/favicon.ico'[39m,
+  method: [32m'GET'[39m,
+  statusCode: [33m404[39m
+} [33m+71ms[39m
+[31m[CAR-RENTAL][39m [31m6496[39m 13/03/25 12:30:57 [31m  ERROR[39m [33m[HTTP][39m [31mGET /favicon.ico 404 - 4.312ms - 1385[39m - { ip: [32m'::1'[39m } [33m+4ms[39m
+[31m[CAR-RENTAL][39m [31m6496[39m 13/03/25 12:31:50 [31m  ERROR[39m  [31mUpload image failed: Upload image failed with error: "\n<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n<html>\n  <head>\n    <title>503 backend write error</title>\n  </head>\n  <body>\n    <h1>Error 503 backend write error</h1>\n    <p>backend write error</p>\n    <h3>Error 54113</h3>\n    <p>Details: cache-bfi-krnt7300088-BFI 1741843910 2609606751</p>\n    <hr>\n    <p>Varnish cache server</p>\n  </body>\n</html>\n"[39m - {
+  stack: [32m'InternalServerErrorException: Upload image failed: Upload image failed with error: "\\n<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>\\n<!DOCTYPE html PUBLIC \\"-//W3C//DTD XHTML 1.0 Strict//EN\\"\\n \\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\\">\\n<html>\\n  <head>\\n    <title>503 backend write error</title>\\n  </head>\\n  <body>\\n    <h1>Error 503 backend write error</h1>\\n    <p>backend write error</p>\\n    <h3>Error 54113</h3>\\n    <p>Details: cache-bfi-krnt7300088-BFI 1741843910 2609606751</p>\\n    <hr>\\n    <p>Varnish cache server</p>\\n  </body>\\n</html>\\n"\n'[39m +
+    [32m'    at ImageService.uploadImage (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\src\\modules\\image\\image.service.ts:53:13)\n'[39m +
+    [32m'    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)'[39m,
+  path: [32m'/image/upload'[39m,
+  method: [32m'POST'[39m,
+  statusCode: [33m500[39m
+} [33m+53s[39m
+[31m[CAR-RENTAL][39m [31m6496[39m 13/03/25 12:31:50 [31m  ERROR[39m [33m[HTTP][39m [31mPOST /image/upload 500 - 2448.133ms - 2083[39m - { ip: [32m'::1'[39m } [33m+2ms[39m
+[31m[CAR-RENTAL][39m [31m33896[39m 13/03/25 14:49:54 [31m  ERROR[39m  [31mCannot GET /image/upload[39m - {
+  stack: [32m'NotFoundException: Cannot GET /image/upload\n'[39m +
+    [32m'    at callback (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\@nestjs\\core\\router\\routes-resolver.js:77:19)\n'[39m +
+    [32m'    at C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\@nestjs\\core\\router\\router-proxy.js:9:23\n'[39m +
+    [32m'    at Layer.handleRequest (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\lib\\layer.js:145:17)\n'[39m +
+    [32m'    at trimPrefix (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\index.js:336:13)\n'[39m +
+    [32m'    at C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\index.js:294:9\n'[39m +
+    [32m'    at processParams (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\index.js:574:12)\n'[39m +
+    [32m'    at next (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\index.js:288:5)\n'[39m +
+    [32m'    at LoggerMiddleware.use (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\src\\middlewares\\logger.middleware.ts:34:5)\n'[39m +
+    [32m'    at C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\@nestjs\\core\\router\\router-proxy.js:9:23\n'[39m +
+    [32m'    at Layer.handleRequest (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\lib\\layer.js:145:17)'[39m,
+  path: [32m'/image/upload'[39m,
+  method: [32m'GET'[39m,
+  statusCode: [33m404[39m
+} [33m+16s[39m
+[31m[CAR-RENTAL][39m [31m33896[39m 13/03/25 14:49:54 [31m  ERROR[39m [33m[HTTP][39m [31mGET /image/upload 404 - 12.343ms - 1388[39m - { ip: [32m'::1'[39m } [33m+7ms[39m
+[31m[CAR-RENTAL][39m [31m33896[39m 13/03/25 14:49:55 [31m  ERROR[39m  [31mCannot GET /favicon.ico[39m - {
+  stack: [32m'NotFoundException: Cannot GET /favicon.ico\n'[39m +
+    [32m'    at callback (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\@nestjs\\core\\router\\routes-resolver.js:77:19)\n'[39m +
+    [32m'    at C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\@nestjs\\core\\router\\router-proxy.js:9:23\n'[39m +
+    [32m'    at Layer.handleRequest (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\lib\\layer.js:145:17)\n'[39m +
+    [32m'    at trimPrefix (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\index.js:336:13)\n'[39m +
+    [32m'    at C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\index.js:294:9\n'[39m +
+    [32m'    at processParams (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\index.js:574:12)\n'[39m +
+    [32m'    at next (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\index.js:288:5)\n'[39m +
+    [32m'    at LoggerMiddleware.use (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\src\\middlewares\\logger.middleware.ts:34:5)\n'[39m +
+    [32m'    at C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\@nestjs\\core\\router\\router-proxy.js:9:23\n'[39m +
+    [32m'    at Layer.handleRequest (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\lib\\layer.js:145:17)'[39m,
+  path: [32m'/favicon.ico'[39m,
+  method: [32m'GET'[39m,
+  statusCode: [33m404[39m
+} [33m+66ms[39m
+[31m[CAR-RENTAL][39m [31m33896[39m 13/03/25 14:49:55 [31m  ERROR[39m [33m[HTTP][39m [31mGET /favicon.ico 404 - 6.638ms - 1385[39m - { ip: [32m'::1'[39m } [33m+5ms[39m
+[31m[CAR-RENTAL][39m [31m33896[39m 13/03/25 15:13:34 [31m  ERROR[39m  [31mUpload image failed: Upload image failed with error: "We don't support that file type!"[39m - {
+  stack: [32m`InternalServerErrorException: Upload image failed: Upload image failed with error: "We don't support that file type!"\n`[39m +
+    [32m'    at ImageService.uploadImage (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\src\\modules\\image\\image.service.ts:53:13)\n'[39m +
+    [32m'    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)'[39m,
+  path: [32m'/image/upload'[39m,
+  method: [32m'POST'[39m,
+  statusCode: [33m500[39m
+} [33m+5m[39m
+[31m[CAR-RENTAL][39m [31m33896[39m 13/03/25 15:13:34 [31m  ERROR[39m [33m[HTTP][39m [31mPOST /image/upload 500 - 1696.103ms - 640[39m - { ip: [32m'::1'[39m } [33m+2ms[39m
+[31m[CAR-RENTAL][39m [31m11468[39m 14/03/25 12:37:17 [31m  ERROR[39m  [31mCannot read properties of null (reading 'password')[39m - {
+  stack: [32m"TypeError: Cannot read properties of null (reading 'password')\n"[39m +
+    [32m'    at AuthService.forgotPassword (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\src\\modules\\auth\\auth.service.ts:157:20)\n'[39m +
+    [32m'    at async AuthController.forgotPassword (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\src\\modules\\auth\\auth.controller.ts:116:12)'[39m,
+  path: [32m'/auth/email/forgot-password'[39m,
+  method: [32m'POST'[39m,
+  statusCode: [33m500[39m
+} [33m+17m[39m
+[31m[CAR-RENTAL][39m [31m11468[39m 14/03/25 12:37:17 [31m  ERROR[39m [33m[HTTP][39m [31mPOST /auth/email/forgot-password 500 - 54.932ms - 413[39m - { ip: [32m'::1'[39m } [33m+4ms[39m
+[31m[CAR-RENTAL][39m [31m11468[39m 14/03/25 12:37:27 [31m  ERROR[39m  [31mCannot GET /auth/email/forgot-password[39m - {
+  stack: [32m'NotFoundException: Cannot GET /auth/email/forgot-password\n'[39m +
+    [32m'    at callback (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\@nestjs\\core\\router\\routes-resolver.js:77:19)\n'[39m +
+    [32m'    at C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\@nestjs\\core\\router\\router-proxy.js:9:23\n'[39m +
+    [32m'    at Layer.handleRequest (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\lib\\layer.js:145:17)\n'[39m +
+    [32m'    at trimPrefix (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\index.js:336:13)\n'[39m +
+    [32m'    at C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\index.js:294:9\n'[39m +
+    [32m'    at processParams (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\index.js:574:12)\n'[39m +
+    [32m'    at next (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\index.js:288:5)\n'[39m +
+    [32m'    at LoggerMiddleware.use (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\src\\middlewares\\logger.middleware.ts:34:5)\n'[39m +
+    [32m'    at C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\@nestjs\\core\\router\\router-proxy.js:9:23\n'[39m +
+    [32m'    at Layer.handleRequest (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\lib\\layer.js:145:17)'[39m,
+  path: [32m'/auth/email/forgot-password'[39m,
+  method: [32m'GET'[39m,
+  statusCode: [33m404[39m
+} [33m+10s[39m
+[31m[CAR-RENTAL][39m [31m11468[39m 14/03/25 12:37:27 [31m  ERROR[39m [33m[HTTP][39m [31mGET /auth/email/forgot-password 404 - 9.531ms - 1430[39m - { ip: [32m'::1'[39m } [33m+7ms[39m
+[31m[CAR-RENTAL][39m [31m11468[39m 14/03/25 12:37:27 [31m  ERROR[39m  [31mCannot GET /favicon.ico[39m - {
+  stack: [32m'NotFoundException: Cannot GET /favicon.ico\n'[39m +
+    [32m'    at callback (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\@nestjs\\core\\router\\routes-resolver.js:77:19)\n'[39m +
+    [32m'    at C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\@nestjs\\core\\router\\router-proxy.js:9:23\n'[39m +
+    [32m'    at Layer.handleRequest (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\lib\\layer.js:145:17)\n'[39m +
+    [32m'    at trimPrefix (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\index.js:336:13)\n'[39m +
+    [32m'    at C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\index.js:294:9\n'[39m +
+    [32m'    at processParams (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\index.js:574:12)\n'[39m +
+    [32m'    at next (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\index.js:288:5)\n'[39m +
+    [32m'    at LoggerMiddleware.use (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\src\\middlewares\\logger.middleware.ts:34:5)\n'[39m +
+    [32m'    at C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\@nestjs\\core\\router\\router-proxy.js:9:23\n'[39m +
+    [32m'    at Layer.handleRequest (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\node_modules\\router\\lib\\layer.js:145:17)'[39m,
+  path: [32m'/favicon.ico'[39m,
+  method: [32m'GET'[39m,
+  statusCode: [33m404[39m
+} [33m+66ms[39m
+[31m[CAR-RENTAL][39m [31m11468[39m 14/03/25 12:37:27 [31m  ERROR[39m [33m[HTTP][39m [31mGET /favicon.ico 404 - 3.816ms - 1385[39m - { ip: [32m'::1'[39m } [33m+3ms[39m
+[31m[CAR-RENTAL][39m [31m11468[39m 14/03/25 12:57:02 [31m  ERROR[39m  [31mCannot read properties of null (reading 'firstName')[39m - {
+  stack: [32m"TypeError: Cannot read properties of null (reading 'firstName')\n"[39m +
+    [32m'    at AuthService.sendVerificationEmail (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\src\\modules\\auth\\auth.service.ts:213:30)\n'[39m +
+    [32m'    at async AuthController.sendEmailVerify (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\src\\modules\\auth\\auth.controller.ts:121:12)'[39m,
+  path: [32m'/auth/email/verify-account'[39m,
+  method: [32m'POST'[39m,
+  statusCode: [33m500[39m
+} [33m+20m[39m
+[31m[CAR-RENTAL][39m [31m11468[39m 14/03/25 12:57:02 [31m  ERROR[39m [33m[HTTP][39m [31mPOST /auth/email/verify-account 500 - 160.567ms - 422[39m - { ip: [32m'::1'[39m } [33m+17ms[39m
+[31m[CAR-RENTAL][39m [31m11468[39m 14/03/25 12:57:05 [31m  ERROR[39m  [31mCannot read properties of null (reading 'firstName')[39m - {
+  stack: [32m"TypeError: Cannot read properties of null (reading 'firstName')\n"[39m +
+    [32m'    at AuthService.sendVerificationEmail (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\src\\modules\\auth\\auth.service.ts:213:30)\n'[39m +
+    [32m'    at async AuthController.sendEmailVerify (C:\\Users\\notrealqt\\Desktop\\Project\\wap\\server\\src\\modules\\auth\\auth.controller.ts:121:12)'[39m,
+  path: [32m'/auth/email/verify-account'[39m,
+  method: [32m'POST'[39m,
+  statusCode: [33m500[39m
+} [33m+3s[39m
+[31m[CAR-RENTAL][39m [31m11468[39m 14/03/25 12:57:05 [31m  ERROR[39m [33m[HTTP][39m [31mPOST /auth/email/verify-account 500 - 14.503ms - 422[39m - { ip: [32m'::1'[39m } [33m+2ms[39m
