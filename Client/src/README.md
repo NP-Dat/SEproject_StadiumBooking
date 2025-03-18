@@ -1,8 +1,8 @@
 /src
   /components
     - Banner.tsx
-    - Navbar.tsx
     - Footer.tsx
+    - Navbar.tsx
   /layouts
     - PublicLayout.tsx
     - AuthLayout.tsx
@@ -16,10 +16,11 @@
       - Dashboard.tsx
       - Profile.tsx
       - Bookings.tsx
-  - Router.tsx
+    /Route
+      - Router.tsx
   - App.tsx
   - main.tsx
 
 cd client
 npm i
-npm run
+npm run dev
