@@ -1,28 +1,25 @@
-src/
-├── assets/                    // images, fonts, etc.
-├── components/
-│   ├── buttons/
-│   │   └── PrimaryButton.tsx
-│   ├── Layout/
-│   │   ├── PublicLayout.tsx   // Layout for public pages (landing page)
-│   │   ├── DashboardLayout.tsx // Layout for logged in/deep booking pages
-│   │   ├── Header.tsx         // Common header for public pages
-│   │   └── Footer.tsx         // Common footer for public pages
-│   └── UI/
-│       └── Loader.tsx
-├── pages/
-│   ├── Home/
-│   │   └── Home.tsx           // Landing page (public)
-│   ├── BookSeats/
-│   │   └── BookSeats.tsx      // Booking pages (using DashboardLayout)
-│   ├── StadiumInfo/
-│   │   └── StadiumInfo.tsx    // May be public or dashboard-based
-│   ├── Account/
-│   │   └── Login.tsx          // Example login page
-│   └── NotFound/
-│       └── NotFound.tsx
-├── routes/
-│   ├── PublicRoutes.tsx       // Routes using PublicLayout
-│   └── DashboardRoutes.tsx    // Routes using DashboardLayout
-├── App.tsx
-└── main.tsx
+/src
+  /components
+    - Banner.tsx
+    - Navbar.tsx
+    - Footer.tsx
+  /layouts
+    - PublicLayout.tsx
+    - AuthLayout.tsx
+  /pages
+    /public
+      - Home.tsx
+      - About.tsx
+      - Contact.tsx
+      - Login.tsx
+    /auth
+      - Dashboard.tsx
+      - Profile.tsx
+      - Bookings.tsx
+  - Router.tsx
+  - App.tsx
+  - main.tsx
+
+cd client
+npm i
+npm run
