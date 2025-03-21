@@ -1,27 +1,27 @@
 const pool = require('../config/db');
 const bcrypt = require('bcryptjs');
 
-class UserModel {
+class OwnerModel {
   static async findByEmail(email) {
-    const [users] = await pool.query('SELECT * FROM Customers WHERE email = ?', [email]);
+    const [users] = await pool.query('SELECT * FROM Owners WHERE email = ?', [email]);
     return users[0];
   }
 
   static async findPasswordByEmail(email) {
-    const [passwords] = await pool.query('SELECT passWord FROM Customers WHERE email = ?', [email]);
+    const [passwords] = await pool.query('SELECT passWord FROM Owners WHERE email = ?', [email]);
     return passwords.length > 0 ? passwords[0].passWord : null;
   }
 
   static async findById(id) {
-    const [users] = await pool.query('SELECT id, username, email FROM users WHERE id = ?', [id]);
+    const [users] = await pool.query('SELECT id, username, email FROM Owners WHERE id = ?', [id]);
     return users[0];
   }
 
   static async create(username, email, password) {
     const hashedPassword = await bcrypt.hash(password, 10);
     const [result] = await pool.query(
-      'INSERT INTO Customers (userName, email, passWord, fullName, birth, phoneNumber, address) VALUES (?, ?, ?, ?, ?, ?, ?)',
-      [username, email, hashedPassword,"Dat", "2000-01-01", "0123456789", "HCM"]
+      'INSERT INTO Owners (userName, email, passWord, phoneNumber) VALUES (?, ?, ?, ?)',
+      [username, email, hashedPassword, '555123456789']
     );
     return result.insertId;
   }
@@ -31,4 +31,4 @@ class UserModel {
   }
 }
 
-module.exports = UserModel;
+module.exports = OwnerModel;
