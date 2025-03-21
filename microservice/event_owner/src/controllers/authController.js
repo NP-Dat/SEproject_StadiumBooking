@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const UserModel = require('../models/Owner');
+const OwnerModel = require('../models/Owner');
 
 class AuthController {
   static async register(req, res) {
@@ -10,12 +10,12 @@ class AuthController {
         return res.status(400).json({ message: 'All fields are required' });
       }
 
-      const existingUser = await UserModel.findByEmail(email);
+      const existingUser = await OwnerModel.findByEmail(email);
       if (existingUser) {
         return res.status(409).json({ message: 'User already exists' });
       }
 
-      const userId = await UserModel.create(username, email, password);
+      const userId = await OwnerModel.create(username, email, password);
 
       res.status(201).json({
         message: 'User registered successfully',
@@ -35,13 +35,13 @@ class AuthController {
         return res.status(400).json({ message: 'Email and password are required' });
       }
 
-      const user = await UserModel.findByEmail(email);
+      const user = await OwnerModel.findByEmail(email);
       if (!user) {
         return res.status(401).json({ message: 'Invalid credentials' });
       }
 
-      const hashedPassword = await UserModel.findPasswordByEmail(email);
-      const validPassword = await UserModel.verifyPassword(password, hashedPassword);
+      const hashedPassword = await OwnerModel.findPasswordByEmail(email);
+      const validPassword = await OwnerModel.verifyPassword(password, hashedPassword);
       if (!validPassword) {
         return res.status(401).json({ message: 'Invalid credentials' });
       }
@@ -69,7 +69,7 @@ class AuthController {
 
   static async getProfile(req, res) {
     try {
-      const user = await UserModel.findById(req.user.userId);
+      const user = await OwnerModel.findById(req.user.userId);
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
       }
