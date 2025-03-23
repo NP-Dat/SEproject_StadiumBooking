@@ -76,7 +76,7 @@ const Login = () => {
 
     const result = await login(email, password);
     if (result.success) {
-      navigate('/dashboard');
+      navigate('/profile');
     } else {
       setError(result.message);
     }

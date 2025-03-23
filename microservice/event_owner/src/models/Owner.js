@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 
 class OwnerModel {
   static async findByEmail(email) {
-    const [users] = await pool.query('SELECT * FROM Owners WHERE email = ?', [email]);
+    const [users] = await pool.query('SELECT id, userName, email FROM Owners WHERE email = ?', [email]);
     return users[0];
   }
 
@@ -13,7 +13,7 @@ class OwnerModel {
   }
 
   static async findById(id) {
-    const [users] = await pool.query('SELECT id, username, email FROM Owners WHERE id = ?', [id]);
+    const [users] = await pool.query('SELECT id, username, email, phoneNumber FROM Owners WHERE id = ?', [id]);
     return users[0];
   }
 

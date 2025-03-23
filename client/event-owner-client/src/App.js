@@ -4,8 +4,9 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider } from './contexts/AuthContext';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
-import Dashboard from './components/Dashboard';
+import Profile from './components/Profile';
 import './App.css';
+
 
 // Protected route component
 const ProtectedRoute = ({ children }) => {
@@ -26,10 +27,10 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route 
-            path="/dashboard" 
+            path="/profile" 
             element={
               <ProtectedRoute>
-                <Dashboard />
+                <Profile />
               </ProtectedRoute>
             } 
           />
