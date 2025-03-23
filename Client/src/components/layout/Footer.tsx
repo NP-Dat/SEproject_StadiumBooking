@@ -1,4 +1,4 @@
-export const Footer = () => {
+const Footer = () => {
     return (
         <footer className="flex flex-wrap gap-5 justify-between items-start py-4 pr-20 pl-5 mt-7 w-full bg-black max-md:pr-5 max-md:max-w-full">
             <div className="flex flex-col self-end mt-6 text-base text-center">
@@ -23,15 +23,13 @@ export const Footer = () => {
                         </a>
                     </div>
                     <p className="mt-9 font-light text-neutral-400 max-md:mr-1.5">
-                        @Copyright Webify Company
+                        &copy; Copyright Webify Company
                     </p>
                 </div>
             </div>
 
             <nav className="flex flex-col items-center text-xl font-light text-center text-neutral-400">
-                <h3 className="self-stretch text-2xl font-bold text-sky-400">
-                    Important
-                </h3>
+                <h3 className="self-stretch text-2xl font-bold text-sky-400">Important</h3>
                 <a href="#" className="mt-3">
                     About us
                 </a>
@@ -60,9 +58,7 @@ export const Footer = () => {
                         className="object-contain shrink-0 w-14 aspect-[1.6]"
                     />
                 </div>
-                <h3 className="mt-7 text-2xl font-bold text-center text-sky-400">
-                    Follow us
-                </h3>
+                <h3 className="mt-7 text-2xl font-bold text-center text-sky-400">Follow us</h3>
                 <div className="flex gap-5 justify-between mt-2 max-w-full w-[134px]">
                     <img
                         src="https://cdn.builder.io/api/v1/image/assets/TEMP/611116ccd7b438644a2ef71fc6a83985d14aa0bc2947c93a273f8eea6ba040a8?placeholderIfAbsent=true&apiKey=ebb3257718164cd3b8c551bf8167e955"
@@ -79,3 +75,5 @@ export const Footer = () => {
         </footer>
     );
 };
+
+export default Footer;
