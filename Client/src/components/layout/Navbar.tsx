@@ -1,24 +1,60 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Navbar: React.FC = () => {
+    const navigate = useNavigate();
+
     return (
-        <header className="flex flex-col justify-center items-end px-16 py-14 w-full text-2xl font-bold text-center text-white bg-black max-md:px-5 max-md:max-w-full">
-            <nav className="flex gap-10 items-center w-full max-w-[1132px] max-md:max-w-full">
-                <h1 className="grow self-stretch text-4xl">
-                    Webify <span className="text-[#2687b8]">Co.</span>
-                </h1>
+        <header className="bg-gray-900 text-white">
+            <nav className="flex items-center justify-between px-6 py-4">
+                {/* Logo */}
+                <div className="flex-shrink-0 ml-0">
+                    <h1
+                        className="text-3xl font-bold cursor-pointer"
+                        onClick={() => navigate('/')}
+                    >
+                        Webify <span className="text-[#2687b8]">Co.</span>
+                    </h1>
+                </div>
+
+                {/* Navigation Links */}
+                <div className="hidden md:flex items-center gap-6">
+                    <a href="/" className="hover:underline">Home</a>
+                    <a href="/events" className="hover:underline">Events</a>
+                    <a href="/about" className="hover:underline">About</a>
+                    <a href="/contact" className="hover:underline">Contact</a>
+                </div>
+
+                {/* Modern Search Bar */}
                 <input
                     type="search"
-                    placeholder="search"
-                    className="self-stretch px-16 py-2 my-auto font-light whitespace-nowrap bg-white rounded-2xl text-zinc-400 max-md:px-5"
+                    placeholder="Search events, venues, or teams..."
+                    className="hidden md:block px-6 py-3 w-[300px] lg:w-[500px] rounded-full bg-white text-black shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                 />
-                <button className="self-stretch my-auto whitespace-nowrap">
-                    Login
-                </button>
-                <button className="self-stretch my-auto whitespace-nowrap">
-                    Register
-                </button>
+
+                {/* Buttons */}
+                <div className="flex items-center gap-4">
+                    <button
+                        onClick={() => navigate('/login')}
+                        className="px-6 py-2 text-sm border border-white rounded-full hover:bg-white hover:text-black transition"
+                    >
+                        Login
+                    </button>
+                    <button
+                        onClick={() => navigate('/register')}
+                        className="px-6 py-2 text-sm bg-blue-600 rounded-full hover:bg-blue-700 transition"
+                    >
+                        Sign Up
+                    </button>
+                </div>
             </nav>
+
+            {/* Mobile Menu */}
+            <div className="block md:hidden px-4 py-2">
+                <button className="text-sm bg-blue-600 px-4 py-2 rounded">
+                    Menu
+                </button>
+            </div>
         </header>
     );
 };
