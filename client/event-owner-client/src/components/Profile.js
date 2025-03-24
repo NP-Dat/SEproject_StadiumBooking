@@ -25,13 +25,26 @@ const Title = styled.h1`
   font-weight: 500;
 `;
 
-const LogoutButton = styled.button`
+const ButtonGroup = styled.div`
+  display: flex;
+  gap: 1rem;
+`;
+
+const Button = styled.button`
   padding: 0.5rem 1rem;
-  background-color: #e53e3e;
+  background-color: #2563eb;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  
+  &:hover {
+    background-color: #1d4ed8;
+  }
+`;
+
+const LogoutButton = styled(Button)`
+  background-color: #e53e3e;
   
   &:hover {
     background-color: #c53030;
@@ -91,7 +104,6 @@ const ErrorMessage = styled.div`
   margin-bottom: 1.5rem;
 `;
 
-// Add these styled components with your other styled components
 const AvatarSection = styled.div`
   display: flex;
   align-items: center;
@@ -131,6 +143,12 @@ const UserRole = styled.p`
   font-size: 1rem;
 `;
 
+const ActionSection = styled.div`
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+`;
+
 const Profile = () => {
   const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -167,6 +185,10 @@ const Profile = () => {
     navigate('/login');
   };
 
+  const handleViewStadiums = () => {
+    navigate('/stadiums');
+  };
+
   return (
     <ProfileContainer>
       <Header>
@@ -183,39 +205,43 @@ const Profile = () => {
           <ProfileHeader>
             <h2>Account Information</h2>
             <p>Manage your personal information and account details</p>
-        </ProfileHeader>
+          </ProfileHeader>
           
-        <ProfileBody>
+          <ProfileBody>
             <AvatarSection>
-                <Avatar>
+              <Avatar>
                 <AvatarImage 
-                    src={profileData?.avatarUrl || "https://ui-avatars.com/api/?name=" + encodeURIComponent(profileData?.username || currentUser?.user?.username || "User")} 
-                    alt="Profile Avatar" 
+                  src={profileData?.avatarUrl || "https://ui-avatars.com/api/?name=" + encodeURIComponent(profileData?.username || currentUser?.user?.username || "User")} 
+                  alt="Profile Avatar" 
                 />
-                </Avatar>
-                <UserInfo>
+              </Avatar>
+              <UserInfo>
                 <UserName>{profileData?.username || currentUser?.user?.username}</UserName>
                 <UserRole>Event Owner</UserRole>
-                </UserInfo>
+              </UserInfo>
             </AvatarSection>
-                        
+                      
             <ProfileRow>
-                <ProfileLabel>Email</ProfileLabel>
-                <ProfileValue>{profileData?.email || currentUser?.user?.email}</ProfileValue>
+              <ProfileLabel>Email</ProfileLabel>
+              <ProfileValue>{profileData?.email || currentUser?.user?.email}</ProfileValue>
             </ProfileRow>
-                        
+                      
             <ProfileRow>
-                <ProfileLabel>Account ID</ProfileLabel>
-                <ProfileValue>{profileData?.id || currentUser?.user?.id}</ProfileValue>
+              <ProfileLabel>Account ID</ProfileLabel>
+              <ProfileValue>{profileData?.id || currentUser?.user?.id}</ProfileValue>
             </ProfileRow>
-                        
+                      
             {profileData?.phoneNumber && (
-                <ProfileRow>
+              <ProfileRow>
                 <ProfileLabel>Phone Number</ProfileLabel>
                 <ProfileValue>{profileData.phoneNumber}</ProfileValue>
-                </ProfileRow>
+              </ProfileRow>
             )}
-        </ProfileBody>
+
+            <ActionSection>
+              <Button onClick={handleViewStadiums}>View Available Stadiums</Button>
+            </ActionSection>
+          </ProfileBody>
         </ProfileSection>
       )}
     </ProfileContainer>
