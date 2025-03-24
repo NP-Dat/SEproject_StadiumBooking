@@ -5,8 +5,9 @@ import { AuthProvider } from './contexts/AuthContext';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import Profile from './components/Profile';
+import StadiumList from './components/stadiums/StadiumList';
+import CreateEvent from './components/events/CreateEvent';
 import './App.css';
-
 
 // Protected route component
 const ProtectedRoute = ({ children }) => {
@@ -34,7 +35,23 @@ function App() {
               </ProtectedRoute>
             } 
           />
-          <Route path="/" element={<Navigate to="/login" />} />
+          <Route 
+            path="/stadiums" 
+            element={
+              <ProtectedRoute>
+                <StadiumList />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/create-event/:stadiumId" 
+            element={
+              <ProtectedRoute>
+                <CreateEvent />
+              </ProtectedRoute>
+            } 
+          />
+          <Route path="/" element={<Navigate to="/profile" />} />
         </Routes>
       </Router>
     </AuthProvider>
