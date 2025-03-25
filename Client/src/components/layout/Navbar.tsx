@@ -1,8 +1,31 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Navbar: React.FC = () => {
     const navigate = useNavigate();
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+        // Check authentication status when the component mounts
+        const checkAuth = () => {
+            const token = localStorage.getItem('token');
+            setIsLoggedIn(!!token);
+        };
+
+        checkAuth();
+        // Set up an event listener for storage changes (for logout in other tabs)
+        window.addEventListener('storage', checkAuth);
+
+        return () => {
+            window.removeEventListener('storage', checkAuth);
+        };
+    }, []);
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        setIsLoggedIn(false);
+        navigate('/');
+    };
 
     return (
         <header className="bg-gray-900 text-white">
@@ -19,10 +42,10 @@ const Navbar: React.FC = () => {
 
                 {/* Navigation Links */}
                 <div className="hidden md:flex items-center gap-6">
-                    <a href="/" className="hover:underline">Home</a>
-                    <a href="/events" className="hover:underline">Events</a>
-                    <a href="/about" className="hover:underline">About</a>
-                    <a href="/contact" className="hover:underline">Contact</a>
+                    <Link to="/" className="hover:underline">Home</Link>
+                    <Link to="/events" className="hover:underline">Events</Link>
+                    <Link to="/about" className="hover:underline">About</Link>
+                    <Link to="/contact" className="hover:underline">Contact</Link>
                 </div>
 
                 {/* Modern Search Bar */}
@@ -34,18 +57,37 @@ const Navbar: React.FC = () => {
 
                 {/* Buttons */}
                 <div className="flex items-center gap-4">
-                    <button
-                        onClick={() => navigate('/login')}
-                        className="px-6 py-2 text-sm border border-white rounded-full hover:bg-white hover:text-black transition"
-                    >
-                        Login
-                    </button>
-                    <button
-                        onClick={() => navigate('/register')}
-                        className="px-6 py-2 text-sm bg-blue-600 rounded-full hover:bg-blue-700 transition"
-                    >
-                        Sign Up
-                    </button>
+                    {isLoggedIn ? (
+                        <>
+                            <button
+                                onClick={() => navigate('/dashboard')}
+                                className="px-6 py-2 text-sm border border-white rounded-full hover:bg-white hover:text-black transition"
+                            >
+                                Dashboard
+                            </button>
+                            <button
+                                onClick={handleLogout}
+                                className="px-6 py-2 text-sm bg-blue-600 rounded-full hover:bg-blue-700 transition"
+                            >
+                                Logout
+                            </button>
+                        </>
+                    ) : (
+                        <>
+                            <button
+                                onClick={() => navigate('/login')}
+                                className="px-6 py-2 text-sm border border-white rounded-full hover:bg-white hover:text-black transition"
+                            >
+                                Login
+                            </button>
+                            <button
+                                onClick={() => navigate('/register')}
+                                className="px-6 py-2 text-sm bg-blue-600 rounded-full hover:bg-blue-700 transition"
+                            >
+                                Sign Up
+                            </button>
+                        </>
+                    )}
                 </div>
             </nav>
 

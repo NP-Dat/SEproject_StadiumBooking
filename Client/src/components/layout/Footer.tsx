@@ -1,3 +1,6 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+
 const Footer = () => {
     return (
         <footer className="bg-gray-900 text-white py-10 px-6">
@@ -24,18 +27,18 @@ const Footer = () => {
                 {/* Important Links */}
                 <div className="flex flex-col gap-4">
                     <h3 className="text-lg font-semibold text-sky-400">Important</h3>
-                    <a href="#" className="text-neutral-400 hover:underline">
+                    <Link to="/about" className="text-neutral-400 hover:underline">
                         About us
-                    </a>
-                    <a href="#" className="text-neutral-400 hover:underline">
+                    </Link>
+                    <Link to="/terms" className="text-neutral-400 hover:underline">
                         Terms
-                    </a>
-                    <a href="#" className="text-neutral-400 hover:underline">
+                    </Link>
+                    <Link to="/policy" className="text-neutral-400 hover:underline">
                         Policy
-                    </a>
-                    <a href="#" className="text-neutral-400 hover:underline">
+                    </Link>
+                    <Link to="/contact" className="text-neutral-400 hover:underline">
                         Contact
-                    </a>
+                    </Link>
                 </div>
 
                 {/* Payment and Socials */}

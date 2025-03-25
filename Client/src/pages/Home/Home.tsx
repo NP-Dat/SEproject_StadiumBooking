@@ -1,17 +1,20 @@
-import { motion } from "framer-motion";
+import React from "react";
 import Hero from "./components/Hero";
 import Event from "./components/Event";
-import Feature from "./components/Feature";
+import Venue from "./components/Venue";
+import BookingGuide from "./components/BookingGuide";
 import JoinUs from "./components/JoinUs";
+import styles from "./Home.module.css";
 
 const Home = () => {
     return (
-        <div className="w-full min-h-screen bg-gray-900 text-white">
+        <div className={styles.home}>
             <Hero />
             <Event />
-            <Feature />
-            < JoinUs />
-        </div >
+            <Venue />
+            <BookingGuide />
+            <JoinUs />
+        </div>
     );
 };
 
