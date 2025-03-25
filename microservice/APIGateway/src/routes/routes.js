@@ -27,6 +27,28 @@ router.post('/auth/register', authProxy);
 // Protected routes
 router.get('/auth/profile', verifyToken, authProxy);
 
+// Event Owner Service Routes
+const ownerProxy = createProxyMiddleware({
+  target: services.owner.url,
+  changeOrigin: true,
+  pathRewrite: {
+    '^/owner': '/api/owner'
+  },
+  onProxyReq: (proxyReq, req, res) => {
+    // Forward the original headers
+    if (req.token) {
+      proxyReq.setHeader('Authorization', req.token);
+    }
+  }
+});
+
+// Public routes
+router.post('/owner/login', authProxy);
+router.post('/owner/register', authProxy);
+
+// Protected routes
+router.get('/owner/profile', verifyToken, authProxy);
+
 // User Service Routes
 const userProxy = createProxyMiddleware({
   target: services.users.url,
