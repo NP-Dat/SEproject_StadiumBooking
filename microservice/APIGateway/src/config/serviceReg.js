@@ -8,6 +8,15 @@ const services = {
       ]
     },
 
+    owner: {
+      url: process.env.OWNER_SERVICE_URL || 'http://localhost:8008',
+      routes: [
+        '/api/owner/login',
+        '/api/owner/register',
+        '/api/owner/profile'
+      ]
+    },
+
     users: {
       url: process.env.USER_SERVICE_URL || 'http://localhost:8002',
       routes: [
