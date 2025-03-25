@@ -1,12 +1,37 @@
 import React from "react";
+import { motion } from "framer-motion";
+import styles from "./Mission.module.css";
 
-const Mission = () => {
+interface MissionProps {
+    title: string;
+    description: string;
+    imageUrl: string;
+}
+
+const Mission: React.FC<MissionProps> = ({ title, description, imageUrl }) => {
     return (
-        <section id="mission" className="py-16 bg-gray-800 text-center">
-            <h2 className="text-3xl font-semibold text-blue-400">Our Mission</h2>
-            <p className="mt-4 text-gray-300 px-6 md:px-20">
-                At Webify Co., our mission is to create unforgettable experiences by providing seamless, innovative, and user-friendly solutions for booking stadium seats. We strive to connect fans with their favorite events, making every moment count.
-            </p>
+        <section className={styles.mission}>
+            <div className={styles.container}>
+                <div className={styles.missionContent}>
+                    <motion.div
+                        initial={{ opacity: 0, x: -20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.6 }}
+                        className={styles.missionText}
+                    >
+                        <h2 className={styles.missionTitle}>{title}</h2>
+                        <p className={styles.missionDescription}>{description}</p>
+                    </motion.div>
+                    <motion.div
+                        initial={{ opacity: 0, x: 20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.6 }}
+                        className={styles.missionImage}
+                    >
+                        <img src={imageUrl} alt={title} />
+                    </motion.div>
+                </div>
+            </div>
         </section>
     );
 };

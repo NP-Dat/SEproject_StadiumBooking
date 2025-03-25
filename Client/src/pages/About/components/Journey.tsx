@@ -1,32 +1,58 @@
 import React from "react";
 import { motion } from "framer-motion";
-const Journey = () => {
+import styles from "./Journey.module.css";
+
+interface TimelineItem {
+    date: string;
+    title: string;
+    description: string;
+}
+
+interface JourneyProps {
+    title: string;
+    subtitle: string;
+    timeline: TimelineItem[];
+}
+
+const Journey: React.FC<JourneyProps> = ({ title, subtitle, timeline }) => {
     return (
-        <section className="py-16 bg-gray-800 text-center">
-            <motion.h2
-                className="text-3xl font-semibold text-blue-400"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ duration: 1 }}
-            >
-                Our Journey
-            </motion.h2>
-            <div className="mt-8 px-6 md:px-20 text-gray-300">
-                <motion.p
-                    className="mb-6"
-                    initial={{ opacity: 0, y: 50 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 1, delay: 0.2 }}
-                >
-                    Webify Co. started as a small team of dreamers determined to simplify event bookings for fans worldwide. From humble beginnings, we’ve grown into a global platform, connecting millions to their favorite events.
-                </motion.p>
-                <motion.p
-                    initial={{ opacity: 0, y: 50 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 1, delay: 0.4 }}
-                >
-                    The journey wasn’t easy — we faced challenges with funding, technology, and scaling up. But every milestone we achieved came from a belief in delivering unforgettable experiences, one booking at a time.
-                </motion.p>
+        <section className={styles.journey}>
+            <div className={styles.container}>
+                <div className={styles.sectionHeader}>
+                    <motion.h2
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6 }}
+                        className={styles.sectionTitle}
+                    >
+                        {title}
+                    </motion.h2>
+                    <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.2 }}
+                        className={styles.sectionSubtitle}
+                    >
+                        {subtitle}
+                    </motion.p>
+                </div>
+                <div className={styles.timeline}>
+                    {timeline.map((item, index) => (
+                        <motion.div
+                            key={item.date}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, delay: index * 0.2 }}
+                            className={styles.timelineItem}
+                        >
+                            <div className={styles.timelineContent}>
+                                <div className={styles.timelineDate}>{item.date}</div>
+                                <h3 className={styles.timelineTitle}>{item.title}</h3>
+                                <p className={styles.timelineDescription}>{item.description}</p>
+                            </div>
+                        </motion.div>
+                    ))}
+                </div>
             </div>
         </section>
     );

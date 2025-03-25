@@ -1,52 +1,100 @@
-import React from "react";
 import { motion } from "framer-motion";
+import styles from "./Event.module.css";
+
+const events = [
+    {
+        id: 1,
+        title: "Championship Final",
+        date: "June 15, 2024",
+        description: "Witness the epic showdown between the top teams in this year's championship final.",
+        image: "/event1.jpg",
+        location: "Main Stadium"
+    },
+    {
+        id: 2,
+        title: "International Match",
+        date: "July 1, 2024",
+        description: "Experience the thrill of international competition with teams from around the world.",
+        image: "/event2.jpg",
+        location: "Arena Center"
+    },
+    {
+        id: 3,
+        title: "League Cup",
+        date: "July 15, 2024",
+        description: "The prestigious League Cup brings together the best teams for an unforgettable tournament.",
+        image: "/event3.jpg",
+        location: "Sports Complex"
+    }
+];
 
 const Event = () => {
-    const events = [
-        {
-            title: "Football Championship",
-            date: "March 15, 2025",
-            location: "National Stadium",
-            image: "/football-event.jpg",
-        },
-        {
-            title: "Concert: Rock Night",
-            date: "April 5, 2025",
-            location: "City Arena",
-            image: "/concert-event.jpg",
-        },
-        {
-            title: "Basketball Finals",
-            date: "May 10, 2025",
-            location: "Sports Complex",
-            image: "/basketball-event.jpg",
-        },
-    ];
-
     return (
-        <section id="events" className="py-16 text-center bg-gray-800">
-            <h2 className="text-3xl font-semibold text-blue-400">Upcoming Events</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8 px-10">
-                {events.map((event, index) => (
-                    <motion.div
-                        key={index}
-                        className="relative bg-gray-700 p-6 rounded-lg cursor-pointer hover:scale-105 transition-transform overflow-hidden"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        whileHover={{ scale: 1.05 }}
-                    >
-                        <img
-                            src={event.image}
-                            alt={event.title}
-                            className="absolute inset-0 object-cover w-full h-full opacity-30 hover:opacity-50 transition"
-                        />
-                        <div className="relative z-10">
-                            <h3 className="text-xl font-bold">{event.title}</h3>
-                            <p className="mt-2 text-gray-300">{event.date}</p>
-                            <p className="mt-1 text-gray-400">{event.location}</p>
-                        </div>
-                    </motion.div>
-                ))}
+        <section className={styles.events}>
+            <div className={styles.container}>
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6 }}
+                    className={styles.header}
+                >
+                    <h2 className={styles.title}>Upcoming Events</h2>
+                    <p className={styles.subtitle}>
+                        Discover exciting sports events and secure your seats for the best matches
+                    </p>
+                </motion.div>
+
+                <div className={styles.eventsGrid}>
+                    {events.map((event, index) => (
+                        <motion.div
+                            key={event.id}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, delay: index * 0.2 }}
+                            className={styles.eventCard}
+                        >
+                            <img
+                                src={event.image}
+                                alt={event.title}
+                                className={styles.eventImage}
+                            />
+                            <div className={styles.eventContent}>
+                                <h3 className={styles.eventTitle}>{event.title}</h3>
+                                <div className={styles.eventDate}>{event.date}</div>
+                                <p className={styles.eventDescription}>
+                                    {event.description}
+                                </p>
+                                <div className={styles.eventDetails}>
+                                    <div className={styles.eventLocation}>
+                                        <svg
+                                            className="w-4 h-4"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                                            />
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                                            />
+                                        </svg>
+                                        {event.location}
+                                    </div>
+                                    <button className={styles.bookButton}>
+                                        Book Now
+                                    </button>
+                                </div>
+                            </div>
+                        </motion.div>
+                    ))}
+                </div>
             </div>
         </section>
     );

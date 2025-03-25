@@ -1,28 +1,53 @@
 import React from 'react';
-
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import publicRoutes from './publicRoutes';
-import Navbar from '../components/layout/Navbar';
-import Footer from '../components/layout/Footer';
+import privateRoutes from './privateRoutes';
+import MainLayout from '../components/layout/MainLayout';
+import NotFound from '../pages/NotFound/NotFound';
 
 const AppRouter = () => {
     return (
         <Router>
-            <Navbar />
             <Routes>
                 {/* Public Routes */}
                 {publicRoutes.map((route, index) => (
-                    <Route key={index} path={route.path} element={route.element} />
+                    <Route
+                        key={index}
+                        path={route.path}
+                        element={
+                            <MainLayout>
+                                {route.element}
+                            </MainLayout>
+                        }
+                    />
                 ))}
 
-                {/* Private Routes (currently commented out) */}
-                {/*
+                {/* Private Routes */}
                 {privateRoutes.map((route, index) => (
-                    <Route key={index} path={route.path} element={route.element} />
+                    <Route
+                        key={index}
+                        path={route.path}
+                        element={
+                            <MainLayout>
+                                {route.element}
+                            </MainLayout>
+                        }
+                    />
                 ))}
-                */}
+
+                {/* 404 Page */}
+                <Route
+                    path="/404"
+                    element={
+                        <MainLayout>
+                            <NotFound />
+                        </MainLayout>
+                    }
+                />
+
+                {/* Redirect any unknown routes to 404 */}
+                <Route path="*" element={<Navigate to="/404" replace />} />
             </Routes>
-            <Footer />
         </Router>
     );
 };

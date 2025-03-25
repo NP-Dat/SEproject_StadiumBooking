@@ -1,10 +1,9 @@
 import React from 'react';
 import AppRouter from './routes';
+import './styles/variables.css';
 
 const App = () => (
-  <div>
-    <AppRouter />
-  </div>
+  <AppRouter />
 );
 
 export default App;

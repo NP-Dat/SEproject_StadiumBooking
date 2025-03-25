@@ -1,0 +1,60 @@
+.legal {
+    padding: 4rem 1.5rem;
+    background-color: #f9fafb;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #111827;
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+.lastUpdated {
+    color: #6b7280;
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.content {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.section {
+    margin-bottom: 2rem;
+}
+
+.section:last-child {
+    margin-bottom: 0;
+}
+
+.sectionTitle {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 1rem;
+}
+
+.text {
+    color: #4b5563;
+    line-height: 1.6;
+}
+
+@media (max-width: 640px) {
+    .legal {
+        padding: 2rem 1rem;
+    }
+
+    .content {
+        padding: 1.5rem;
+    }
+}
