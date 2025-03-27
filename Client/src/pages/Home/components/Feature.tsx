@@ -1,47 +1,70 @@
-import React from "react";
+import { motion } from "framer-motion";
+import styles from "./Feature.module.css";
+
+const features = [
+    {
+        icon: "🎯",
+        title: "Easy Booking",
+        description: "Book your seats in just a few clicks with our intuitive booking system."
+    },
+    {
+        icon: "💺",
+        title: "Interactive Seat Map",
+        description: "Choose your perfect seat with our interactive stadium seating map."
+    },
+    {
+        icon: "🔒",
+        title: "Secure Payment",
+        description: "Your transactions are protected with industry-standard security measures."
+    },
+    {
+        icon: "📱",
+        title: "Mobile Friendly",
+        description: "Access and book from any device with our responsive platform."
+    },
+    {
+        icon: "🎫",
+        title: "Digital Tickets",
+        description: "Receive instant digital tickets that you can easily access on your device."
+    },
+    {
+        icon: "💬",
+        title: "24/7 Support",
+        description: "Get help anytime with our dedicated customer support team."
+    }
+];
 
 const Feature = () => {
-    const experiences = [
-        {
-            title: "VIP Lounges",
-            description: "Exclusive access to luxury lounges.",
-            image: "/vip-lounge.jpg",
-        },
-        {
-            title: "Front Row Access",
-            description: "Best view of the action.",
-            image: "/front-row.jpg",
-        },
-        {
-            title: "Group Discounts",
-            description: "Bring the whole squad and save!",
-            image: "/group-discount.jpg",
-        },
-    ];
-
     return (
-        <section id="featured-experiences" className="py-16 bg-gray-900 text-center">
-            <h2 className="text-3xl font-semibold text-blue-400">Featured Experiences</h2>
-            <p className="mt-4 text-gray-300">
-                Explore premium event packages and unforgettable experiences.
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-8 px-10">
-                {experiences.map((experience, index) => (
-                    <div
-                        key={index}
-                        className="relative bg-gray-800 p-6 rounded-lg overflow-hidden hover:scale-105 transition-transform"
-                    >
-                        <img
-                            src={experience.image}
-                            alt={experience.title}
-                            className="absolute inset-0 object-cover w-full h-full opacity-40 hover:opacity-60 transition"
-                        />
-                        <div className="relative z-10">
-                            <h3 className="text-xl font-bold text-white">{experience.title}</h3>
-                            <p className="mt-2 text-gray-300">{experience.description}</p>
-                        </div>
-                    </div>
-                ))}
+        <section className={styles.features}>
+            <div className={styles.container}>
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6 }}
+                    className={styles.header}
+                >
+                    <h2 className={styles.title}>Why Choose Us</h2>
+                    <p className={styles.subtitle}>
+                        Experience the best in stadium booking with our premium features
+                    </p>
+                </motion.div>
+
+                <div className={styles.featuresGrid}>
+                    {features.map((feature, index) => (
+                        <motion.div
+                            key={index}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, delay: index * 0.1 }}
+                            className={styles.featureCard}
+                        >
+                            <div className={styles.icon}>{feature.icon}</div>
+                            <h3 className={styles.featureTitle}>{feature.title}</h3>
+                            <p className={styles.description}>{feature.description}</p>
+                        </motion.div>
+                    ))}
+                </div>
             </div>
         </section>
     );
