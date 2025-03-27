@@ -10,6 +10,17 @@ class ChooseStadiumController {
             res.status(500).json({ message: 'Internal server error' });
         }
     }
+
+    static async getScheduleOfStadium(req, res) {
+        const { stadiumId } = req.params;
+        try {
+            const schedule = await StadiumModel.getScheduleOfStadium(stadiumId);
+            res.json(schedule);
+        } catch (error) {
+            console.error('Get schedule of stadium error:', error);
+            res.status(500).json({ message: 'Internal server error' });
+        }
+    }
 }
 
 module.exports = ChooseStadiumController;
