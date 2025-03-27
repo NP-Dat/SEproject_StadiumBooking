@@ -12,9 +12,11 @@ const PrivateRoutes = ({ children }: { children: React.ReactNode }) => {
     return isAuthenticated() ? <>{ children } < /> : <Navigate to="/login" replace />;
 };
 
+/*
 const privateRoutes = [
-    { path: '/dashboard', element: <PrivateRoutes><Dashboard /></PrivateRoutes > },
+{ path: '/dashboard', element: <PrivateRoutes><Dashboard /></PrivateRoutes > },
     { path: '/profile', element: <PrivateRoutes><Profile /></PrivateRoutes > }, // Example protected route
-];
 
+];
+*/
 export default privateRoutes;

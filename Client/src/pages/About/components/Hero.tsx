@@ -1,18 +1,33 @@
 import React from "react";
+import { motion } from "framer-motion";
+import styles from "./Hero.module.css";
 
-const Hero = () => {
+interface HeroProps {
+    title: string;
+    subtitle: string;
+}
+
+const Hero: React.FC<HeroProps> = ({ title, subtitle }) => {
     return (
-        <section
-            className="relative flex flex-col items-center justify-center h-screen bg-cover bg-center"
-            style={{ backgroundImage: "url('/about-hero-bg.jpg')" }}
-        >
-            <div className="absolute inset-0 bg-black bg-opacity-60"></div>
-            <h1 className="text-5xl font-bold text-white z-10 text-center">
-                Welcome to Webify Co.
-            </h1>
-            <p className="mt-4 text-lg text-gray-300 z-10 text-center">
-                Where passion meets innovation to redefine stadium experiences.
-            </p>
+        <section className={styles.hero}>
+            <div className={styles.heroContent}>
+                <motion.h1
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6 }}
+                    className={styles.title}
+                >
+                    {title}
+                </motion.h1>
+                <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
+                    className={styles.subtitle}
+                >
+                    {subtitle}
+                </motion.p>
+            </div>
         </section>
     );
 };
