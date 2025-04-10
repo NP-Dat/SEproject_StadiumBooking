@@ -1,0 +1,47 @@
+.dashboardContainer {
+  padding: 2rem;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.heading {
+  font-size: 1.875rem;
+  margin-bottom: 1.5rem;
+  color: #111827;
+}
+
+.dashboardContent {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .dashboardContent {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 1024px) {
+  .dashboardContent {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+.card {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+}
+
+.cardTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: #111827;
+}
+
+.cardContent {
+  color: #4b5563;
+} 
