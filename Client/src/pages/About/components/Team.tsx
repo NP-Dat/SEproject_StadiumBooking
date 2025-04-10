@@ -1,5 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
+import styles from "./Team.module.css";
+
 const Team = () => {
     const team = [
         { name: "Jane Smith", role: "CEO", image: "/team-jane.jpg" },
@@ -8,13 +10,13 @@ const Team = () => {
     ];
 
     return (
-        <section className="py-16 bg-gray-800 text-center">
-            <h2 className="text-3xl font-semibold text-blue-400">Meet Our Team</h2>
-            <div className="flex overflow-x-auto mt-8 px-10 space-x-6">
+        <section className={styles.team}>
+            <h2 className={styles.title}>Meet Our Team</h2>
+            <div className={styles.teamGrid}>
                 {team.map((member, index) => (
                     <motion.div
                         key={index}
-                        className="flex-none w-80 p-6 bg-gray-900 rounded-lg overflow-hidden hover:scale-105 transition-transform"
+                        className={styles.memberCard}
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
                         transition={{ duration: 0.8, delay: index * 0.2 }}
@@ -22,10 +24,10 @@ const Team = () => {
                         <img
                             src={member.image}
                             alt={member.name}
-                            className="w-full h-48 object-cover rounded-md mb-4"
+                            className={styles.memberImage}
                         />
-                        <h3 className="text-xl font-bold text-white">{member.name}</h3>
-                        <p className="mt-2 text-gray-300">{member.role}</p>
+                        <h3 className={styles.memberName}>{member.name}</h3>
+                        <p className={styles.memberRole}>{member.role}</p>
                     </motion.div>
                 ))}
             </div>
