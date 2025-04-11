@@ -1,10 +1,9 @@
-import React from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { privateRoutes } from './privateRoutes'
 import { publicRoutes } from './publicRoutes'
-import { RouteType } from './RouteTypes'
+import { RouteType } from './privateRoutes'
 
-export const AppRoutes: React.FC = () => {
+export const AppRoutes = () => {
   return (
     <Routes>
       {publicRoutes.map((route: RouteType) => (

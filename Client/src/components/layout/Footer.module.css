@@ -1,9 +1,10 @@
 .footer {
-    background-color: #1a1a1a;
-    color: white;
+    background-color: var(--card-bg, white);
+    color: var(--text-primary, #334155);
     padding: 3rem 2rem 1.5rem;
     margin-top: 3rem;
     width: 100%;
+    border-top: 1px solid var(--border, #e9f0fb);
 }
 
 .container {
@@ -30,7 +31,7 @@
 .logo {
     font-size: 1.75rem;
     font-weight: 800;
-    background: linear-gradient(45deg, #2687b8, #51b7d0);
+    background: linear-gradient(45deg, #4f86f7, #62b6e4);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     margin: 0;
@@ -38,18 +39,20 @@
 }
 
 .logoAccent {
-    color: #51b7d0;
+    background: linear-gradient(45deg, #62b6e4, #4facf7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .address {
-    color: #888;
+    color: var(--text-secondary, #788aa3);
     font-size: 0.9rem;
     line-height: 1.5;
     margin: 0;
 }
 
 .contact {
-    color: #888;
+    color: var(--text-secondary, #788aa3);
     font-size: 0.9rem;
     line-height: 1.5;
     margin: 0;
@@ -57,26 +60,27 @@
 
 .contactLabel {
     font-weight: 600;
-    color: #e5e5e5;
+    color: var(--text-primary, #334155);
     margin-right: 0.5rem;
 }
 
 .contactLink {
-    color: #2687b8;
+    color: var(--primary, #4f86f7);
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
 .contactLink:hover {
-    color: #51b7d0;
+    color: var(--primary-dark, #3a75e5);
+    text-decoration: underline;
 }
 
 .copyright {
-    color: #888;
+    color: var(--text-secondary, #788aa3);
     font-size: 0.85rem;
     margin-top: 1rem;
     padding-top: 1rem;
-    border-top: 1px solid #333;
+    border-top: 1px solid var(--border, #e9f0fb);
 }
 
 .linksSection {
@@ -88,12 +92,12 @@
 .sectionTitle {
     font-size: 1.1rem;
     font-weight: 600;
-    color: #e5e5e5;
+    color: var(--text-primary, #334155);
     margin: 0 0 0.5rem 0;
 }
 
 .link {
-    color: #888;
+    color: var(--text-secondary, #788aa3);
     text-decoration: none;
     transition: all 0.3s ease;
     font-size: 0.9rem;
@@ -101,7 +105,7 @@
 }
 
 .link:hover {
-    color: #2687b8;
+    color: var(--primary, #4f86f7);
     transform: translateX(5px);
 }
 
@@ -114,7 +118,7 @@
 .paymentTitle {
     font-size: 1.1rem;
     font-weight: 600;
-    color: #e5e5e5;
+    color: var(--text-primary, #334155);
     margin: 0 0 0.75rem 0;
 }
 
@@ -128,20 +132,22 @@
     object-fit: contain;
     width: 3rem;
     height: 3rem;
-    background: #2a2a2a;
+    background: rgba(0, 0, 0, 0.03);
     padding: 0.5rem;
     border-radius: 6px;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: var(--shadow, 0 2px 8px rgba(0, 0, 0, 0.06));
 }
 
 .paymentMethod:hover {
     transform: translateY(-3px);
+    box-shadow: var(--shadow-lg, 0 10px 15px -3px rgba(0, 0, 0, 0.1));
 }
 
 .socialTitle {
     font-size: 1.1rem;
     font-weight: 600;
-    color: #e5e5e5;
+    color: var(--text-primary, #334155);
     margin: 0 0 0.75rem 0;
 }
 
@@ -150,31 +156,60 @@
     gap: 1rem;
 }
 
+.socialLink {
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.socialLink:hover {
+    transform: translateY(-3px);
+}
+
 .socialIcon {
     object-fit: contain;
     width: 2.25rem;
     height: 2.25rem;
-    background: #2a2a2a;
+    background: rgba(0, 0, 0, 0.03);
     padding: 0.5rem;
     border-radius: 50%;
-    transition: all 0.3s ease;
+    transition: background 0.3s ease;
 }
 
 .socialIcon:hover {
-    transform: translateY(-3px);
-    background: #2687b8;
+    background: var(--primary, #4f86f7);
 }
 
 @media (max-width: 768px) {
     .footer {
-        padding: 2rem 1rem 1rem;
+        padding: 2rem 1.5rem 1rem;
     }
 
     .container {
         gap: 2rem;
     }
+}
 
-    .paymentMethods, .socialLinks {
-        justify-content: center;
+@media (max-width: 640px) {
+    .footer {
+        padding: 2rem 1rem 1rem;
+    }
+    
+    .container {
+        gap: 1.75rem;
+    }
+    
+    .logo {
+        font-size: 1.5rem;
+    }
+    
+    .sectionTitle, .paymentTitle, .socialTitle {
+        font-size: 1rem;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .paymentMethod, .socialIcon {
+        background: rgba(255, 255, 255, 0.05);
     }
 } 
