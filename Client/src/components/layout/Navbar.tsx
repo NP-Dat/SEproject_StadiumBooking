@@ -1,9 +1,33 @@
-import React from 'react';
+import { useState } from 'react';
 import { useNavigate, NavLink } from 'react-router-dom';
 import styles from './Navbar.module.css';
+import AuthModals from '../auth/AuthModals';
 
-const Navbar: React.FC = () => {
+const Navbar = () => {
     const navigate = useNavigate();
+    const [loginModalOpen, setLoginModalOpen] = useState(false);
+    const [registerModalOpen, setRegisterModalOpen] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+    const openLoginModal = () => {
+        setRegisterModalOpen(false);
+        setLoginModalOpen(true);
+        setIsMobileMenuOpen(false);
+    };
+
+    const openRegisterModal = () => {
+        setLoginModalOpen(false);
+        setRegisterModalOpen(true);
+        setIsMobileMenuOpen(false);
+    };
+
+    const toggleMobileMenu = () => {
+        setIsMobileMenuOpen(!isMobileMenuOpen);
+    };
+
+    const closeMobileMenu = () => {
+        setIsMobileMenuOpen(false);
+    };
 
     return (
         <header className={styles.header}>
@@ -12,13 +36,16 @@ const Navbar: React.FC = () => {
                 <div className={styles.logo}>
                     <h1
                         className={styles.logoText}
-                        onClick={() => navigate('/')}
+                        onClick={() => {
+                            navigate('/');
+                            closeMobileMenu();
+                        }}
                     >
                         Webify <span className={styles.logoAccent}>Co.</span>
                     </h1>
                 </div>
 
-                {/* Navigation Links */}
+                {/* Navigation Links - Desktop */}
                 <div className={styles.navLinks}>
                     <NavLink
                         to="/"
@@ -62,29 +89,131 @@ const Navbar: React.FC = () => {
                     </NavLink>
                 </div>
 
-                {/* Modern Search Bar */}
+                {/* Modern Search Bar - Desktop */}
                 <input
                     type="search"
                     placeholder="Search events, venues, or teams..."
                     className={styles.searchBar}
                 />
 
-                {/* Buttons */}
+                {/* Buttons - Desktop */}
                 <div className={styles.buttonContainer}>
                     <button
-                        onClick={() => navigate('/login')}
+                        onClick={openLoginModal}
                         className={styles.loginButton}
                     >
                         Login
                     </button>
                     <button
-                        onClick={() => navigate('/register')}
+                        onClick={openRegisterModal}
                         className={styles.signUpButton}
                     >
                         Sign Up
                     </button>
                 </div>
+
+                {/* Hamburger Menu - Mobile */}
+                <div className={styles.hamburger} onClick={toggleMobileMenu}>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
             </nav>
+
+            {/* Mobile Menu */}
+            <div className={`${styles.mobileMenu} ${isMobileMenuOpen ? styles.mobileMenuOpen : ''}`}>
+                <div className={styles.mobileNavLinks}>
+                    <NavLink
+                        to="/"
+                        className={({ isActive }) =>
+                            `${styles.mobileNavLink} ${isActive ? styles.mobileNavLinkActive : ''}`
+                        }
+                        onClick={closeMobileMenu}
+                    >
+                        Home
+                    </NavLink>
+                    <NavLink
+                        to="/stadiums"
+                        className={({ isActive }) =>
+                            `${styles.mobileNavLink} ${isActive ? styles.mobileNavLinkActive : ''}`
+                        }
+                        onClick={closeMobileMenu}
+                    >
+                        Stadiums
+                    </NavLink>
+                    <NavLink
+                        to="/bookings"
+                        className={({ isActive }) =>
+                            `${styles.mobileNavLink} ${isActive ? styles.mobileNavLinkActive : ''}`
+                        }
+                        onClick={closeMobileMenu}
+                    >
+                        My Bookings
+                    </NavLink>
+                    <NavLink
+                        to="/about"
+                        className={({ isActive }) =>
+                            `${styles.mobileNavLink} ${isActive ? styles.mobileNavLinkActive : ''}`
+                        }
+                        onClick={closeMobileMenu}
+                    >
+                        About
+                    </NavLink>
+                    <NavLink
+                        to="/contact"
+                        className={({ isActive }) =>
+                            `${styles.mobileNavLink} ${isActive ? styles.mobileNavLinkActive : ''}`
+                        }
+                        onClick={closeMobileMenu}
+                    >
+                        Contact
+                    </NavLink>
+                </div>
+                
+                {/* Mobile Search */}
+                <div className={styles.mobileSearch}>
+                    <input
+                        type="search"
+                        placeholder="Search events, venues, or teams..."
+                        className={styles.searchBar}
+                        style={{ width: '100%' }}
+                    />
+                </div>
+                
+                {/* Mobile Buttons */}
+                <div className={styles.mobileButtons}>
+                    <button
+                        onClick={openLoginModal}
+                        className={styles.loginButton}
+                        style={{ width: '100%' }}
+                    >
+                        Login
+                    </button>
+                    <button
+                        onClick={openRegisterModal}
+                        className={styles.signUpButton}
+                        style={{ width: '100%' }}
+                    >
+                        Sign Up
+                    </button>
+                </div>
+            </div>
+
+            {/* Auth Modals */}
+            <AuthModals
+                loginOpen={loginModalOpen}
+                registerOpen={registerModalOpen}
+                onCloseLogin={() => setLoginModalOpen(false)}
+                onCloseRegister={() => setRegisterModalOpen(false)}
+                onSwitchToRegister={() => {
+                    setLoginModalOpen(false);
+                    setRegisterModalOpen(true);
+                }}
+                onSwitchToLogin={() => {
+                    setRegisterModalOpen(false);
+                    setLoginModalOpen(true);
+                }}
+            />
         </header>
     );
 };

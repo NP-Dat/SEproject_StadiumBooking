@@ -21,24 +21,24 @@ const initialState: AuthState = {
   error: null
 }
 
-export const authSlice = createSlice({
+const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    loginStart: (state) => {
+    loginStart: (state: AuthState) => {
       state.isLoading = true
       state.error = null
     },
-    loginSuccess: (state, action: PayloadAction<User>) => {
+    loginSuccess: (state: AuthState, action: PayloadAction<User>) => {
       state.isLoading = false
       state.isAuthenticated = true
       state.user = action.payload
     },
-    loginFailure: (state, action: PayloadAction<string>) => {
+    loginFailure: (state: AuthState, action: PayloadAction<string>) => {
       state.isLoading = false
       state.error = action.payload
     },
-    logout: (state) => {
+    logout: (state: AuthState) => {
       state.user = null
       state.isAuthenticated = false
     }

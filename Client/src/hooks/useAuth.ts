@@ -1,12 +1,15 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import authService from '../services/authService'
-import { LoginCredentials, RegisterData } from '../types/auth'
+import { LoginCredentials, RegisterData, AuthState } from '../types/auth'
+
+// Define User type based on AuthState
+type User = AuthState['user']
 
 interface UseAuthReturn {
   isAuthenticated: boolean
   isLoading: boolean
-  user: any | null
+  user: User
   error: string | null
   login: (credentials: LoginCredentials) => Promise<void>
   register: (data: RegisterData) => Promise<void>
@@ -16,7 +19,7 @@ interface UseAuthReturn {
 export const useAuth = (): UseAuthReturn => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const [user, setUser] = useState<any | null>(null)
+  const [user, setUser] = useState<User>(null)
   const [error, setError] = useState<string | null>(null)
   const navigate = useNavigate()
 
@@ -38,8 +41,8 @@ export const useAuth = (): UseAuthReturn => {
       setUser(data)
       setIsAuthenticated(true)
       navigate('/dashboard')
-    } catch (err: any) {
-      const message = err.response?.data?.message || 'Failed to login'
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Failed to login'
       setError(message)
     } finally {
       setIsLoading(false)
@@ -52,8 +55,8 @@ export const useAuth = (): UseAuthReturn => {
     try {
       await authService.register(data)
       navigate('/login')
-    } catch (err: any) {
-      const message = err.response?.data?.message || 'Failed to register'
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Failed to register'
       setError(message)
     } finally {
       setIsLoading(false)

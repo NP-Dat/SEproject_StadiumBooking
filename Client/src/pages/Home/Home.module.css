@@ -533,12 +533,11 @@
 
 /* Responsive Design */
 @media (max-width: 1024px) {
-
     .eventsGrid,
     .featuresGrid {
         grid-template-columns: repeat(2, 1fr);
     }
-
+    
     .heroStats {
         gap: 2rem;
     }
@@ -546,46 +545,125 @@
 
 @media (max-width: 768px) {
     .heroTitle {
-        font-size: 2.5rem;
+        font-size: 3.5rem;
     }
-
+    
     .heroSubtitle {
         font-size: 1.25rem;
     }
-
+    
     .sectionTitle {
         font-size: 2rem;
     }
-
+    
     .eventsGrid,
     .featuresGrid {
         grid-template-columns: 1fr;
     }
-
+    
     .heroStats {
         flex-direction: column;
-        gap: 1.5rem;
+        gap: 2rem;
     }
-
+    
     .newsletterForm {
         flex-direction: column;
     }
-
+    
     .events,
     .features,
     .newsletter {
-        padding: 4rem 1rem;
+        padding: 4rem 1.5rem;
     }
-
+    
     .ctaBox {
-        padding: 2rem;
+        padding: 3rem 1.5rem;
     }
-
+    
     .ctaTitle {
-        font-size: 1.75rem;
+        font-size: 2rem;
     }
-
+    
     .ctaText {
         font-size: 1rem;
+    }
+
+    .heroContent {
+        padding: 2rem;
+        max-width: 90%;
+    }
+
+    .ctaContainer {
+        flex-direction: column;
+        width: 100%;
+        gap: 1rem;
+    }
+
+    .primaryButton,
+    .secondaryButton {
+        width: 100%;
+    }
+
+    .newsletterInput,
+    .newsletterButton {
+        width: 100%;
+        margin: 0;
+    }
+    
+    .newsletterInput {
+        margin-bottom: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .heroTitle {
+        font-size: 2.5rem;
+    }
+    
+    .heroSubtitle {
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .heroContent {
+        padding: 1.5rem;
+    }
+    
+    .events,
+    .features,
+    .newsletter {
+        padding: 3rem 1rem;
+    }
+    
+    .statNumber {
+        font-size: 2rem;
+    }
+    
+    .statLabel {
+        font-size: 0.9rem;
+    }
+    
+    .sectionTitle {
+        font-size: 1.75rem;
+    }
+    
+    .sectionSubtitle {
+        font-size: 0.9rem;
+    }
+    
+    .eventCard {
+        padding: 1rem;
+    }
+    
+    .featureCard {
+        padding: 1.5rem;
+    }
+    
+    .featureTitle {
+        font-size: 1.25rem;
+    }
+    
+    .ctaBox {
+        padding: 2.5rem 1rem;
     }
 }

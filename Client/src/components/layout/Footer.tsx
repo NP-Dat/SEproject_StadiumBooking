@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styles from './Footer.module.css';
 
 const Footer = () => {
@@ -26,18 +27,18 @@ const Footer = () => {
                 {/* Important Links */}
                 <div className={styles.linksSection}>
                     <h3 className={styles.sectionTitle}>Important</h3>
-                    <a href="#" className={styles.link}>
+                    <Link to="/about" className={styles.link}>
                         About us
-                    </a>
-                    <a href="#" className={styles.link}>
+                    </Link>
+                    <Link to="/terms" className={styles.link}>
                         Terms
-                    </a>
-                    <a href="#" className={styles.link}>
-                        Policy
-                    </a>
-                    <a href="#" className={styles.link}>
+                    </Link>
+                    <Link to="/privacy" className={styles.link}>
+                        Privacy Policy
+                    </Link>
+                    <Link to="/contact" className={styles.link}>
                         Contact
-                    </a>
+                    </Link>
                 </div>
 
                 {/* Payment and Socials */}
@@ -60,16 +61,20 @@ const Footer = () => {
                     <div>
                         <h3 className={styles.socialTitle}>Follow us</h3>
                         <div className={styles.socialLinks}>
-                            <img
-                                src="https://cdn.builder.io/api/v1/image/assets/TEMP/611116ccd7b438644a2ef71fc6a83985d14aa0bc2947c93a273f8eea6ba040a8?placeholderIfAbsent=true&apiKey=ebb3257718164cd3b8c551bf8167e955"
-                                alt="Social media 1"
-                                className={styles.socialIcon}
-                            />
-                            <img
-                                src="https://cdn.builder.io/api/v1/image/assets/TEMP/e7eed5fb7672c5b167c981d0582a694cde5677216c3ee139d1c5acd148af9adc?placeholderIfAbsent=true&apiKey=ebb3257718164cd3b8c551bf8167e955"
-                                alt="Social media 2"
-                                className={styles.socialIcon}
-                            />
+                            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
+                                <img
+                                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/611116ccd7b438644a2ef71fc6a83985d14aa0bc2947c93a273f8eea6ba040a8?placeholderIfAbsent=true&apiKey=ebb3257718164cd3b8c551bf8167e955"
+                                    alt="Facebook"
+                                    className={styles.socialIcon}
+                                />
+                            </a>
+                            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
+                                <img
+                                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/e7eed5fb7672c5b167c981d0582a694cde5677216c3ee139d1c5acd148af9adc?placeholderIfAbsent=true&apiKey=ebb3257718164cd3b8c551bf8167e955"
+                                    alt="Twitter"
+                                    className={styles.socialIcon}
+                                />
+                            </a>
                         </div>
                     </div>
                 </div>
