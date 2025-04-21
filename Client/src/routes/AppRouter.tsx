@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import { privateRoutes } from './privateRoutes'
 import { publicRoutes } from './publicRoutes'
-import { RouteType } from './privateRoutes'
+import { RouteType } from '../types/routes'
 
 export const AppRoutes = () => {
   return (

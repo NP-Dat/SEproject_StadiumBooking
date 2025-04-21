@@ -1,49 +1,78 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import LoginModal from '../../../components/auth/LoginModal'
-import RegisterModal from '../../../components/auth/RegisterModal'
-import styles from '../Auth.module.css'
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Modal from '../../../components/ui/Modal/Modal';
+import Input from '../../../components/ui/Input/Input';
+import Button from '../../../components/ui/Button/Button';
+import styles from './Login.module.css';
 
 const Login = () => {
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(true)
-  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false)
-  const navigate = useNavigate()
+    const navigate = useNavigate();
+    const [formData, setFormData] = useState({
+        email: '',
+        password: '',
+    });
 
-  const openLoginModal = () => {
-    setIsRegisterModalOpen(false)
-    setIsLoginModalOpen(true)
-  }
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        // Handle login logic here
+        console.log('Login form submitted:', formData);
+    };
 
-  const openRegisterModal = () => {
-    setIsLoginModalOpen(false)
-    setIsRegisterModalOpen(true)
-  }
+    return (
+        <div className={styles.authContainer}>
+            <div className={styles.authCard}>
+                <div className={styles.authHeader}>
+                    <h1 className={styles.authTitle}>Welcome Back</h1>
+                    <p className={styles.authSubtitle}>Sign in to your account</p>
+                </div>
 
-  const closeLoginModal = () => {
-    setIsLoginModalOpen(false)
-    navigate('/')
-  }
+                <form onSubmit={handleSubmit} className={styles.form}>
+                    <Input
+                        id="login-email"
+                        type="email"
+                        label="Email"
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        required
+                    />
+                    <Input
+                        id="login-password"
+                        type="password"
+                        label="Password"
+                        value={formData.password}
+                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                        required
+                    />
 
-  const closeRegisterModal = () => {
-    setIsRegisterModalOpen(false)
-    navigate('/')
-  }
+                    <div className={styles.formActions}>
+                        <Button type="submit" variant="primary" fullWidth>
+                            Sign In
+                        </Button>
+                        <button 
+                            type="button" 
+                            className={styles.forgotPassword}
+                            onClick={() => {/* Handle forgot password */}}
+                        >
+                            Forgot Password?
+                        </button>
+                    </div>
 
-  return (
-    <>
-      <LoginModal 
-        isOpen={isLoginModalOpen} 
-        onClose={closeLoginModal} 
-        onRegisterClick={openRegisterModal} 
-      />
+                    <div className={styles.divider}>or</div>
 
-      <RegisterModal 
-        isOpen={isRegisterModalOpen} 
-        onClose={closeRegisterModal} 
-        onLoginClick={openLoginModal} 
-      />
-    </>
-  )
-}
+                    <div className={styles.switchAuth}>
+                        Don't have an account?{' '}
+                        <button 
+                            type="button" 
+                            onClick={() => navigate('/register')} 
+                            className={styles.switchAuthLink}
+                        >
+                            Sign up
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    );
+};
 
-export default Login 
+export default Login; 
