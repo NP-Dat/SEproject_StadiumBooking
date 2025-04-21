@@ -1,11 +1,6 @@
-import { ReactNode } from 'react'
+import { RouteType } from '../types/routes'
 import Home from '../pages/Home/Home'
 import About from '../pages/About/About'
-
-export interface RouteType {
-  path: string
-  element: ReactNode
-}
 
 export const publicRoutes: RouteType[] = [
   {

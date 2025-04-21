@@ -1,8 +1,8 @@
-import Hero from "./components/Hero";
-import Event from "./components/Event";
-import Venue from "./components/Venue";
-import BookingGuide from "./components/BookingGuide";
-import JoinUs from "./components/JoinUs";
+import Hero from "./components/Hero/Hero";
+import Event from "./components/Event/Event";
+import Venue from "./components/Venue/Venue";
+import BookingGuide from "./components/BookingGuide/BookingGuide";
+import JoinUs from "./components/JoinUs/JoinUs";
 import styles from "./Home.module.css";
 
 const Home = () => {
