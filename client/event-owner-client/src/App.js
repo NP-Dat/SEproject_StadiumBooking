@@ -51,7 +51,7 @@ function App() {
               </ProtectedRoute>
             } 
           />
-          <Route path="/" element={<Navigate to="/profile" />} />
+          <Route path="/" element={<Navigate to="/login" />} />
         </Routes>
       </Router>
     </AuthProvider>

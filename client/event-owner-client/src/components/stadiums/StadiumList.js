@@ -8,6 +8,8 @@ const StadiumContainer = styled.div`
   max-width: 1200px;
   margin: 20px auto;
   padding: 2rem;
+  background: #f8fafc;
+  border-radius: 12px;
 `;
 
 const Header = styled.header`
@@ -58,15 +60,15 @@ const StadiumGrid = styled.div`
 
 const StadiumCard = styled.div`
   background-color: white;
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
   cursor: pointer;
   
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
   }
 `;
 
@@ -78,23 +80,27 @@ const StadiumImage = styled.img`
 
 const StadiumInfo = styled.div`
   padding: 1.5rem;
+  background: linear-gradient(to bottom, #ffffff, #f8fafc);
 `;
 
 const StadiumName = styled.h2`
   margin: 0 0 0.5rem 0;
-  color: #333;
+  color: #1e293b;
   font-size: 1.5rem;
+  font-weight: 600;
 `;
 
 const StadiumLocation = styled.p`
   margin: 0 0 1rem 0;
-  color: #666;
+  color: #64748b;
+  font-size: 0.95rem;
 `;
 
 const StadiumCapacity = styled.p`
   margin: 0;
   color: #2563eb;
-  font-weight: 500;
+  font-weight: 600;
+  font-size: 1rem;
 `;
 
 const LoadingSpinner = styled.div`
