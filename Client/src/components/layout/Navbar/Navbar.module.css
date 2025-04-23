@@ -50,8 +50,6 @@
     display: flex;
     align-items: center;
     gap: 2rem;
-    margin: 0;
-    padding: 0;
 }
 
 .navLink {
@@ -94,107 +92,31 @@
     width: 80%;
 }
 
-.bookNowLink {
-    background: linear-gradient(135deg, #00B4D8, #0096C7);
-    color: white !important;
-    padding: 0.5rem 1.25rem !important;
-    border-radius: 20px !important;
-    font-weight: 600 !important;
-    transition: all 0.3s ease !important;
-}
-
-.bookNowLink:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 180, 216, 0.25);
-}
-
-.bookNowLink::after {
-    display: none;
-}
-
-.buttonContainer {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-}
-
-.loginButton {
-    padding: 0.5rem 1.25rem;
-    font-size: 0.9rem;
-    font-weight: 500;
-    border: 2px solid #00B4D8;
-    border-radius: 20px;
-    background: transparent;
-    color: #00B4D8;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.loginButton:hover {
-    background-color: #00B4D8;
-    color: white;
-    transform: translateY(-2px);
-}
-
-.signUpButton {
-    padding: 0.5rem 1.25rem;
-    font-size: 0.9rem;
-    font-weight: 500;
-    background: linear-gradient(135deg, #00B4D8, #0096C7);
-    border: none;
-    border-radius: 20px;
-    color: white;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.signUpButton:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 180, 216, 0.25);
-}
-
-/* Search Box Styles */
 .searchContainer {
     display: flex;
     align-items: center;
-    background-color: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 20px;
-    padding: 0.25rem;
-    margin: 0 1rem;
-    transition: all 0.3s ease;
-    width: 300px;
-}
-
-.searchContainer:focus-within {
-    border-color: #00B4D8;
-    box-shadow: 0 0 0 2px rgba(0, 180, 216, 0.1);
+    gap: 0.5rem;
 }
 
 .searchInput {
-    flex: 1;
-    border: none;
-    background: transparent;
-    padding: 0.5rem 0.75rem;
-    font-size: 0.9rem;
-    color: #1e293b;
-    outline: none;
-    width: 100%;
+    padding: 0.4rem 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    width: 200px;
+    transition: border-color 0.3s ease;
 }
 
-.searchInput::placeholder {
-    color: #94a3b8;
+.searchInput:focus {
+    outline: none;
+    border-color: #00B4D8;
 }
 
 .searchButton {
-    background: none;
+    background-color: transparent;
     border: none;
-    padding: 0.5rem;
     cursor: pointer;
-    color: #64748b;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    color: #1e293b;
     transition: color 0.3s ease;
 }
 
@@ -202,82 +124,43 @@
     color: #00B4D8;
 }
 
-/* Responsive Styles */
-@media (max-width: 1200px) {
-    .nav {
-        padding: 1rem 1.5rem;
-    }
-    
-    .navLinks {
-        gap: 1.5rem;
-    }
-
-    .searchContainer {
-        width: 250px;
-    }
+.buttonContainer {
+    display: flex;
+    gap: 0.75rem;
 }
 
-@media (max-width: 1024px) {
-    .navLinks {
-        gap: 1rem;
-    }
-
-    .searchContainer {
-        width: 200px;
-    }
-
-    .navLink {
-        font-size: 0.9rem;
-        padding: 0.5rem 0.5rem;
-    }
+/* buttons */
+.buttonContainer {
+    display: flex;
+    gap: 0.75rem;
 }
 
-@media (max-width: 900px) {
-    .nav {
-        flex-wrap: wrap;
-        gap: 1rem;
-    }
-
-    .navLinks {
-        order: 3;
-        width: 100%;
-        justify-content: center;
-        margin-top: 1rem;
-    }
-
-    .searchContainer {
-        order: 2;
-        width: 100%;
-        max-width: 400px;
-        margin: 0 auto;
-    }
-
-    .buttonContainer {
-        order: 1;
-    }
+/* Shared base style for both buttons */
+.buttonContainer button {
+    padding: 0.4rem 1rem;
+    font-size: 0.95rem;
+    border-radius: 20px;
+    font-weight: 500;
+    cursor: pointer;
+    height: 2.4rem;
+    min-width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
 }
 
-@media (max-width: 600px) {
-    .nav {
-        padding: 1rem;
-    }
+/* Unified color for both buttons */
+.buttonContainer button {
+    background-color: #00B4D8;
+    border: 1px solid #00B4D8;
+    color: white;
+}
 
-    .logoText {
-        font-size: 1.5rem;
-    }
-
-    .navLinks {
-        gap: 0.75rem;
-    }
-
-    .navLink {
-        font-size: 0.85rem;
-        padding: 0.4rem 0.4rem;
-    }
-
-    .loginButton,
-    .signUpButton {
-        padding: 0.4rem 1rem;
-        font-size: 0.85rem;
-    }
-} 
+/* Hover effect for both buttons */
+.buttonContainer button:hover {
+    background-color: white;
+    color: #00B4D8;
+    transform: scale(1.05);
+    /* Adds a scaling effect */
+}
