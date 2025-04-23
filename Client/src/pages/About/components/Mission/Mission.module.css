@@ -1,0 +1,88 @@
+.mission {
+    padding: 8rem 2rem;
+    background: linear-gradient(135deg, #e2e8f0, #f1f5f9);
+    position: relative;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+.missionContent {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+.missionText {
+    padding-right: 2rem;
+}
+
+.missionTitle {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #00B4D8, #CAF0F8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.missionDescription {
+    color: #1e293b;
+    font-size: 1.25rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+.missionImage {
+    position: relative;
+    border-radius: 1.5rem;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 180, 216, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.missionImage:hover {
+    transform: scale(1.02);
+}
+
+.missionImage::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(0, 180, 216, 0.1), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.missionImage:hover::before {
+    opacity: 1;
+}
+
+@media (max-width: 1024px) {
+    .missionContent {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .missionText {
+        padding-right: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .missionTitle {
+        font-size: 2rem;
+    }
+
+    .missionDescription {
+        font-size: 1rem;
+    }
+}
