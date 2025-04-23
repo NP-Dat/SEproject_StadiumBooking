@@ -7,6 +7,7 @@ DROP TABLE IF EXISTS Tickets;
 DROP TABLE IF EXISTS Customers;  -- Was Users
 DROP TABLE IF EXISTS Seats;  -- No change needed, not a reserved word
 DROP TABLE IF EXISTS EventSchedules; -- Was Schedules
+DROP TABLE IF EXISTS eventZone;
 DROP TABLE IF EXISTS EventList;      -- Was Events
 DROP TABLE IF EXISTS Stadiums;      -- No change needed
 DROP TABLE IF EXISTS Carts;			-- New
@@ -41,6 +42,17 @@ CREATE TABLE EventSchedules (  -- Renamed from Schedules
     FOREIGN KEY (eventID) REFERENCES EventList(id) ON DELETE CASCADE  -- Use new name
 );
 
+CREATE TABLE eventZone (
+    id INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    size INT NOT NULL,
+    eventScheduleID INT NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    status VARCHAR(255) NOT NULL,  -- Consider ENUM
+    PRIMARY KEY (id),
+    FOREIGN KEY (eventScheduleID) REFERENCES EventSchedules(id) ON DELETE CASCADE
+);
+
 CREATE TABLE Seats (
     id INT NOT NULL AUTO_INCREMENT,
     stadiumID INT NOT NULL,
@@ -63,6 +75,15 @@ CREATE TABLE Customers (  -- Renamed from Users
     PRIMARY KEY (id)
 );
 
+CREATE TABLE Owners (  -- Event Owner, they can book stadiums for their events
+    id INT NOT NULL AUTO_INCREMENT,
+    userName VARCHAR(255) NOT NULL,
+    passWord VARCHAR(255) NOT NULL,    
+    phoneNumber VARCHAR(20) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id)
+);
+
 CREATE TABLE Carts ( -- Handle for Payments
     id INT NOT NULL AUTO_INCREMENT,
     userID INT NOT NULL,
@@ -78,13 +99,14 @@ CREATE TABLE Tickets ( -- Renamed from Ticket
     userID INT NOT NULL,
     seatID INT NOT NULL,
     scheduleID INT NOT NULL,
+    zoneID INT NOT NULL,
     cartID INT NOT NULL,
-    price DECIMAL(10, 2) NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (userID) REFERENCES Customers(id) ON DELETE CASCADE,  -- Use new name
     FOREIGN KEY (scheduleID) REFERENCES EventSchedules(id) ON DELETE CASCADE,  -- Use new name
     FOREIGN KEY (seatID) REFERENCES Seats(id) ON DELETE CASCADE,
-    FOREIGN KEY (cartID) REFERENCES Carts(id) ON DELETE CASCADE
+    FOREIGN KEY (cartID) REFERENCES Carts(id) ON DELETE CASCADE,
+    FOREIGN KEY (zoneID) REFERENCES eventZone(id) ON DELETE CASCADE
 );
 
 CREATE TABLE Payments ( -- Renamed from Payment
