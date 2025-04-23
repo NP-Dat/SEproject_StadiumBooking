@@ -1,24 +1,22 @@
-import React, { Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Loader from './components/UI/Loader';
-import PublicRoutes from "./routes/PublicRoutes";
-import DashboardRoutes from "./routes/DashboardRoutes";
-import NotFound from "./pages/404/NotFound";
-import Home from './pages/home/Home';
-// Lazy load pages
+import { BrowserRouter as Router } from 'react-router-dom'
+import { AppRoutes } from './routes/AppRouter'
+import Navbar from './components/layout/Navbar/Navbar'
+import Footer from './components/layout/Footer/Footer'
+import styles from './App.module.css'
 
-const App: React.FC = () => {
+function App() {
   return (
     <Router>
-      <Suspense fallback={<Loader />}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/dashboard/*" element={<DashboardRoutes />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Suspense>
+      <div className={styles.app}>
+        <div className={styles.background}></div>
+        <Navbar />
+        <main className={styles.main}>
+          <AppRoutes />
+        </main>
+        <Footer />
+      </div>
     </Router>
-  );
-};
+  )
+}
 
-export default App;
+export default App
