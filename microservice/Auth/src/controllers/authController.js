@@ -48,8 +48,8 @@ class AuthController {
 
       const token = jwt.sign(
         { userId: user.id, email: user.email },
-        process.env.JWT_SECRET || 'your-secret-key',
-        { expiresIn: '24h' }
+        process.env.JWT_SECRET || '1-2390481234-1234-1234',
+        { expiresIn: '1h' }
       );
 
       res.json({
@@ -67,17 +67,43 @@ class AuthController {
     }
   }
 
-  static async getProfile(req, res) {
-    try {
-      const user = await UserModel.findById(req.user.userId);
-      if (!user) {
-        return res.status(404).json({ message: 'User not found' });
-      }
-      res.json(user);
-    } catch (error) {
-      console.error('Profile fetch error:', error);
-      res.status(500).json({ message: 'Internal server error' });
+  // static async getProfile(req, res) {
+  //   try {
+  //     const user = await UserModel.findById(req.user.userId);
+  //     if (!user) {
+  //       return res.status(404).json({ message: 'User not found' });
+  //     }
+  //     res.json(user);
+  //   } catch (error) {
+  //     console.error('Profile fetch error:', error);
+  //     res.status(500).json({ message: 'Internal server error' });
+  //   }
+  // }
+
+  static async verifyToken(req, res) {
+    const {token, userId} = req.body;
+    // || req.query.token || req.headers['x-access-token'];
+    if (!token) {
+      return res.status(403).json({ message: 'No token provided' });
     }
+
+    if (!userId) {
+      return res.status(403).json({ message: 'No user ID provided' });
+    }
+
+    // Verify the token 
+    jwt.verify(token, process.env.JWT_SECRET || '1-2390481234-1234-1234', (err, decoded) => {
+      if (err) {
+        return res.status(401).json({ message: 'Unauthorized' });
+      }
+      // Check if the user ID in the token matches the user ID in the request
+      if (decoded.userId !== userId) {
+        return res.status(403).json({ message: 'Forbidden' });
+      }
+
+      // Token is valid and user ID matches
+      res.json({ message: 'Valid token', userId: decoded.userId});
+    });
   }
 }
 
