@@ -4,6 +4,7 @@
     overflow: hidden;
     position: relative;
     scroll-behavior: smooth;
+    width: 100%;
 }
 
 .about::before {
@@ -16,6 +17,8 @@
     background: radial-gradient(circle at 50% 50%, rgba(0, 180, 216, 0.05) 0%, transparent 50%);
     pointer-events: none;
     z-index: 0;
+    width: 100%;
+    height: 100%;
 }
 
 .about::after {
@@ -29,6 +32,8 @@
     opacity: 0.1;
     pointer-events: none;
     z-index: 0;
+    width: 100%;
+    height: 100%;
 }
 
 /* Scrollbar Styling */
@@ -147,6 +152,8 @@
     margin: 0 auto;
     position: relative;
     z-index: 1;
+    width: 100%;
+    padding: 0 2rem;
 }
 
 .story .container {
@@ -397,5 +404,15 @@
     .timeline,
     .cta {
         padding: 4rem 1.5rem;
+    }
+
+    .container {
+        padding: 0 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 1rem;
     }
 }
