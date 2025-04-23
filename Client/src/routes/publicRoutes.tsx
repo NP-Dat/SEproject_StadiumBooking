@@ -2,6 +2,7 @@ import { RouteType } from '../types/routes'
 import Home from '../pages/Home/Home'
 import About from '../pages/About/About'
 import Venues from '../pages/Venues/Venues'
+import Events from '../pages/Events/Events'
 
 export const publicRoutes: RouteType[] = [
   {
@@ -9,11 +10,10 @@ export const publicRoutes: RouteType[] = [
     element: <Home />
   },
 
-  /*{
+  {
     path: '/',
-    element: <Event />
-  }*/
-
+    element: <Events />
+  },
   {
     path: '/venues',
     element: <Venues />
