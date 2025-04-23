@@ -8,6 +8,7 @@ function App() {
   return (
     <Router>
       <div className={styles.app}>
+        <div className={styles.background}></div>
         <Navbar />
         <main className={styles.main}>
           <AppRoutes />

@@ -1,7 +1,7 @@
 .venues {
-    padding: 8rem 2rem;
     background: linear-gradient(135deg, #e2e8f0, #f1f5f9);
     position: relative;
+    width: 100%;
 }
 
 .container {
@@ -9,6 +9,8 @@
     margin: 0 auto;
     position: relative;
     z-index: 1;
+    width: 100%;
+    padding: 8rem 2rem;
 }
 
 .sectionHeader {
@@ -168,12 +170,18 @@
 @media (max-width: 1024px) {
     .venuesGrid {
         grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
     }
 }
 
 @media (max-width: 768px) {
+    .container {
+        padding: 4rem 1.5rem;
+    }
+
     .venuesGrid {
         grid-template-columns: 1fr;
+        gap: 1.5rem;
     }
 
     .sectionTitle {
@@ -182,5 +190,19 @@
 
     .sectionSubtitle {
         font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 3rem 1rem;
+    }
+
+    .sectionTitle {
+        font-size: 1.75rem;
+    }
+
+    .venueContent {
+        padding: 1.5rem;
     }
 }

@@ -4,6 +4,7 @@
   margin: 0 auto;
   background: linear-gradient(135deg, #0f172a, #1e293b);
   min-height: 100vh;
+  width: 100%;
 }
 
 .heading {
@@ -57,4 +58,16 @@
 
 .cardContent {
   color: #CAF0F8;
+}
+
+@media (max-width: 768px) {
+  .dashboardContainer {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboardContainer {
+    padding: 1rem;
+  }
 } 

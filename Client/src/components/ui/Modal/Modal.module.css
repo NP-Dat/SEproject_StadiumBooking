@@ -10,7 +10,7 @@
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  padding: 1rem;
+  padding: 2rem;
   overflow-y: auto;
 }
 
@@ -19,8 +19,8 @@
   border-radius: 0.5rem;
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
   width: 100%;
-  max-width: 400px;
-  max-height: 75vh;
+  max-width: 500px;
+  max-height: 80vh;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -31,17 +31,17 @@
 
 /* Size variants */
 .small {
-  max-width: 320px;
+  max-width: 400px;
 }
 
 .large {
-  max-width: 550px;
+  max-width: 700px;
 }
 
 /* Auth specific variant */
 .auth {
-  max-width: 380px;
-  max-height: 520px;
+  max-width: 450px;
+  max-height: 600px;
   border-radius: 0.6rem;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 }
@@ -50,14 +50,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.85rem 1.15rem;
+  padding: 1rem 1.5rem;
   border-bottom: 1px solid #CAF0F8;
   position: relative;
 }
 
 /* Auth header variant */
 .auth .header {
-  padding: 1rem 1.25rem;
+  padding: 1.25rem 1.5rem;
   background-color: #CAF0F8;
   border-bottom: 1px solid #00B4D8;
   text-align: center;
@@ -71,7 +71,7 @@
 }
 
 .title {
-  font-size: 1.05rem;
+  font-size: 1.25rem;
   font-weight: 600;
   color: #00B4D8;
   margin: 0;
@@ -85,14 +85,14 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  width: 1.6rem;
-  height: 1.6rem;
+  width: 2rem;
+  height: 2rem;
   border-radius: 50%;
   color: #00B4D8;
   transition: all 0.2s;
   position: absolute;
-  right: 0.75rem;
-  top: 0.75rem;
+  right: 1rem;
+  top: 1rem;
 }
 
 .closeButton:hover {
@@ -101,14 +101,14 @@
 }
 
 .content {
-  padding: 1.1rem;
+  padding: 1.5rem;
   overflow-y: auto;
   flex: 1;
 }
 
 /* Auth content variant */
 .auth .content {
-  padding: 1.25rem;
+  padding: 1.5rem;
 }
 
 /* Animation */
@@ -124,85 +124,89 @@
 }
 
 /* Responsive Design */
-@media (max-width: 640px) {
+@media (max-width: 1024px) {
   .container {
-    max-width: 85%;
-    max-height: 70vh;
-  }
-  
-  .header {
-    padding: 0.8rem 0.95rem;
-  }
-  
-  .title {
-    font-size: 0.95rem;
-  }
-  
-  .closeButton {
-    width: 1.4rem;
-    height: 1.4rem;
-    right: 0.6rem;
-    top: 0.6rem;
-  }
-  
-  .content {
-    padding: 0.95rem;
+    max-width: 600px;
   }
   
   .small {
-    max-width: 80%;
+    max-width: 450px;
   }
   
   .large {
-    max-width: 92%;
+    max-width: 800px;
   }
   
   .auth {
-    max-width: 90%;
-    max-height: 480px;
+    max-width: 500px;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .overlay {
-    padding: 0.5rem;
+    padding: 1.5rem;
   }
   
   .container {
-    max-width: 92%;
-    border-radius: 0.375rem;
-    max-height: 65vh;
+    max-width: 500px;
   }
   
-  .header {
-    padding: 0.7rem 0.85rem;
+  .small {
+    max-width: 400px;
   }
   
-  .title {
-    font-size: 0.925rem;
-  }
-  
-  .closeButton {
-    width: 1.3rem;
-    height: 1.3rem;
-    right: 0.5rem;
-    top: 0.5rem;
-  }
-  
-  .content {
-    padding: 0.8rem;
+  .large {
+    max-width: 600px;
   }
   
   .auth {
-    max-height: 450px;
+    max-width: 450px;
   }
   
-  .auth .header {
-    padding: 0.9rem 1rem;
+  .header {
+    padding: 1rem 1.25rem;
   }
   
-  .auth .content {
+  .title {
+    font-size: 1.1rem;
+  }
+  
+  .content {
+    padding: 1.25rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .overlay {
     padding: 1rem;
+  }
+  
+  .container {
+    max-width: 450px;
+  }
+  
+  .small {
+    max-width: 350px;
+  }
+  
+  .large {
+    max-width: 500px;
+  }
+  
+  .auth {
+    max-width: 400px;
+  }
+  
+  .header {
+    padding: 0.9rem 1.1rem;
+  }
+  
+  .title {
+    font-size: 1rem;
+  }
+  
+  .content {
+    padding: 1.1rem;
   }
 }
 
