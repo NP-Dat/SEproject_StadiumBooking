@@ -1,11 +1,22 @@
-import React from 'react';
-import AppRouter from './routes/Route';
-import styles from './App.module.css';
+import { BrowserRouter as Router } from 'react-router-dom'
+import { AppRoutes } from './routes/AppRouter'
+import Navbar from './components/layout/Navbar/Navbar'
+import Footer from './components/layout/Footer/Footer'
+import styles from './App.module.css'
 
-const App = () => (
-  <div className={styles.app}>
-    <AppRouter />
-  </div>
-);
+function App() {
+  return (
+    <Router>
+      <div className={styles.app}>
+        <div className={styles.background}></div>
+        <Navbar />
+        <main className={styles.main}>
+          <AppRoutes />
+        </main>
+        <Footer />
+      </div>
+    </Router>
+  )
+}
 
-export default App;
+export default App

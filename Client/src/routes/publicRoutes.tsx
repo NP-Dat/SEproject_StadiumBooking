@@ -1,15 +1,33 @@
-import React from "react";
+import { RouteType } from '../types/routes'
+import Home from '../pages/Home/Home'
+import About from '../pages/About/About'
+import Venues from '../pages/Venues/Venues'
+import Stadium from '../pages/Stadium/Stadium'
 
-import Home from "../pages/Home/Home";
-import About from "../pages/About/About";
-import LoginPage from "../pages/Login/LoginPage";
-import StadiumView from "../pages/Stadium/StadiumView";
+export const publicRoutes: RouteType[] = [
+  {
+    path: '/',
+    element: <Home />
+  },
 
-const publicRoutes = [
-    { path: "/", element: <Home /> },
-    { path: "/about", element: <About /> },
-    { path: "/login", element: <LoginPage />},
-    { path: "/Stadiums", element: <StadiumView />}
-];
+  /*{
+    path: '/',
+    element: <Event />
+  }*/
 
-export default publicRoutes;
+  {
+    path: '/venues',
+    element: <Venues />
+  },
+  {
+    path: '/about',
+    element: <About />
+  },
+  
+//      This is for testing the UI layout of the Stadium booking page
+//      Actually, this will be in private routes
+  {
+    path: '/stadium',
+    element: <Stadium />
+  }
+]
