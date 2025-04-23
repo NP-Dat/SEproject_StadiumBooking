@@ -2,9 +2,6 @@
 node_modules/
 .qodo/
 
+.env
+**/.env
 
-
-
-microservice/Auth/.env
-microservice/Auth/.env
-microservice/event_owner/.env

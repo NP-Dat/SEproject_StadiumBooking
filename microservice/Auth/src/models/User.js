@@ -3,8 +3,8 @@ const bcrypt = require('bcryptjs');
 
 class UserModel {
   static async findByEmail(email) {
-    const [users] = await pool.query('SELECT * FROM Customers WHERE email = ?', [email]);
-    return users[0];
+    const [users] = await pool.query('SELECT 1 FROM Customers WHERE email = ?', [email]);
+    return users[0] ? true : false;
   }
 
   static async findPasswordByEmail(email) {
