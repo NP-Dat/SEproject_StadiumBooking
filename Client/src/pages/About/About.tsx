@@ -1,4 +1,4 @@
-import React from "react";
+
 import Hero from "./components/Hero";
 import Journey from "./components/Journey";
 import Value from "./components/Value";

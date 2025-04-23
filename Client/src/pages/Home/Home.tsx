@@ -1,4 +1,4 @@
-import React from "react";
+
 import Hero from "./components/Hero";
 import Event from "./components/Event";
 import Venue from "./components/Venue";
