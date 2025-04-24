@@ -129,14 +129,49 @@
     gap: 0.75rem;
 }
 
-/* buttons */
-.buttonContainer {
+.userActions {
     display: flex;
-    gap: 0.75rem;
+    align-items: center;
+    gap: 1rem;
 }
 
-/* Shared base style for both buttons */
-.buttonContainer button {
+.profileButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s;
+}
+
+.profileButton:hover {
+    transform: translateY(-1px);
+}
+
+.userName {
+    color: #1e293b;
+    font-weight: 500;
+    margin-right: 0.5rem;
+}
+
+.cartButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    color: #1e293b;
+    transition: all 0.2s;
+    position: relative;
+}
+
+.cartButton:hover {
+    color: #00B4D8;
+    transform: translateY(-1px);
+}
+
+.loginButton,
+.signUpButton {
     padding: 0.4rem 1rem;
     font-size: 0.95rem;
     border-radius: 20px;
@@ -150,17 +185,57 @@
     transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
 }
 
-/* Unified color for both buttons */
-.buttonContainer button {
+.loginButton {
+    background-color: transparent;
+    border: 1px solid #00B4D8;
+    color: #00B4D8;
+}
+
+.loginButton:hover {
+    background-color: #00B4D8;
+    color: white;
+    transform: scale(1.05);
+}
+
+.signUpButton {
     background-color: #00B4D8;
     border: 1px solid #00B4D8;
     color: white;
 }
 
-/* Hover effect for both buttons */
-.buttonContainer button:hover {
+.signUpButton:hover {
     background-color: white;
     color: #00B4D8;
     transform: scale(1.05);
-    /* Adds a scaling effect */
+}
+
+@media (max-width: 768px) {
+    .nav {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .navLinks {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .searchContainer {
+        width: 100%;
+        margin: 1rem 0;
+    }
+
+    .searchInput {
+        width: 100%;
+    }
+
+    .buttonContainer {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .userActions {
+        width: 100%;
+        justify-content: center;
+    }
 }
