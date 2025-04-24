@@ -3,9 +3,11 @@ import { useNavigate, NavLink } from 'react-router-dom';
 import styles from './Navbar.module.css';
 import Login from '../../../pages/Auth/Login/Login';
 import Register from '../../../pages/Auth/Register/Register';
+import { useAuth } from '../../../contexts/AuthContext';
 
 const Navbar = () => {
     const navigate = useNavigate();
+    const { user, isAuthenticated, isAdmin } = useAuth();
     const [loginModalOpen, setLoginModalOpen] = useState(false);
     const [registerModalOpen, setRegisterModalOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
@@ -26,18 +28,6 @@ const Navbar = () => {
 
     const closeRegisterModal = () => {
         setRegisterModalOpen(false);
-    };
-
-    const handleLogin = (email: string, password: string) => {
-        // TODO: Implement login logic
-        console.log('Login attempt with:', email, password);
-        closeLoginModal();
-    };
-
-    const handleRegister = (email: string, password: string, name: string) => {
-        // TODO: Implement register logic
-        console.log('Register attempt with:', email, password, name);
-        closeRegisterModal();
     };
 
     const handleSearch = (e: React.FormEvent) => {
@@ -94,6 +84,16 @@ const Navbar = () => {
                         >
                             About
                         </NavLink>
+                        {isAuthenticated && isAdmin && (
+                            <NavLink
+                                to="/admin"
+                                className={({ isActive }) =>
+                                    `${styles.navLink} ${isActive ? styles.navLinkActive : ''}`
+                                }
+                            >
+                                Admin Panel
+                            </NavLink>
+                        )}
                     </div>
 
                     <form onSubmit={handleSearch} className={styles.searchContainer}>
@@ -113,18 +113,43 @@ const Navbar = () => {
                     </form>
 
                     <div className={styles.buttonContainer}>
-                        <button
-                            onClick={openLoginModal}
-                            className={styles.loginButton}
-                        >
-                            Login
-                        </button>
-                        <button
-                            onClick={openRegisterModal}
-                            className={styles.signUpButton}
-                        >
-                            Register
-                        </button>
+                        {isAuthenticated ? (
+                            <div className={styles.userActions}>
+                                <button
+                                    onClick={() => navigate('/profile')}
+                                    className={styles.profileButton}
+                                >
+                                    <span className={styles.userName}>
+                                        {user?.name} {isAdmin && '(Admin)'}
+                                    </span>
+                                </button>
+                                <button
+                                    onClick={() => navigate('/cart')}
+                                    className={styles.cartButton}
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <circle cx="9" cy="21" r="1"></circle>
+                                        <circle cx="20" cy="21" r="1"></circle>
+                                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        ) : (
+                            <>
+                                <button
+                                    onClick={openLoginModal}
+                                    className={styles.loginButton}
+                                >
+                                    Login
+                                </button>
+                                <button
+                                    onClick={openRegisterModal}
+                                    className={styles.signUpButton}
+                                >
+                                    Register
+                                </button>
+                            </>
+                        )}
                     </div>
                 </nav>
             </header>
@@ -133,7 +158,7 @@ const Navbar = () => {
                 <Login
                     onClose={closeLoginModal}
                     onSwitchToRegister={openRegisterModal}
-                    onLogin={handleLogin}
+                    onLogin={openLoginModal}
                 />
             )}
 
@@ -141,7 +166,7 @@ const Navbar = () => {
                 <Register
                     onClose={closeRegisterModal}
                     onSwitchToLogin={openLoginModal}
-                    onRegister={handleRegister}
+                    onRegister={openRegisterModal}
                 />
             )}
         </>
