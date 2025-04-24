@@ -32,9 +32,7 @@ const Footer = () => {
                     <h3 className={styles.sectionTitle}>Quick Links</h3>
                     <Link to="/events" className={styles.link}>Upcoming Events</Link>
                     <Link to="/venues" className={styles.link}>Stadiums & Venues</Link>
-                    <Link to="/bookings" className={styles.link}>My Bookings</Link>
                     <Link to="/about" className={styles.link}>About Us</Link>
-                    <Link to="/contact" className={styles.link}>Contact</Link>
                 </div>
 
                 {/* Support & Legal */}

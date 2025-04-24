@@ -1,14 +1,15 @@
 // Authentication-related types
 
+export interface User {
+  id: string
+  email: string
+  name: string
+  role: 'user' | 'admin'
+}
+
 export interface AuthResponse {
-  user: {
-    id: string
-    name: string
-    email: string
-    role: 'user' | 'admin'
-  }
+  user: User
   token: string
-  expiresIn: number
 }
 
 export interface LoginCredentials {
@@ -16,7 +17,7 @@ export interface LoginCredentials {
   password: string
 }
 
-export interface RegisterData {
+export interface RegisterCredentials {
   name: string
   email: string
   password: string
@@ -34,14 +35,14 @@ export interface NewPasswordData {
 }
 
 export interface AuthState {
-  user: {
-    id: string
-    name: string
-    email: string
-    role: 'user' | 'admin'
-  } | null
+  user: User | null
   token: string | null
   isAuthenticated: boolean
   isLoading: boolean
   error: string | null
+}
+
+export interface AuthError {
+  message: string
+  code: string
 }

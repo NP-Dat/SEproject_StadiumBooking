@@ -1,187 +1,119 @@
-import axios from 'axios'
-import axiosInstance from '../config/axios'
-import { useMockImplementation } from '../utils/apiConfig'
+import { LoginCredentials, RegisterCredentials, AuthResponse, AuthError, User } from '../types/auth';
 
-// Types
-export interface LoginCredentials {
-  email: string
-  password: string
-}
+// Mock user database
+const mockUsers: (User & { password: string })[] = [
+    {
+        id: '1',
+        email: 'admin@example.com',
+        name: 'Admin User',
+        role: 'admin',
+        password: 'admin123' // In real app, this would be hashed
+    },
+    {
+        id: '2',
+        email: 'user@example.com',
+        name: 'Regular User',
+        role: 'user',
+        password: 'user123' // In real app, this would be hashed
+    }
+];
 
-export interface RegisterData {
-  name: string
-  email: string
-  password: string
-}
+// Mock token storage
+let mockToken: string | null = null;
 
-export interface User {
-  id: string
-  name: string
-  email: string
-  token?: string
-}
+// Simulate API delay
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-/**
- * Authentication service
- * Provides methods for user authentication and authorization
- */
-const authService = {
-  /**
-   * Login a user
-   * @param credentials User credentials
-   * @returns Promise with user data
-   */
-  login: async (credentials: LoginCredentials): Promise<User> => {
-    if (useMockImplementation()) {
-      // Mock implementation
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          // Simple validation
-          if (!credentials.email || !credentials.password) {
-            reject(new Error('Email and password are required'))
-            return
-          }
-          
-          // Mock successful login
-          const user = {
-            id: '1',
-            name: 'Test User',
+export const authService = {
+    async login(credentials: LoginCredentials): Promise<AuthResponse> {
+        await delay(1000); // Simulate network delay
+
+        const user = mockUsers.find(u => 
+            u.email === credentials.email && 
+            u.password === credentials.password
+        );
+
+        if (!user) {
+            throw {
+                message: 'Invalid email or password',
+                code: 'INVALID_CREDENTIALS'
+            } as AuthError;
+        }
+
+        // Generate mock token
+        const token = `mock-token-${user.id}-${Date.now()}`;
+        mockToken = token;
+
+        // Remove password from user object
+        const { password, ...userWithoutPassword } = user;
+
+        return {
+            user: userWithoutPassword,
+            token
+        };
+    },
+
+    async register(credentials: RegisterCredentials): Promise<AuthResponse> {
+        await delay(1000); // Simulate network delay
+
+        // Check if email already exists
+        if (mockUsers.some(u => u.email === credentials.email)) {
+            throw {
+                message: 'Email already exists',
+                code: 'EMAIL_EXISTS'
+            } as AuthError;
+        }
+
+        // Create new user
+        const newUser = {
+            id: String(mockUsers.length + 1),
             email: credentials.email,
-            token: 'mock-jwt-token'
-          }
-          
-          // Store user in localStorage
-          localStorage.setItem('user', JSON.stringify(user))
-          
-          resolve(user)
-        }, 800)
-      })
-    } else {
-      // Real API implementation
-      const response = await axiosInstance.post('/auth/login', credentials)
-      
-      // Store user in localStorage if token exists
-      if (response.data && response.data.token) {
-        localStorage.setItem('user', JSON.stringify(response.data))
-      }
-      
-      return response.data
+            name: credentials.name,
+            role: 'user' as const,
+            password: credentials.password // In real app, this would be hashed
+        };
+
+        mockUsers.push(newUser);
+
+        // Generate mock token
+        const token = `mock-token-${newUser.id}-${Date.now()}`;
+        mockToken = token;
+
+        // Remove password from user object
+        const { password, ...userWithoutPassword } = newUser;
+
+        return {
+            user: userWithoutPassword,
+            token
+        };
+    },
+
+    async logout(): Promise<void> {
+        await delay(500); // Simulate network delay
+        mockToken = null;
+    },
+
+    async getCurrentUser(): Promise<AuthResponse | null> {
+        await delay(500); // Simulate network delay
+
+        if (!mockToken) {
+            return null;
+        }
+
+        // Extract user ID from mock token
+        const userId = mockToken.split('-')[2];
+        const user = mockUsers.find(u => u.id === userId);
+
+        if (!user) {
+            return null;
+        }
+
+        // Remove password from user object
+        const { password, ...userWithoutPassword } = user;
+
+        return {
+            user: userWithoutPassword,
+            token: mockToken
+        };
     }
-  },
-
-  /**
-   * Register a new user
-   * @param userData User registration data
-   * @returns Promise with user data
-   */
-  register: async (userData: RegisterData): Promise<User> => {
-    if (useMockImplementation()) {
-      // Mock implementation
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          // Simple validation
-          if (!userData.email || !userData.password || !userData.name) {
-            reject(new Error('All fields are required'))
-            return
-          }
-          
-          // Mock successful registration
-          const user = {
-            id: Date.now().toString(),
-            name: userData.name,
-            email: userData.email,
-            token: 'mock-jwt-token'
-          }
-          
-          resolve(user)
-        }, 1000)
-      })
-    } else {
-      // Real API implementation
-      const response = await axiosInstance.post('/auth/register', userData)
-      return response.data
-    }
-  },
-
-  /**
-   * Logout the current user
-   */
-  logout: async (): Promise<void> => {
-    // Remove user from local storage
-    localStorage.removeItem('user')
-    
-    if (!useMockImplementation()) {
-      // Only call API if using real implementation
-      try {
-        await axiosInstance.post('/auth/logout')
-      } catch (error) {
-        console.error('Error during logout:', error)
-      }
-    }
-  },
-
-  /**
-   * Get the current user from localStorage
-   * @returns User object or null if not logged in
-   */
-  getCurrentUser: (): User | null => {
-    const userStr = localStorage.getItem('user')
-    if (!userStr) return null
-    
-    try {
-      return JSON.parse(userStr)
-    } catch (error) {
-      console.error('Error parsing user data:', error)
-      return null
-    }
-  },
-
-  /**
-   * Check if the user is logged in
-   * @returns True if logged in, false otherwise
-   */
-  isAuthenticated: (): boolean => {
-    return !!authService.getCurrentUser()
-  },
-
-  /**
-   * Refresh the user's authentication token
-   * @returns Promise with updated user data
-   */
-  refreshToken: async (): Promise<User> => {
-    if (useMockImplementation()) {
-      // Mock implementation
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          const currentUser = authService.getCurrentUser()
-          
-          if (!currentUser) {
-            throw new Error('No user to refresh token')
-          }
-          
-          // Mock refreshed token
-          const refreshedUser = {
-            ...currentUser,
-            token: `refreshed-mock-token-${Date.now()}`
-          }
-          
-          // Update in localStorage
-          localStorage.setItem('user', JSON.stringify(refreshedUser))
-          
-          resolve(refreshedUser)
-        }, 500)
-      })
-    } else {
-      // Real API implementation
-      const response = await axiosInstance.post('/auth/refresh-token')
-      
-      if (response.data && response.data.token) {
-        localStorage.setItem('user', JSON.stringify(response.data))
-      }
-      
-      return response.data
-    }
-  }
-}
-
-export default authService
+};

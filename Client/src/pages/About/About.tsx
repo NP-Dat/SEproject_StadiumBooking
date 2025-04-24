@@ -1,8 +1,8 @@
-import Hero from "./components/Hero/Hero"
-import Journey from "./components/Journey/Journey";
-import Value from "./components/Value/Value";
-import Mission from "./components/Mission/Mission";
-import Contact from "./components/Contact/Contact";
+import Hero from "./sections/Hero/Hero"
+import Journey from "./sections/Journey/Journey";
+import Value from "./sections/Value/Value";
+import Mission from "./sections/Mission/Mission";
+import Contact from "./sections/Contact/Contact";
 import styles from "./About.module.css";
 
 const About = () => {
