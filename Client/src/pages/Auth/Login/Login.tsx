@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import styles from './Login.module.css';
 import Button from '../../../components/ui/Button/Button';
 import Input from '../../../components/ui/Input/Input';
+import { AuthService } from '../../../services/AuthService';
+import axios from 'axios';
 
 interface LoginProps {
     onClose: () => void;
@@ -15,13 +17,32 @@ const Login: React.FC<LoginProps> = ({ onClose, onSwitchToRegister, onLogin }) =
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!email || !password) {
             setError('Please fill in all fields');
             return;
         }
-        onLogin(email, password);
+
+        try {
+            const response = await AuthService.login({email, password});
+            
+            if (response.token) {
+                AuthService.setToken(response.token);
+            } else {
+                setError('No token received');
+                return;
+            
+            }
+            onLogin(email, password);
+            onClose();
+        } catch (err: unknown) {
+            if (axios.isAxiosError(err)) {
+                setError(err.response?.data?.message || 'Login failed');
+            } else {
+                setError('An unexpected error occurred');
+            }
+        }
     };
 
     return (
