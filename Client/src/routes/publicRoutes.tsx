@@ -8,6 +8,7 @@ import Terms from '../pages/Support/Terms'
 import Privacy from '../pages/Support/Privacy'
 import Refund from '../pages/Support/Refund'
 import Accessibility from '../pages/Support/Accessibility'
+import Stadium from '../pages/Stadium/Stadium'
 
 export const publicRoutes: RouteType[] = [
   {
@@ -46,5 +47,11 @@ export const publicRoutes: RouteType[] = [
   {
     path: '/accessibility',
     element: <Accessibility />
-  }
+  },
+
+  // This is for testing the stadium seat page
+  {
+    path: '/stadium',
+    element: <Stadium />
+  },
 ]
