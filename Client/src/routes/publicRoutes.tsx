@@ -2,19 +2,22 @@ import { RouteType } from '../types/routes'
 import Home from '../pages/Home/Home'
 import About from '../pages/About/About'
 import Venues from '../pages/Venues/Venues'
-import Stadium from '../pages/Stadium/Stadium'
+import Events from '../pages/Events/Events'
+import FAQ from '../pages/Support/FAQ'
+import Terms from '../pages/Support/Terms'
+import Privacy from '../pages/Support/Privacy'
+import Refund from '../pages/Support/Refund'
+import Accessibility from '../pages/Support/Accessibility'
 
 export const publicRoutes: RouteType[] = [
   {
     path: '/',
     element: <Home />
   },
-
-  /*{
-    path: '/',
-    element: <Event />
-  }*/
-
+  {
+    path: '/events',
+    element: <Events />
+  },
   {
     path: '/venues',
     element: <Venues />
@@ -23,11 +26,25 @@ export const publicRoutes: RouteType[] = [
     path: '/about',
     element: <About />
   },
-  
-//      This is for testing the UI layout of the Stadium booking page
-//      Actually, this will be in private routes
+  /*Support & Legal*/
   {
-    path: '/stadium',
-    element: <Stadium />
+    path: '/faq',
+    element: <FAQ />
+  },
+  {
+    path: '/terms',
+    element: <Terms />
+  },
+  {
+    path: '/privacy',
+    element: <Privacy />
+  },
+  {
+    path: '/refund',
+    element: <Refund />
+  },
+  {
+    path: '/accessibility',
+    element: <Accessibility />
   }
 ]

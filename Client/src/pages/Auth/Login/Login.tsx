@@ -1,74 +1,82 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-// import Modal from '../../../components/ui/Modal/Modal';
-import Input from '../../../components/ui/Input/Input';
-import Button from '../../../components/ui/Button/Button';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import styles from './Login.module.css';
+import Button from '../../../components/ui/Button/Button';
+import Input from '../../../components/ui/Input/Input';
 
-const Login = () => {
-    const navigate = useNavigate();
-    const [formData, setFormData] = useState({
-        email: '',
-        password: '',
-    });
+interface LoginProps {
+    onClose: () => void;
+    onSwitchToRegister: () => void;
+    onLogin: (email: string, password: string) => void;
+}
+
+const Login: React.FC<LoginProps> = ({ onClose, onSwitchToRegister, onLogin }) => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        // Handle login logic here
-        console.log('Login form submitted:', formData);
+        if (!email || !password) {
+            setError('Please fill in all fields');
+            return;
+        }
+        onLogin(email, password);
     };
 
     return (
-        <div className={styles.authContainer}>
-            <div className={styles.authCard}>
-                <div className={styles.authHeader}>
-                    <h1 className={styles.authTitle}>Welcome Back</h1>
-                    <p className={styles.authSubtitle}>Sign in to your account</p>
+        <div className={styles.modalOverlay} onClick={onClose}>
+            <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
+                <button className={styles.closeButton} onClick={onClose}>×</button>
+                <div className={styles.modalHeader}>
+                    <h2 className={styles.title}>Welcome Back</h2>
+                    <p className={styles.subtitle}>Sign in to continue to your account</p>
                 </div>
-
+                {error && <p className={styles.error}>{error}</p>}
                 <form onSubmit={handleSubmit} className={styles.form}>
-                    <Input
-                        id="login-email"
-                        type="email"
-                        label="Email"
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        required
-                    />
-                    <Input
-                        id="login-password"
-                        type="password"
-                        label="Password"
-                        value={formData.password}
-                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                        required
-                    />
-
-                    <div className={styles.formActions}>
-                        <Button type="submit" variant="primary" fullWidth>
-                            Sign In
-                        </Button>
-                        <button 
-                            type="button" 
-                            className={styles.forgotPassword}
-                            onClick={() => {/* Handle forgot password */}}
-                        >
+                    <div className={styles.inputGroup}>
+                        <Input
+                            id="email"
+                            label="Email"
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="Enter your email"
+                            required
+                        />
+                        <Input
+                            id="password"
+                            label="Password"
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            placeholder="Enter your password"
+                            required
+                        />
+                    </div>
+                    <div className={styles.forgotPassword}>
+                        <Link to="/forgot-password" className={styles.forgotPasswordLink}>
                             Forgot Password?
-                        </button>
+                        </Link>
                     </div>
-
-                    <div className={styles.divider}>or</div>
-
-                    <div className={styles.switchAuth}>
-                        Don't have an account?{' '}
-                        <button 
-                            type="button" 
-                            onClick={() => navigate('/register')} 
-                            className={styles.switchAuthLink}
-                        >
-                            Sign up
-                        </button>
+                    <Button
+                        type="submit"
+                        variant="primary"
+                        size="large"
+                        className={styles.submitButton}
+                    >
+                        Sign In
+                    </Button>
+                    <div className={styles.divider}>
+                        <span>or</span>
                     </div>
+                    <Button
+                        variant="outline"
+                        onClick={onSwitchToRegister}
+                        className={styles.switchButton}
+                    >
+                        Create New Account
+                    </Button>
                 </form>
             </div>
         </div>
