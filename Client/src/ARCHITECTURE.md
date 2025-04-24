@@ -1,21 +1,25 @@
 # Application Architecture Documentation
 
 ## Overview
-This document explains the architecture of the Stadium Booking application, focusing on the relationship between Types, Services, and Hooks.
+This document explains the architecture of the Stadium Booking application, focusing on the relationship between Types, Services, Contexts, and Components.
 
 ## Directory Structure
 ```
 src/
 ├── types/           # TypeScript interfaces and types
 ├── services/        # API and data operation services
-├── hooks/           # React custom hooks
-└── components/      # React components
+├── contexts/        # React Context providers
+├── components/      # React components
+├── pages/          # Page components
+├── routes/         # Router configuration
+├── utils/          # Utility functions
+└── config/         # Configuration files
 ```
 
 ## 1. Types (`types/`)
 Types define the shape of our data and ensure type safety throughout the application.
 
-### Example: Authentication Types
+### Authentication Types
 ```typescript
 // types/auth.ts
 interface User {
@@ -25,26 +29,40 @@ interface User {
   role: 'user' | 'admin'
 }
 
+interface AuthState {
+  user: User | null
+  token: string | null
+  isAuthenticated: boolean
+  loading: boolean
+  error: string | null
+}
+
 interface LoginCredentials {
   email: string
   password: string
 }
 
-interface AuthResponse {
-  user: User
-  token: string
+interface RegisterCredentials {
+  name: string
+  email: string
+  password: string
 }
 ```
 
 ## 2. Services (`services/`)
 Services handle API calls and data operations. They are pure functions that don't contain React-specific code.
 
-### Example: Authentication Service
+### Authentication Service
 ```typescript
 // services/authService.ts
 const authService = {
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
-    // Implementation
+    const response = await fetch(`${API_URL}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(credentials)
+    });
+    // Error handling and response processing
   },
   
   async register(credentials: RegisterCredentials): Promise<AuthResponse> {
@@ -57,215 +75,169 @@ const authService = {
 }
 ```
 
-## 3. Hooks (`hooks/`)
-Hooks manage React state and side effects, using services to perform operations.
+## 3. Contexts (`contexts/`)
+Contexts provide global state management and share data across components.
 
-### Example: User Authentication Hook
+### Authentication Context
 ```typescript
-// hooks/useUser.ts
-const useUser = () => {
-  const [user, setUser] = useState<User | null>(null);
-  
-  const login = async (credentials: LoginCredentials) => {
-    const response = await authService.login(credentials);
-    setUser(response.user);
-  };
-  
-  return { user, login };
-};
-```
+// contexts/AuthContext.tsx
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-## 4. Components
-Components use hooks to access services and manage UI state.
-
-### Example: Login Component
-```typescript
-// components/LoginForm.tsx
-const LoginForm = () => {
-  const { login, error } = useUser();
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [state, setState] = useState<AuthState>({...});
   
-  const handleSubmit = async (formData: LoginCredentials) => {
-    try {
-      await login(formData);
-    } catch (err) {
-      // Handle error
-    }
-  };
+  // Authentication methods
+  const login = async (credentials: LoginCredentials) => {...};
+  const register = async (credentials: RegisterCredentials) => {...};
+  const logout = async () => {...};
   
   return (
-    <form onSubmit={handleSubmit}>
-      {/* Form fields */}
-    </form>
+    <AuthContext.Provider value={{...state, login, register, logout}}>
+      {children}
+    </AuthContext.Provider>
   );
 };
 ```
 
-## Data Flow
-1. Components call hooks
-2. Hooks use services
-3. Services perform operations
-4. Types ensure data consistency
+## 4. Routes (`routes/`)
+Routes handle navigation and protect routes based on authentication status.
 
-```mermaid
-graph TD
-    A[Types] --> B[Services]
-    A --> C[Hooks]
-    B --> C
-    C --> D[Components]
+### Route Protection
+```typescript
+// utils/routeUtils.ts
+export const withAuthCheck = (Component: React.ComponentType, requiredRole?: string) => {
+  return function WithAuthCheckWrapper() {
+    const { isAuthenticated, user, loading } = useAuthContext();
+    // Authentication check and redirection logic
+  };
+};
 ```
+
+### Route Configuration
+```typescript
+// routes/protectedRoutes.tsx
+export const protectedRoutes: RouteType[] = [
+  {
+    path: '/dashboard',
+    element: <ProtectedDashboard />
+  },
+  // Other protected routes
+];
+```
+
+## API Implementation Techniques
+
+### 1. Service Layer Pattern
+- Services handle all API communication
+- Centralized error handling
+- Consistent response processing
+- Type-safe request/response handling
+
+### 2. Authentication Flow
+1. User submits credentials
+2. Service makes API call
+3. Context updates state
+4. Local storage persists session
+5. Protected routes check authentication
+
+### 3. Error Handling
+- Service layer catches API errors
+- Context manages error state
+- Components display error messages
+- Consistent error format across application
+
+### 4. State Management
+- Context provides global state
+- Services handle data operations
+- Components consume state through hooks
+- Local storage for persistence
 
 ## Best Practices
 
 ### 1. Type Safety
-- Always define interfaces for your data
-- Use TypeScript's type checking
-- Avoid using `any` type
+- Define interfaces for all data structures
+- Use TypeScript's strict mode
+- Validate API responses
+- Handle null/undefined cases
 
-### 2. Service Layer
-- Keep services pure and stateless
-- Handle all API calls in services
-- Use proper error handling
-- Document service methods
+### 2. API Calls
+- Centralize API endpoints
+- Use consistent error handling
+- Implement retry logic for failed requests
+- Cache responses when appropriate
 
-### 3. Hooks
-- Keep hooks focused on a single responsibility
-- Use proper dependency arrays
-- Handle loading and error states
-- Provide clear return values
+### 3. Authentication
+- Secure token storage
+- Automatic token refresh
+- Role-based access control
+- Session persistence
 
-### 4. Components
-- Use hooks for data fetching and state management
-- Keep components focused on UI
-- Use proper prop types
-- Handle loading and error states
+### 4. Routing
+- Protect sensitive routes
+- Handle loading states
+- Implement proper redirects
+- Maintain route history
 
 ## Example Implementation
 
-### 1. Define Types
-```typescript
-// types/booking.ts
-interface Booking {
-  id: string
-  userId: string
-  eventId: string
-  seats: string[]
-  status: 'pending' | 'confirmed' | 'cancelled'
-}
-```
-
-### 2. Create Service
+### 1. API Call
 ```typescript
 // services/bookingService.ts
 const bookingService = {
-  async createBooking(booking: Omit<Booking, 'id'>): Promise<Booking> {
-    // Implementation
-  },
-  
-  async getBookings(userId: string): Promise<Booking[]> {
-    // Implementation
+  async createBooking(booking: BookingRequest): Promise<Booking> {
+    const response = await fetch(`${API_URL}/bookings`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(booking)
+    });
+    
+    if (!response.ok) {
+      throw new Error('Booking creation failed');
+    }
+    
+    return response.json();
   }
-}
-```
-
-### 3. Create Hook
-```typescript
-// hooks/useBookings.ts
-const useBookings = (userId: string) => {
-  const [bookings, setBookings] = useState<Booking[]>([]);
-  
-  useEffect(() => {
-    const fetchBookings = async () => {
-      const userBookings = await bookingService.getBookings(userId);
-      setBookings(userBookings);
-    };
-    
-    fetchBookings();
-  }, [userId]);
-  
-  return { bookings };
 };
 ```
 
-### 4. Use in Component
+### 2. Context Usage
 ```typescript
-// components/BookingList.tsx
-const BookingList = ({ userId }: { userId: string }) => {
-  const { bookings } = useBookings(userId);
+// components/BookingForm.tsx
+const BookingForm = () => {
+  const { user, token } = useAuthContext();
   
-  return (
-    <div>
-      {bookings.map(booking => (
-        <BookingCard key={booking.id} booking={booking} />
-      ))}
-    </div>
-  );
-};
-```
-
-## Common Patterns
-
-### 1. Data Fetching
-```typescript
-// hooks/useData.ts
-const useData = <T>(fetchFn: () => Promise<T>) => {
-  const [data, setData] = useState<T | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await fetchFn();
-        setData(result);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-    
-    fetchData();
-  }, [fetchFn]);
-  
-  return { data, loading, error };
-};
-```
-
-### 2. Form Handling
-```typescript
-// hooks/useForm.ts
-const useForm = <T>(initialValues: T) => {
-  const [values, setValues] = useState<T>(initialValues);
-  
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setValues(prev => ({ ...prev, [name]: value }));
+  const handleSubmit = async (formData: BookingFormData) => {
+    try {
+      const booking = await bookingService.createBooking({
+        ...formData,
+        userId: user.id
+      });
+      // Handle success
+    } catch (error) {
+      // Handle error
+    }
   };
   
-  return { values, handleChange };
+  return <form onSubmit={handleSubmit}>{/* Form fields */}</form>;
 };
 ```
 
 ## Testing Guidelines
+- Mock API calls in tests
+- Test authentication flows
+- Verify route protection
+- Check error handling
 
-### 1. Types
-- No need to test types directly
-- TypeScript compiler will catch type errors
-
-### 2. Services
-- Test API calls and data transformations
-- Mock external dependencies
-- Test error handling
-
-### 3. Hooks
-- Test state management
-- Test side effects
-- Use React Testing Library
-
-### 4. Components
-- Test UI rendering
-- Test user interactions
-- Test prop handling
+```mermaid
+graph TD
+    A[Types] --> B[Services]
+    A --> C[Contexts]
+    B --> C
+    C --> D[Components]
+```
 
 ## Conclusion
 This architecture provides a clean separation of concerns and makes the codebase more maintainable and scalable. By following these patterns, you can ensure type safety, proper data flow, and clean component structure throughout your application. 
