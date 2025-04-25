@@ -7,7 +7,7 @@ import {
     AuthState 
 } from '../types/auth';
 
-const API_URL = 'http://localhost:3000/api/auth';
+const API_URL = 'http://localhost:8001/api/auth';
 
 interface errorResponse {
     message: string;
@@ -49,14 +49,22 @@ export class AuthService {
 
     static async register(credentials: RegisterCredentials): Promise<AuthState> {
         try {
+            console.log('Registration attempt with:', credentials); // Debug log
+            
             const response = await axios.post<AuthResponse>(
                 `${API_URL}/register`, 
                 credentials
             );
+            
+            console.log('Registration response:', response.data); // Debug log
+            
             const { user, token } = response.data;
-            this.setToken(token);
-            this.user = user;
-
+            
+            if (user && token) {
+                this.setToken(token);
+                this.user = user;
+            }
+    
             return {
                 user,
                 token,
@@ -65,7 +73,8 @@ export class AuthService {
                 error: null
             };
         } catch (error) {
-            const axiosError = error as AxiosError<errorResponse>;
+            console.error('Registration error details:', error); // Debug log
+            const axiosError = error as AxiosError<{message: string}>;
             return {
                 user: null,
                 token: null,

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import styles from './Register.module.css';
 import Button from '../../../components/ui/Button/Button';
 import Input from '../../../components/ui/Input/Input';
+import { AuthService } from '../../../services/AuthService';
+
 
 interface RegisterProps {
     onClose: () => void;
@@ -17,7 +19,7 @@ const Register: React.FC<RegisterProps> = ({ onClose, onSwitchToLogin, onRegiste
     const [error, setError] = useState('');
     const [agreed, setAgreed] = useState(false);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!name || !email || !password || !confirmPassword) {
             setError('Please fill in all fields');
@@ -31,7 +33,24 @@ const Register: React.FC<RegisterProps> = ({ onClose, onSwitchToLogin, onRegiste
             setError('Please agree to the terms and conditions');
             return;
         }
-        onRegister(email, password, name);
+
+        try {
+            const authState = await AuthService.register({
+                username: name,  // Map name to username
+                email,
+                password
+            });
+
+            if (authState.error) {
+                setError(authState.error);
+                return;
+            }
+
+            onRegister(email, password, name);  // Changed from name to username
+            onClose();
+        } catch {
+            setError('Registration failed. Please try again.');
+        }
     };
 
     return (
