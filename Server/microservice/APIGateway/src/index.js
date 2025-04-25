@@ -32,4 +32,5 @@ app.listen(PORT, () => {
   console.log(`Event Service URL: ${process.env.EVENT_SERVICE_URL}`);
   console.log(`Booking Service URL: ${process.env.BOOKING_SERVICE_URL}`);
   console.log(`Event Owner Service URL: ${process.env.OWNER_SERVICE_URL}`);
+  console.log(`Ticket Service URL: ${process.env.TICKET_SERVICE_URL}`);
 });

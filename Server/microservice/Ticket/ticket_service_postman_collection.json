@@ -1,0 +1,299 @@
+{
+  "info": {
+    "_postman_id": "e8f3e9d1-7c1b-4f6e-9b5c-7d1b8f6e9b5c",
+    "name": "Ticket Service API",
+    "description": "Collection to test the Ticket Service API endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Event Zones (Ticket Types)",
+      "item": [
+        {
+          "name": "Get Ticket Types for Event",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8005/api/events/1/ticket-types",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8005",
+              "path": [
+                "api",
+                "events",
+                "1",
+                "ticket-types"
+              ]
+            },
+            "description": "Retrieves all ticket types (event zones) for the specified event"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Ticket Type (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Super VIP Zone\",\n    \"size\": 50,\n    \"price\": 350.00,\n    \"status\": \"active\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8005/api/events/1/ticket-types",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8005",
+              "path": [
+                "api",
+                "events",
+                "1",
+                "ticket-types"
+              ]
+            },
+            "description": "Creates a new ticket type (event zone) for the specified event"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Ticket Type (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"VIP Zone - Updated\",\n    \"size\": 75,\n    \"price\": 225.00,\n    \"status\": \"active\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8005/api/ticket-types/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8005",
+              "path": [
+                "api",
+                "ticket-types",
+                "1"
+              ]
+            },
+            "description": "Updates an existing ticket type (event zone)"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Ticket Type (Admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8005/api/ticket-types/7",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8005",
+              "path": [
+                "api",
+                "ticket-types",
+                "7"
+              ]
+            },
+            "description": "Deletes an existing ticket type (event zone)"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Tickets",
+      "item": [
+        {
+          "name": "List All Tickets (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8005/api/tickets",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8005",
+              "path": [
+                "api",
+                "tickets"
+              ]
+            },
+            "description": "Retrieves all tickets (admin only)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Tickets for Order",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{user_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8005/api/orders/1/tickets",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8005",
+              "path": [
+                "api",
+                "orders",
+                "1",
+                "tickets"
+              ]
+            },
+            "description": "Retrieves all tickets for a specific order (cart)"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Ticket",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{user_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"userID\": 1,\n    \"seatID\": 3,\n    \"scheduleID\": 1,\n    \"zoneID\": 1,\n    \"cartID\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8005/api/tickets",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8005",
+              "path": [
+                "api",
+                "tickets"
+              ]
+            },
+            "description": "Creates a new ticket"
+          },
+          "response": []
+        },
+        {
+          "name": "Cancel Tickets for Cart",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{user_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8005/api/carts/1/tickets",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8005",
+              "path": [
+                "api",
+                "carts",
+                "1",
+                "tickets"
+              ]
+            },
+            "description": "Cancels all tickets for a specific cart"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "admin_token",
+      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlzQWRtaW4iOnRydWUsImlhdCI6MTY5ODY4NTc1MSwiZXhwIjoxNjk4Njg5MzUxfQ.8M7ZG3ZMfFCRae_8XjDfVsZt0uK9P2WsGAUgc6JvFO0",
+      "type": "string"
+    },
+    {
+      "key": "user_token",
+      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2OTg2ODU3NTEsImV4cCI6MTY5ODY4OTM1MX0.GmM7EdBR8fR-yo7cClOCxX_kXs9zHzQE1XJmnQMNF3Q",
+      "type": "string"
+    }
+  ]
+}

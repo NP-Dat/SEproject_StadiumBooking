@@ -37,6 +37,17 @@ const services = {
       routes: [
         '/api/bookings'
       ]
+    },
+    
+    tickets: {
+      url: process.env.TICKET_SERVICE_URL || 'http://localhost:8009',
+      routes: [
+        '/api/events',
+        '/api/tickets',
+        '/api/ticket-types',
+        '/api/orders',
+        '/api/carts'
+      ]
     }
     // Add other services here as needed
   };

@@ -68,6 +68,30 @@ router.get('/users/profile', verifyToken, userProxy);
 router.put('/users/profile', verifyToken, userProxy);
 router.delete('/users/profile', verifyToken, userProxy);
 
+// Ticket Service Routes
+const ticketProxy = createProxyMiddleware({
+  target: services.tickets.url,
+  changeOrigin: true,
+  pathRewrite: {
+    '^/tickets': '/api'
+  },
+  onProxyReq: (proxyReq, req, res) => {
+    if (req.token) {
+      proxyReq.setHeader('Authorization', req.token);
+    }
+  }
+});
+
+// Public ticket routes
+router.get('/events/:id/ticket-types', ticketProxy);
+
+// Protected ticket routes
+router.post('/events/:id/ticket-types', verifyToken, ticketProxy);
+router.put('/ticket-types/:id', verifyToken, ticketProxy);
+router.delete('/ticket-types/:id', verifyToken, ticketProxy);
+router.get('/tickets', verifyToken, ticketProxy);
+router.get('/orders/:order_id/tickets', verifyToken, ticketProxy);
+
 // Health check endpoint
 router.get('/health', (req, res) => {
   res.json({ status: 'OK', message: 'API Gateway is running' });
