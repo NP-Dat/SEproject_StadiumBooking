@@ -2,7 +2,6 @@ CREATE DATABASE IF NOT EXISTS stadium_booking_v2;
 USE stadium_booking_v2;
 
 -- Drop tables in reverse order of creation to avoid foreign key constraint errors
-DROP TABLE IF EXISTS Payments;
 DROP TABLE IF EXISTS Tickets;
 DROP TABLE IF EXISTS Customers;  -- Was Users
 DROP TABLE IF EXISTS Seats;  -- No change needed, not a reserved word
@@ -107,19 +106,6 @@ CREATE TABLE Tickets ( -- Renamed from Ticket
     FOREIGN KEY (seatID) REFERENCES Seats(id) ON DELETE CASCADE,
     FOREIGN KEY (cartID) REFERENCES Carts(id) ON DELETE CASCADE,
     FOREIGN KEY (zoneID) REFERENCES eventZone(id) ON DELETE CASCADE
-);
-
-CREATE TABLE Payments ( -- Renamed from Payment
-    id INT NOT NULL AUTO_INCREMENT,
-    time TIME NOT NULL,
-    date DATE NOT NULL,
-    service VARCHAR(255) NOT NULL,  -- Consider 'PaymentServices' table
-    totalCost DECIMAL(10, 2) NOT NULL,
-    userID INT NOT NULL,
-    cartID INT NOT NULL,
-    PRIMARY KEY (id),
-    FOREIGN KEY (cartID) REFERENCES Carts(id) ON DELETE CASCADE,
-    FOREIGN KEY (userID) REFERENCES Customers(id) ON DELETE CASCADE  -- Use new name
 );
 
 -- Indexes for performance (using new table names)
