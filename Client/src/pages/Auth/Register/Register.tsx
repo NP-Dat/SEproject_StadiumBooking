@@ -102,21 +102,21 @@ const Register: React.FC<RegisterProps> = ({ onClose, onSwitchToLogin, onRegiste
                         />
                     </div>
                     <div className={styles.agreement}>
-                        <label className={styles.checkboxContainer}>
+                        <label className={styles.checkboxContainer} onClick={(e) => e.stopPropagation()}>
                             <input
                                 type="checkbox"
                                 checked={agreed}
                                 onChange={(e) => setAgreed(e.target.checked)}
-                                required
+                                id="terms-checkbox"
                             />
                             <span className={styles.checkmark}></span>
                             <span className={styles.agreementText}>
                                 I agree to the{' '}
-                                <a href="/terms" className={styles.termsLink}>
+                                <a href="/terms" className={styles.termsLink} onClick={(e) => e.stopPropagation()}>
                                     Terms of Service
                                 </a>{' '}
                                 and{' '}
-                                <a href="/privacy" className={styles.termsLink}>
+                                <a href="/privacy" className={styles.termsLink} onClick={(e) => e.stopPropagation()}>
                                     Privacy Policy
                                 </a>
                             </span>
@@ -146,4 +146,4 @@ const Register: React.FC<RegisterProps> = ({ onClose, onSwitchToLogin, onRegiste
     );
 };
 
-export default Register; 
+export default Register;
