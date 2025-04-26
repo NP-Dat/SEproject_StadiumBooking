@@ -1,16 +1,6 @@
 CREATE DATABASE IF NOT EXISTS stadium_booking_v2;
 USE stadium_booking_v2;
 
--- Drop tables in reverse order of creation to avoid foreign key constraint errors
-DROP TABLE IF EXISTS Tickets;
-DROP TABLE IF EXISTS Customers;  -- Was Users
-DROP TABLE IF EXISTS Seats;  -- No change needed, not a reserved word
-DROP TABLE IF EXISTS EventSchedules; -- Was Schedules
-DROP TABLE IF EXISTS eventZone;
-DROP TABLE IF EXISTS EventList;      -- Was Events
-DROP TABLE IF EXISTS Stadiums;      -- No change needed
-DROP TABLE IF EXISTS Carts;			-- New
-
 
 CREATE TABLE Stadiums (
     id INT NOT NULL AUTO_INCREMENT,
@@ -71,6 +61,14 @@ CREATE TABLE Customers (  -- Renamed from Users
     phoneNumber VARCHAR(20) NOT NULL,
     address VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE Roles (  -- Handle Users
+    id INT NOT NULL AUTO_INCREMENT,
+	userID INT NOT NULL,
+    role VARCHAR(255) NOT NULL,    -- Consider ENUM
+    optionalKey VARCHAR(255),
     PRIMARY KEY (id)
 );
 
