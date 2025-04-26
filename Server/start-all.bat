@@ -9,12 +9,12 @@ call npm install
 start "Auth Service (Port 8001)" cmd /k npm run dev
 cd ../..
 
-@REM REM Start User Service
-@REM echo Starting User Service...
-@REM cd microservice/User
-@REM call npm install
-@REM start "User Service (Port 8002)" cmd /k npm run dev
-@REM cd ../..
+REM Start User Service
+echo Starting User Service...
+cd microservice/User
+call npm install
+start "User Service (Port 8002)" cmd /k npm run dev
+cd ../..
 
 @REM REM Start Event Service
 @REM echo Starting Event Service...

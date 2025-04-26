@@ -1,27 +1,53 @@
 const pool = require('../config/db');
+const bcrypt = require('bcrypt');
 
 class UserModel {
   static async findById(id) {
     const [users] = await pool.query(
-      'SELECT id, userName, email, fullName, birth, passWord, phoneNumber, address FROM Customers WHERE id = ?',
+      'SELECT * FROM Customers WHERE id = ?',
       [id]
     );
     if (!users.length) return null;
     return users[0];
   }
 
-  static async updateProfile(userId, profileData) {
-    const { fullName, phoneNumber, address} = profileData;
+  static async updateProfile(id, profileData) {
+    const { fullname, phonenumber, address, birth, email, password } = profileData;
+    
+    let hashedPassword = password;
+    // only hash the password if it's provided
+    if (password) {
+      const saltRounds = 10;
+      hashedPassword = await bcrypt.hash(password, saltRounds);
+    }
+    
     const [result] = await pool.query(
-      // updated_at isnt in the Customers table in DB yet, might delete if not needed
       `UPDATE Customers 
-       SET fullName = ?, phoneNumber = ?, address = ?, updated_at = CURRENT_TIMESTAMP
+       SET fullName = ?, 
+           phoneNumber = ?, 
+           address = ?,
+           birth = ?,
+           email = ?,
+           passWord = ?
        WHERE id = ?`,
-      [fullName, phoneNumber, address, userId]
+      [fullname, phonenumber, address, birth, email, hashedPassword, id]
     );
+    
     return result.affectedRows > 0;
   }
 
+  // method to verify passwords if user is updating password
+  // static async verifyPassword(userId, password) {
+  //   const [users] = await pool.query(
+  //     'SELECT passWord FROM Customers WHERE id = ?',
+  //     [userId]
+  //   );
+    
+  //   if (!users.length) return false;
+  //   console.log('Hashed password:', users[0].passWord);
+  //   const hashedPassword = users[0].passWord;
+  //   return await bcrypt.compare(password, hashedPassword);
+  // }
 
   static async deleteProfile(userId) {
     const [result] = await pool.query(
@@ -30,6 +56,15 @@ class UserModel {
     );
     return result.affectedRows > 0;
   }
+  static async findAllUsers() {
+    console.log('findAllUsers method called');
+    const [users] = await pool.query(
+      'SELECT id, userName, email, fullName, birth, passWord, phoneNumber, address FROM Customers'
+    );
+    console.log('Users retrieved successfully');
+    return users;
+  }
+
 }
 
 module.exports = UserModel;
