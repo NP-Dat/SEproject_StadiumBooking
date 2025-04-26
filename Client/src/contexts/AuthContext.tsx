@@ -1,11 +1,6 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useCallback } from 'react';
 import { authAPI } from '../utils/api';
-
-interface User {
-  id: string;
-  username: string;
-  email: string;
-}
+import { User } from '../types/auth';
 
 interface AuthContextType {
   user: User | null;
@@ -24,20 +19,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    const userId = localStorage.getItem('userId');
-    if (token && userId) {
-      verifyToken(token, userId);
-    }
-  }, []);
-
-  const verifyToken = async (token: string, userId: string) => {
+  const verifyToken = useCallback(async (token: string, userId: string) => {
     try {
       const response = await authAPI.verifyToken(token, userId);
       if (response.message === 'Valid token') {
-        setIsAuthenticated(true);
-        // You might want to fetch user details here
+        const userResponse = await authAPI.getCurrentUser();
+        if (userResponse.user) {
+          setUser(userResponse.user);
+          setIsAuthenticated(true);
+          setIsAdmin(userResponse.user.role === 'admin');
+        } else {
+          logout();
+        }
       } else {
         logout();
       }
@@ -45,29 +38,46 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.error('Token verification failed:', error);
       logout();
     }
-  };
+  }, []);
+
+  React.useEffect(() => {
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
+    if (token && userId) {
+      verifyToken(token, userId);
+    }
+  }, [verifyToken]);
 
   const login = async (email: string, password: string) => {
     try {
       const response = await authAPI.login(email, password);
-      const { token, user } = response;
-      
-      localStorage.setItem('token', token);
-      localStorage.setItem('userId', user.id);
-      
-      setUser(user);
-      setIsAuthenticated(true);
-      setIsAdmin(false); // Update this based on your backend response
+      if (response.user && response.token) {
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('userId', response.user.id);
+        
+        setUser(response.user);
+        setIsAuthenticated(true);
+        setIsAdmin(response.user.role === 'admin');
+      } else {
+        throw new Error('Invalid login response');
+      }
     } catch (error) {
       console.error('Login failed:', error);
       throw error;
     }
   };
 
-  const register = async (username: string, email: string, password: string) => {
+  const register = async (username: string, email: string, password: string): Promise<void> => {
     try {
-      const response = await authAPI.register(username, email, password);
-      return response;
+      const response = await authAPI.register({ username, email, password });
+      if (response.user && response.token) {
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('userId', response.user.id);
+        
+        setUser(response.user);
+        setIsAuthenticated(true);
+        setIsAdmin(response.user.role === 'admin');
+      }
     } catch (error) {
       console.error('Registration failed:', error);
       throw error;
@@ -101,10 +111,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   );
 };
 
-export const useAuth = () => {
+export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
-}; 
+}

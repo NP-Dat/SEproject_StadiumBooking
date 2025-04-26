@@ -21,11 +21,7 @@ const Profile = () => {
 
     const handleSave = () => {
         if (user) {
-            login({
-                ...user,
-                name: editedName,
-                email: editedEmail
-            });
+            login(editedEmail, ''); // Replace with appropriate logic if needed
         }
         setIsEditing(false);
     };
