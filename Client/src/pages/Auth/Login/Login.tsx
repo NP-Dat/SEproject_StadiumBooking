@@ -19,28 +19,58 @@ const Login: React.FC<LoginProps> = ({ onClose, onSwitchToRegister, onLogin }) =
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!email || !password) {
-            setError('Please fill in all fields');
+        setError('');  // Clear previous errors
+        
+        if (!email) {
+            setError('Please enter your email address');
+            return;
+        }
+        if (!password) {
+            setError('Please enter your password');
             return;
         }
 
         try {
             const response = await AuthService.login({email, password});
             
-            if (response.token) {
-                AuthService.setToken(response.token);
-            } else {
-                setError('No token received');
+            // The server is down or there's no internet connection
+            if (!response) {
+                setError('Unable to connect to the server. Please try again later.');
                 return;
-            
             }
+
+            // The server responded successfully (HTTP 200)
+            // But the response object doesn't contain a token property
+            // This is unusual because normally the server should:
+            //      Either send a successful response WITH a token
+            //      Or throw an error that would be caught in the catch block
+            // 
+            if (!response.token) {
+                setError('Authentication failed. Please try again.');
+                return;
+            }
+            
+            AuthService.setToken(response.token);
             onLogin(email, password);
             onClose();
         } catch (err: unknown) {
             if (axios.isAxiosError(err)) {
-                setError(err.response?.data?.message || 'Login failed');
+                const errorMessage = err.response?.data?.message;
+                switch(errorMessage) {
+                    case 'Invalid credentials':
+                        setError('Incorrect email or password. Please try again.');
+                        break;
+                    case 'Email and password are required':
+                        setError('Please fill in both email and password.');
+                        break;
+                    case 'User not found':
+                        setError('No account found with this email. Please check your email or register.');
+                        break;
+                    default:
+                        setError(errorMessage || 'Unable to sign in. Please try again.');
+                }
             } else {
-                setError('An unexpected error occurred');
+                setError('An unexpected error occurred. Please try again later.');
             }
         }
     };
@@ -104,4 +134,4 @@ const Login: React.FC<LoginProps> = ({ onClose, onSwitchToRegister, onLogin }) =
     );
 };
 
-export default Login; 
+export default Login;
