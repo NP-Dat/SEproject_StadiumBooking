@@ -67,6 +67,7 @@ CREATE TABLE Customers (  -- Renamed from Users
 CREATE TABLE Roles (  -- Handle Users
     id INT NOT NULL AUTO_INCREMENT,
 	userID INT NOT NULL,
+    role VARCHAR(255) NOT NULL,    -- Consider ENUM
     optionalKey VARCHAR(255),
     PRIMARY KEY (id)
 );
