@@ -4,7 +4,6 @@ import styles from './Login.module.css';
 import Button from '../../../components/ui/Button/Button';
 import Input from '../../../components/ui/Input/Input';
 import { AuthService } from '../../../services/AuthService';
-import axios from 'axios';
 
 interface LoginProps {
     onClose: () => void;
@@ -31,47 +30,23 @@ const Login: React.FC<LoginProps> = ({ onClose, onSwitchToRegister, onLogin }) =
         }
 
         try {
-            const response = await AuthService.login({email, password});
+            const response = await AuthService.login({ email, password });
             
-            // The server is down or there's no internet connection
-            if (!response) {
-                setError('Unable to connect to the server. Please try again later.');
+            if (response.error) {
+                setError(response.error);
                 return;
             }
 
-            // The server responded successfully (HTTP 200)
-            // But the response object doesn't contain a token property
-            // This is unusual because normally the server should:
-            //      Either send a successful response WITH a token
-            //      Or throw an error that would be caught in the catch block
-            // 
-            if (!response.token) {
+            if (!response.isAuthenticated || !response.token) {
                 setError('Authentication failed. Please try again.');
                 return;
             }
-            
-            AuthService.setToken(response.token);
+
             onLogin(email, password);
             onClose();
         } catch (err: unknown) {
-            if (axios.isAxiosError(err)) {
-                const errorMessage = err.response?.data?.message;
-                switch(errorMessage) {
-                    case 'Invalid credentials':
-                        setError('Incorrect email or password. Please try again.');
-                        break;
-                    case 'Email and password are required':
-                        setError('Please fill in both email and password.');
-                        break;
-                    case 'User not found':
-                        setError('No account found with this email. Please check your email or register.');
-                        break;
-                    default:
-                        setError(errorMessage || 'Unable to sign in. Please try again.');
-                }
-            } else {
-                setError('An unexpected error occurred. Please try again later.');
-            }
+            console.error('Login error:', err);
+            setError('An unexpected error occurred. Please try again later.');
         }
     };
 

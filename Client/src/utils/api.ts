@@ -1,6 +1,6 @@
 import axios from 'axios';
-
-const API_URL = 'http://localhost:3000'; // Update with your API gateway URL
+import { AuthResponse } from '../types/auth';
+import { API_URL } from '../config/env';
 
 const api = axios.create({
     baseURL: API_URL,
@@ -20,17 +20,21 @@ api.interceptors.request.use((config) => {
 
 export const authAPI = {
     login: async (email: string, password: string) => {
-        const response = await api.post('/auth/login', { email, password });
+        const response = await api.post<AuthResponse>('/auth/login', { email, password });
         return response.data;
     },
-    register: async (username: string, email: string, password: string) => {
-        const response = await api.post('/auth/register', { username, email, password });
+    register: async (credentials: { username: string, email: string, password: string }) => {
+        const response = await api.post<AuthResponse>('/auth/register', credentials);
         return response.data;
     },
     verifyToken: async (token: string, userId: string) => {
-        const response = await api.post('/auth/verify', { token, userId });
+        const response = await api.post('/auth/verify-token', { token, userId });
+        return response.data;
+    },
+    getCurrentUser: async () => {
+        const response = await api.get<AuthResponse>('/auth/profile');
         return response.data;
     }
 };
 
-export default api; 
+export default api;

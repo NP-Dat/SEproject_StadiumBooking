@@ -16,17 +16,21 @@ interface errorResponse {
 export class AuthService {
     private static token: string | null = null;
     private static user: User | null = null;
-    
 
     static async login(credentials: LoginCredentials): Promise<AuthState> {
-         try {
+        try {
             const response = await axios.post<AuthResponse>(
                 `${API_URL}/login`, 
                 credentials
             );
+            
             const { user, token } = response.data;
+            
+            // Store token and user data
             this.setToken(token);
             this.user = user;
+            localStorage.setItem('token', token);
+            localStorage.setItem('userId', user.id);
             
             return {
                 user,
