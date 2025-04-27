@@ -34,7 +34,27 @@ const Events = () => {
             image: '/event2.jpg',
             price: '$75'
         },
-        // Add more events as needed
+        {
+            id: 3,
+            title: 'Summer Concert Series',
+            category: 'concerts',
+            date: '2024-07-20',
+            time: '8:00 PM',
+            venue: 'Arena Hall',
+            image: '/event2.jpg',
+            price: '$75'
+        },
+        {
+            id: 4,
+            title: 'Summer Concert Series',
+            category: 'concerts',
+            date: '2024-07-20',
+            time: '8:00 PM',
+            venue: 'Arena Hall',
+            image: '/event2.jpg',
+            price: '$75'
+        },
+       
     ];
 
     return (

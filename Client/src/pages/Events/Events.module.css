@@ -100,7 +100,7 @@
 
 .eventImage {
     position: relative;
-    height: 200px;
+    height: 150px;
     overflow: hidden;
 }
 
@@ -129,11 +129,11 @@
 }
 
 .eventContent {
-    padding: 1.5rem;
+    padding: 1rem;
 }
 
 .eventTitle {
-    font-size: 1.25rem;
+    font-size: 1.125rem;
     font-weight: 600;
     color: #1e293b;
     margin-bottom: 0.75rem;
@@ -153,8 +153,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 1rem;
-    padding-top: 1rem;
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
     border-top: 1px solid rgba(0, 180, 216, 0.1);
 }
 
