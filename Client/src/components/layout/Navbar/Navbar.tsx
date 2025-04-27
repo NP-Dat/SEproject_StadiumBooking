@@ -1,14 +1,18 @@
 import { useState } from 'react';
 import { useNavigate, NavLink } from 'react-router-dom';
+import { useAuth } from '../../../hooks/useAuth';
 import styles from './Navbar.module.css';
 import Login from '../../../pages/Auth/Login/Login';
 import Register from '../../../pages/Auth/Register/Register';
+import UserMenu from './UserMenu/UserMenu';
 
 const Navbar = () => {
     const navigate = useNavigate();
+    const { user, isAuthenticated, login, register } = useAuth();
     const [loginModalOpen, setLoginModalOpen] = useState(false);
     const [registerModalOpen, setRegisterModalOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
+    const [showProfileMenu, setShowProfileMenu] = useState(false);
 
     const openLoginModal = () => {
         setRegisterModalOpen(false);
@@ -28,16 +32,22 @@ const Navbar = () => {
         setRegisterModalOpen(false);
     };
 
-    const handleLogin = (email: string, password: string) => {
-        // TODO: Implement login logic
-        console.log('Login attempt with:', email, password);
-        closeLoginModal();
+    const handleLogin = async (email: string, password: string) => {
+        try {
+            await login(email, password);
+            closeLoginModal();
+        } catch (error) {
+            console.error('Login failed:', error);
+        }
     };
 
-    const handleRegister = (email: string, password: string, name: string) => {
-        // TODO: Implement register logic
-        console.log('Register attempt with:', email, password, name);
-        closeRegisterModal();
+    const handleRegister = async (email: string, password: string, username: string, fullname: string, birth: string, phonenumber: string, address: string) => {
+        try {
+            await register(username, email, password, fullname, birth, phonenumber, address);
+            closeRegisterModal();
+        } catch (error) {
+            console.error('Registration failed:', error);
+        }
     };
 
     const handleSearch = (e: React.FormEvent) => {
@@ -53,45 +63,22 @@ const Navbar = () => {
             <header className={styles.header}>
                 <nav className={styles.nav}>
                     <div className={styles.logo}>
-                        <h1
-                            className={styles.logoText}
-                            onClick={() => navigate('/')}
-                        >
-                            Weblify<span className={styles.logoAccent}> Co.</span>
+                        <h1 className={styles.logoText} onClick={() => navigate('/')}>
+                            Stadium<span className={styles.logoAccent}>Book</span>
                         </h1>
                     </div>
 
                     <div className={styles.navLinks}>
-                        <NavLink
-                            to="/"
-                            className={({ isActive }) =>
-                                `${styles.navLink} ${isActive ? styles.navLinkActive : ''}`
-                            }
-                        >
+                        <NavLink to="/" className={({ isActive }) => `${styles.navLink} ${isActive ? styles.navLinkActive : ''}`}>
                             Home
                         </NavLink>
-                        <NavLink
-                            to="/events"
-                            className={({ isActive }) =>
-                                `${styles.navLink} ${isActive ? styles.navLinkActive : ''}`
-                            }
-                        >
+                        <NavLink to="/events" className={({ isActive }) => `${styles.navLink} ${isActive ? styles.navLinkActive : ''}`}>
                             Events
                         </NavLink>
-                        <NavLink
-                            to="/venues"
-                            className={({ isActive }) =>
-                                `${styles.navLink} ${isActive ? styles.navLinkActive : ''}`
-                            }
-                        >
+                        <NavLink to="/venues" className={({ isActive }) => `${styles.navLink} ${isActive ? styles.navLinkActive : ''}`}>
                             Venues
                         </NavLink>
-                        <NavLink
-                            to="/about"
-                            className={({ isActive }) =>
-                                `${styles.navLink} ${isActive ? styles.navLinkActive : ''}`
-                            }
-                        >
+                        <NavLink to="/about" className={({ isActive }) => `${styles.navLink} ${isActive ? styles.navLinkActive : ''}`}>
                             About
                         </NavLink>
                     </div>
@@ -112,19 +99,22 @@ const Navbar = () => {
                         </button>
                     </form>
 
-                    <div className={styles.buttonContainer}>
-                        <button
-                            onClick={openLoginModal}
-                            className={styles.loginButton}
-                        >
-                            Login
-                        </button>
-                        <button
-                            onClick={openRegisterModal}
-                            className={styles.signUpButton}
-                        >
-                            Register
-                        </button>
+                    <div className={styles.userActions}>
+                        {isAuthenticated && user ? (
+                            <UserMenu 
+                                showProfileMenu={showProfileMenu} 
+                                setShowProfileMenu={setShowProfileMenu}
+                            />
+                        ) : (
+                            <div className={styles.buttonContainer}>
+                                <button onClick={openLoginModal} className={styles.loginButton}>
+                                    Login
+                                </button>
+                                <button onClick={openRegisterModal} className={styles.signUpButton}>
+                                    Register
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </nav>
             </header>

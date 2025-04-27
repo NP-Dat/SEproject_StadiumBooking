@@ -4,44 +4,49 @@ import styles from './Login.module.css';
 import Button from '../../../components/ui/Button/Button';
 import Input from '../../../components/ui/Input/Input';
 import { AuthService } from '../../../services/AuthService';
-import axios from 'axios';
 
 interface LoginProps {
     onClose: () => void;
     onSwitchToRegister: () => void;
-    onLogin: (email: string, password: string) => void;
+    onLogin: (username: string, password: string) => void;
 }
 
 const Login: React.FC<LoginProps> = ({ onClose, onSwitchToRegister, onLogin }) => {
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!email || !password) {
-            setError('Please fill in all fields');
+        setError('');  // Clear previous errors
+        
+        if (!username) {
+            setError('Please enter your username');
+            return;
+        }
+        if (!password) {
+            setError('Please enter your password');
             return;
         }
 
         try {
-            const response = await AuthService.login({email, password});
+            const response = await AuthService.login({ username, password });
             
-            if (response.token) {
-                AuthService.setToken(response.token);
-            } else {
-                setError('No token received');
+            if (response.error) {
+                setError(response.error);
                 return;
-            
             }
-            onLogin(email, password);
+
+            if (!response.isAuthenticated || !response.token) {
+                setError('Authentication failed. Please try again.');
+                return;
+            }
+
+            onLogin(username, password);
             onClose();
         } catch (err: unknown) {
-            if (axios.isAxiosError(err)) {
-                setError(err.response?.data?.message || 'Login failed');
-            } else {
-                setError('An unexpected error occurred');
-            }
+            console.error('Login error:', err);
+            setError('An unexpected error occurred. Please try again later.');
         }
     };
 
@@ -57,12 +62,12 @@ const Login: React.FC<LoginProps> = ({ onClose, onSwitchToRegister, onLogin }) =
                 <form onSubmit={handleSubmit} className={styles.form}>
                     <div className={styles.inputGroup}>
                         <Input
-                            id="email"
-                            label="Email"
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            placeholder="Enter your email"
+                            id="username"
+                            label="Username"
+                            type="text"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            placeholder="Enter your username"
                             required
                         />
                         <Input
@@ -104,4 +109,4 @@ const Login: React.FC<LoginProps> = ({ onClose, onSwitchToRegister, onLogin }) =
     );
 };
 
-export default Login; 
+export default Login;
