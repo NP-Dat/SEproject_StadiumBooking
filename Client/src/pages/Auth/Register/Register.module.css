@@ -4,44 +4,76 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(0.25rem);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    padding: 1rem;
+    padding: clamp(2rem, 5vh, 5rem) 1rem;
 }
 
 .modalContent {
-    background-color: white;
-    padding: 2rem;
-    border-radius: 16px;
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 2.5rem 2rem;
+    border-radius: 1rem;
     width: 100%;
-    max-width: 420px;
+    max-width: 30rem;
+    max-height: calc(90vh - clamp(4rem, 10vh, 10rem));
+    margin: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     position: relative;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Webkit scrollbar styling with matching radius */
+.modalContent::-webkit-scrollbar {
+    width: 0.5rem;
+}
+
+.modalContent::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 1rem;
+    margin: 0.5rem;
+}
+
+.modalContent::-webkit-scrollbar-thumb {
+    background-color: #485068;
+    border-radius: 1rem;
+    border: 0.125rem solid #f1f5f9;
+    /* Add min-height for better appearance on short content */
+    min-height: 2rem;
+}
+
+.modalContent::-webkit-scrollbar-corner {
+    background: transparent;
 }
 
 .closeButton {
     position: absolute;
-    top: 1rem;
-    right: 1rem;
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    color: #666;
-    width: 32px;
-    height: 32px;
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 2rem;
+    height: 2rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50%;
-    transition: background-color 0.3s ease;
+    font-size: 1.25rem;
+    color: #64748b;
+    background: #f1f5f9;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
 
 .closeButton:hover {
-    background-color: rgba(0, 0, 0, 0.05);
+    background: #e2e8f0;
+    color: #475569;
+}
+
+.closeButton:active {
+    transform: scale(0.95);
 }
 
 .modalHeader {
@@ -51,24 +83,29 @@
 
 .title {
     margin: 0;
-    color: #1e293b;
-    font-size: 1.75rem;
+    font-size: 2rem;
     font-weight: 700;
     background: linear-gradient(135deg, #00B4D8, #0096C7);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
+    line-height: 1.2;
 }
 
 .subtitle {
     margin: 0.5rem 0 0;
     color: #64748b;
-    font-size: 0.95rem;
+    font-size: 1rem;
+    line-height: 1.5;
 }
 
 .form {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+    width: 100%;
+    max-width: 25rem;
+    margin: 0 auto;
 }
 
 .inputGroup {
@@ -84,6 +121,7 @@
 .checkboxContainer {
     display: flex;
     align-items: flex-start;
+    gap: 0.5rem;
     cursor: pointer;
     position: relative;
     padding-left: 2rem;
@@ -100,18 +138,14 @@
 
 .checkmark {
     position: absolute;
+    top: 0;
     left: 0;
-    top: 0.2rem;
-    height: 1.2rem;
-    width: 1.2rem;
+    height: 1.25rem;
+    width: 1.25rem;
     background-color: white;
-    border: 2px solid #00B4D8;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
-}
-
-.checkboxContainer:hover input ~ .checkmark {
-    background-color: rgba(0, 180, 216, 0.1);
+    border: 0.125rem solid #00B4D8;
+    border-radius: 0.25rem;
+    cursor: pointer;
 }
 
 .checkboxContainer input:checked ~ .checkmark {
@@ -122,67 +156,53 @@
     content: "";
     position: absolute;
     display: none;
-    left: 0.35rem;
-    top: 0.1rem;
-    width: 0.3rem;
-    height: 0.6rem;
-    border: solid white;
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
 }
 
 .checkboxContainer input:checked ~ .checkmark:after {
     display: block;
 }
 
+.checkboxContainer .checkmark:after {
+    left: 0.4rem;
+    top: 0.2rem;
+    width: 0.25rem;
+    height: 0.5rem;
+    border: solid white;
+    border-width: 0 0.125rem 0.125rem 0;
+    transform: rotate(45deg);
+}
+
 .agreementText {
     color: #64748b;
     font-size: 0.9rem;
     line-height: 1.4;
+    cursor: pointer;
 }
 
 .termsLink {
     color: #00B4D8;
-    text-decoration: none;
-    transition: color 0.3s ease;
+    text-decoration: underline;
 }
 
 .termsLink:hover {
     color: #0096C7;
-    text-decoration: underline;
 }
 
 .submitButton {
-    background: linear-gradient(135deg, #00B4D8, #0096C7);
-    border: none;
-    color: white;
     padding: 0.75rem;
-    border-radius: 8px;
+    border-radius: 0.5rem;
     font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-top: 1rem;
 }
 
 .submitButton:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 180, 216, 0.3);
+    transform: translateY(-0.125rem);
+    box-shadow: 0 0.25rem 0.75rem rgba(0, 180, 216, 0.3);
 }
 
 .divider {
-    display: flex;
-    align-items: center;
-    text-align: center;
-    color: #94a3b8;
+    margin: 1rem 0;
     font-size: 0.9rem;
-    margin: 0.5rem 0;
-}
-
-.divider::before,
-.divider::after {
-    content: '';
-    flex: 1;
-    border-bottom: 1px solid #e2e8f0;
 }
 
 .divider span {
@@ -190,44 +210,37 @@
 }
 
 .switchButton {
-    background: white;
-    border: 2px solid #00B4D8;
-    color: #00B4D8;
     padding: 0.75rem;
-    border-radius: 8px;
+    border-radius: 0.5rem;
     font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.switchButton:hover {
-    background-color: #00B4D8;
-    color: white;
-    transform: translateY(-2px);
+    border: 0.125rem solid #00B4D8;
 }
 
 .error {
-    color: #dc3545;
-    font-size: 0.9rem;
     text-align: center;
-    padding: 0.75rem;
-    background-color: rgba(220, 53, 69, 0.1);
-    border-radius: 8px;
-    margin-bottom: 1rem;
+    color: white;
+    background-color: #ff4444;
+    padding: 10px;
+    border-radius: 4px;
+    margin: 10px 0;
+    width: 100%;
 }
 
-@media (max-width: 480px) {
-    .modalContent {
-        padding: 1.5rem;
+@media (max-width: 30em) {
+    .modalOverlay {
+        padding: clamp(1.5rem, 3vh, 3rem) 1rem;
     }
 
     .title {
-        font-size: 1.5rem;
+        font-size: 1.75rem;
     }
 
     .subtitle {
         font-size: 0.9rem;
+    }
+
+    .form {
+        gap: 1.25rem;
     }
 
     .checkboxContainer {
@@ -237,4 +250,10 @@
     .agreementText {
         font-size: 0.85rem;
     }
-} 
+
+    .submitButton,
+    .switchButton {
+        padding: 0.75rem;
+        font-size: 0.95rem;
+    }
+}

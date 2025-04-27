@@ -1,14 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
 import styles from './Profile.module.css';
 
 const Profile = () => {
     const navigate = useNavigate();
     const { user, logout, login } = useAuth();
     const [isEditing, setIsEditing] = useState(false);
-    const [editedName, setEditedName] = useState(user?.name || '');
-    const [editedEmail, setEditedEmail] = useState(user?.email || '');
+    const [editedUsername, setEditedUsername] = useState(user?.username || '');
 
     const handleLogout = () => {
         logout();
@@ -21,18 +20,13 @@ const Profile = () => {
 
     const handleSave = () => {
         if (user) {
-            login({
-                ...user,
-                name: editedName,
-                email: editedEmail
-            });
+            login(editedUsername, ''); // Replace with appropriate logic if needed
         }
         setIsEditing(false);
     };
 
     const handleCancel = () => {
-        setEditedName(user?.name || '');
-        setEditedEmail(user?.email || '');
+        setEditedUsername(user?.username || '');
         setIsEditing(false);
     };
 
@@ -52,29 +46,16 @@ const Profile = () => {
                 </div>
                 <div className={styles.userInfo}>
                     <div className={styles.infoItem}>
-                        <span className={styles.label}>Name:</span>
+                        <span className={styles.label}>Username:</span>
                         {isEditing ? (
                             <input
                                 type="text"
-                                value={editedName}
-                                onChange={(e) => setEditedName(e.target.value)}
+                                value={editedUsername}
+                                onChange={(e) => setEditedUsername(e.target.value)}
                                 className={styles.input}
                             />
                         ) : (
-                            <span className={styles.value}>{user?.name}</span>
-                        )}
-                    </div>
-                    <div className={styles.infoItem}>
-                        <span className={styles.label}>Email:</span>
-                        {isEditing ? (
-                            <input
-                                type="email"
-                                value={editedEmail}
-                                onChange={(e) => setEditedEmail(e.target.value)}
-                                className={styles.input}
-                            />
-                        ) : (
-                            <span className={styles.value}>{user?.email}</span>
+                            <span className={styles.value}>{user?.username}</span>
                         )}
                     </div>
                     <div className={styles.infoItem}>
@@ -110,4 +91,4 @@ const Profile = () => {
     );
 };
 
-export default Profile; 
+export default Profile;
