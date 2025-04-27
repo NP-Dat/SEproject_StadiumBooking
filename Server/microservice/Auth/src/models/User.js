@@ -35,6 +35,11 @@ class UserModel {
 
   }
 
+  static async getRole(id) {
+    const [roles] = await pool.query('SELECT role FROM Roles WHERE userID = ?', [id]);
+    return roles[0] ? roles[0].role : null;
+  }
+
   static async verifyPassword(plainPassword, hashedPassword) {
     return await bcrypt.compare(plainPassword, hashedPassword);
   }
