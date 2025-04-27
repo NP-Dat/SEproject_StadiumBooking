@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, NavLink } from 'react-router-dom';
-import { useAuth } from '../../../contexts/AuthContext';
+import { useAuth } from '../../../hooks/useAuth';
 import styles from './Navbar.module.css';
 import Login from '../../../pages/Auth/Login/Login';
 import Register from '../../../pages/Auth/Register/Register';
@@ -41,9 +41,9 @@ const Navbar = () => {
         }
     };
 
-    const handleRegister = async (email: string, password: string, name: string) => {
+    const handleRegister = async (email: string, password: string, username: string, fullname: string, birth: string, phonenumber: string, address: string) => {
         try {
-            await register(name, email, password);
+            await register(username, email, password, fullname, birth, phonenumber, address);
             closeRegisterModal();
         } catch (error) {
             console.error('Registration failed:', error);
