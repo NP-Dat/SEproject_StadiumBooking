@@ -4,22 +4,25 @@ const UserModel = require('../models/User');
 class AuthController {
   static async register(req, res) {
     try {
-      const { username, email, password } = req.body;
+      const { username, password, fullname, birth, phonenumber, email, address } = req.body;
 
-      if (!username || !email || !password) {
+      if (!username ||  !password || !fullname || !birth || !phonenumber || !email || !address) {
         return res.status(400).json({ message: 'All fields are required' });
       }
 
-      const existingUser = await UserModel.findByEmail(email);
+      const existingUser = await UserModel.findByUsername(username);
       if (existingUser) {
         return res.status(409).json({ message: 'User already exists' });
       }
 
-      const userId = await UserModel.create(username, email, password);
+      const userId = await UserModel.create(username, password, fullname, birth, phonenumber, email, address);
+      const role = await UserModel.setRole(userId);
+      if (!role) {
+        return res.status(500).json({ message: 'Failed to set user role' });
+      }
 
       res.status(201).json({
         message: 'User registered successfully',
-        userId
       });
     } catch (error) {
       console.error('Registration error:', error);
@@ -29,18 +32,21 @@ class AuthController {
 
   static async login(req, res) {
     try {
-      const { email, password } = req.body;
+      const { username, password } = req.body;
 
-      if (!email || !password) {
+      if (!username || !password) {
         return res.status(400).json({ message: 'Email and password are required' });
       }
 
-      const user = await UserModel.findByEmail(email);
+      const user = await UserModel.findByUsername(username);
+      // console.log(user);
       if (!user) {
         return res.status(401).json({ message: 'Invalid credentials' });
       }
+      const role = await UserModel.getRole(user.id);
 
-      const hashedPassword = await UserModel.findPasswordByEmail(email);
+      // Fix: Change email to username since we're using username for login
+      const hashedPassword = await UserModel.findPasswordByUsername(username);
       const validPassword = await UserModel.verifyPassword(password, hashedPassword);
       if (!validPassword) {
         return res.status(401).json({ message: 'Invalid credentials' });
@@ -48,18 +54,20 @@ class AuthController {
 
       const token = jwt.sign(
         { userId: user.id, email: user.email },
-        process.env.JWT_SECRET || '1-2390481234-1234-1234',
+        process.env.JWT_SECRET || 'default_secret_key',
         { expiresIn: '1h' }
       );
+
+      // Decode token to get expiration time
+      const decoded = jwt.decode(token);
+      const expiresAt = new Date(decoded.exp * 1000);
 
       res.json({
         message: 'Login successful',
         token,
-        user: {
-          id: user.id,
-          username: user.username,
-          email: user.email
-        }
+        role,
+        expiresAt: expiresAt.toISOString(),
+        expiresIn: 3600 
       });
     } catch (error) {
       console.error('Login error:', error);
@@ -67,39 +75,19 @@ class AuthController {
     }
   }
 
-  // static async getProfile(req, res) {
-  //   try {
-  //     const user = await UserModel.findById(req.user.userId);
-  //     if (!user) {
-  //       return res.status(404).json({ message: 'User not found' });
-  //     }
-  //     res.json(user);
-  //   } catch (error) {
-  //     console.error('Profile fetch error:', error);
-  //     res.status(500).json({ message: 'Internal server error' });
-  //   }
-  // }
 
   static async verifyToken(req, res) {
-    const {token, userId} = req.body;
-    // || req.query.token || req.headers['x-access-token'];
+    const {token} = req.body;
+    
     if (!token) {
       return res.status(403).json({ message: 'No token provided' });
     }
 
-    if (!userId) {
-      return res.status(403).json({ message: 'No user ID provided' });
-    }
-
     // Verify the token 
-    jwt.verify(token, process.env.JWT_SECRET || '1-2390481234-1234-1234', (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET || 'default_secret_key', (err, decoded) => {
       if (err) {
         return res.status(401).json({ message: 'Unauthorized' });
-      }
-      // Check if the user ID in the token matches the user ID in the request
-      if (decoded.userId !== userId) {
-        return res.status(403).json({ message: 'Forbidden' });
-      }
+      }      
 
       // Token is valid and user ID matches
       res.json({ message: 'Valid token', userId: decoded.userId});
