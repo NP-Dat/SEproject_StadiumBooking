@@ -8,11 +8,11 @@ import { AuthService } from '../../../services/AuthService';
 interface LoginProps {
     onClose: () => void;
     onSwitchToRegister: () => void;
-    onLogin: (email: string, password: string) => void;
+    onLogin: (username: string, password: string) => void;
 }
 
 const Login: React.FC<LoginProps> = ({ onClose, onSwitchToRegister, onLogin }) => {
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
@@ -20,8 +20,8 @@ const Login: React.FC<LoginProps> = ({ onClose, onSwitchToRegister, onLogin }) =
         e.preventDefault();
         setError('');  // Clear previous errors
         
-        if (!email) {
-            setError('Please enter your email address');
+        if (!username) {
+            setError('Please enter your username');
             return;
         }
         if (!password) {
@@ -30,7 +30,7 @@ const Login: React.FC<LoginProps> = ({ onClose, onSwitchToRegister, onLogin }) =
         }
 
         try {
-            const response = await AuthService.login({ email, password });
+            const response = await AuthService.login({ username, password });
             
             if (response.error) {
                 setError(response.error);
@@ -42,7 +42,7 @@ const Login: React.FC<LoginProps> = ({ onClose, onSwitchToRegister, onLogin }) =
                 return;
             }
 
-            onLogin(email, password);
+            onLogin(username, password);
             onClose();
         } catch (err: unknown) {
             console.error('Login error:', err);
@@ -62,12 +62,12 @@ const Login: React.FC<LoginProps> = ({ onClose, onSwitchToRegister, onLogin }) =
                 <form onSubmit={handleSubmit} className={styles.form}>
                     <div className={styles.inputGroup}>
                         <Input
-                            id="email"
-                            label="Email"
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            placeholder="Enter your email"
+                            id="username"
+                            label="Username"
+                            type="text"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            placeholder="Enter your username"
                             required
                         />
                         <Input

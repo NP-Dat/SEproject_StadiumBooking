@@ -4,31 +4,38 @@ import Button from '../../../components/ui/Button/Button';
 import Input from '../../../components/ui/Input/Input';
 import { AuthService } from '../../../services/AuthService';
 
-
 interface RegisterProps {
     onClose: () => void;
     onSwitchToLogin: () => void;
-    onRegister: (email: string, password: string, name: string) => void;
+    onRegister: (email: string, password: string, username: string, fullname: string, birth: string, phonenumber: string, address: string) => void;
 }
 
 const Register: React.FC<RegisterProps> = ({ onClose, onSwitchToLogin, onRegister }) => {
-    const [name, setName] = useState('');
+    const [username, setUsername] = useState('');
+    const [fullname, setFullname] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [birth, setBirth] = useState('');
+    const [phonenumber, setPhonenumber] = useState('');
+    const [address, setAddress] = useState('');
     const [error, setError] = useState('');
     const [agreed, setAgreed] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!name || !email || !password || !confirmPassword) {
+        
+        // Validate all required fields
+        if (!username || !fullname || !email || !password || !confirmPassword || !birth || !phonenumber || !address) {
             setError('Please fill in all fields');
             return;
         }
+
         if (password !== confirmPassword) {
             setError('Passwords do not match');
             return;
         }
+
         if (!agreed) {
             setError('Please agree to the terms and conditions');
             return;
@@ -36,9 +43,13 @@ const Register: React.FC<RegisterProps> = ({ onClose, onSwitchToLogin, onRegiste
 
         try {
             const authState = await AuthService.register({
-                username: name,  // Map name to username
+                username,
+                password,
+                fullname,
+                birth,
+                phonenumber,
                 email,
-                password
+                address
             });
 
             if (authState.error) {
@@ -46,7 +57,7 @@ const Register: React.FC<RegisterProps> = ({ onClose, onSwitchToLogin, onRegiste
                 return;
             }
 
-            onRegister(email, password, name);  // Changed from name to username
+            onRegister(username, email, password, fullname, birth, phonenumber, address);
             onClose();
         } catch {
             setError('Registration failed. Please try again.');
@@ -65,11 +76,20 @@ const Register: React.FC<RegisterProps> = ({ onClose, onSwitchToLogin, onRegiste
                 <form onSubmit={handleSubmit} className={styles.form}>
                     <div className={styles.inputGroup}>
                         <Input
-                            id="name"
+                            id="username"
+                            label="Username"
+                            type="text"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            placeholder="Choose a username"
+                            required
+                        />
+                        <Input
+                            id="fullname"
                             label="Full Name"
                             type="text"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
+                            value={fullname}
+                            onChange={(e) => setFullname(e.target.value)}
                             placeholder="Enter your full name"
                             required
                         />
@@ -80,6 +100,32 @@ const Register: React.FC<RegisterProps> = ({ onClose, onSwitchToLogin, onRegiste
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="Enter your email"
+                            required
+                        />
+                        <Input
+                            id="birth"
+                            label="Date of Birth"
+                            type="date"
+                            value={birth}
+                            onChange={(e) => setBirth(e.target.value)}
+                            required
+                        />
+                        <Input
+                            id="phonenumber"
+                            label="Phone Number"
+                            type="tel"
+                            value={phonenumber}
+                            onChange={(e) => setPhonenumber(e.target.value)}
+                            placeholder="Enter your phone number"
+                            required
+                        />
+                        <Input
+                            id="address"
+                            label="Address"
+                            type="text"
+                            value={address}
+                            onChange={(e) => setAddress(e.target.value)}
+                            placeholder="Enter your address"
                             required
                         />
                         <Input
@@ -102,7 +148,7 @@ const Register: React.FC<RegisterProps> = ({ onClose, onSwitchToLogin, onRegiste
                         />
                     </div>
                     <div className={styles.agreement}>
-                        <label className={styles.checkboxContainer} onClick={(e) => e.stopPropagation()}>
+                        <label className={styles.checkboxContainer}>
                             <input
                                 type="checkbox"
                                 checked={agreed}
@@ -112,11 +158,11 @@ const Register: React.FC<RegisterProps> = ({ onClose, onSwitchToLogin, onRegiste
                             <span className={styles.checkmark}></span>
                             <span className={styles.agreementText}>
                                 I agree to the{' '}
-                                <a href="/terms" className={styles.termsLink} onClick={(e) => e.stopPropagation()}>
+                                <a href="/terms" className={styles.termsLink}>
                                     Terms of Service
                                 </a>{' '}
                                 and{' '}
-                                <a href="/privacy" className={styles.termsLink} onClick={(e) => e.stopPropagation()}>
+                                <a href="/privacy" className={styles.termsLink}>
                                     Privacy Policy
                                 </a>
                             </span>
