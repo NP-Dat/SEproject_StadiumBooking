@@ -39,10 +39,11 @@ class AuthController {
       }
 
       const user = await UserModel.findByUsername(username);
-      console.log(user);
+      // console.log(user);
       if (!user) {
         return res.status(401).json({ message: 'Invalid credentials' });
       }
+      const role = await UserModel.getRole(user.id);
 
       // Fix: Change email to username since we're using username for login
       const hashedPassword = await UserModel.findPasswordByUsername(username);
@@ -59,13 +60,14 @@ class AuthController {
 
       // Decode token to get expiration time
       const decoded = jwt.decode(token);
-      const expiresAt = new Date(decoded.exp * 1000); // Convert to milliseconds
+      const expiresAt = new Date(decoded.exp * 1000);
 
       res.json({
         message: 'Login successful',
         token,
+        role,
         expiresAt: expiresAt.toISOString(),
-        expiresIn: 3600 // Seconds (1 hour)
+        expiresIn: 3600 
       });
     } catch (error) {
       console.error('Login error:', error);
@@ -76,7 +78,7 @@ class AuthController {
 
   static async verifyToken(req, res) {
     const {token} = req.body;
-    // || req.query.token || req.headers['x-access-token'];
+    
     if (!token) {
       return res.status(403).json({ message: 'No token provided' });
     }
