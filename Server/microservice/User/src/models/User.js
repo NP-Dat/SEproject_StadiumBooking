@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 class UserModel {
   static async findById(id) {
     const [users] = await pool.query(
-      'SELECT * FROM Customers WHERE id = ?',
+      'SELECT id, phoneNumber, address, birth, fullName, userName, email FROM Customers WHERE id = ?',
       [id]
     );
     if (!users.length) return null;
@@ -12,7 +12,7 @@ class UserModel {
   }
 
   static async updateProfile(id, profileData) {
-    const { fullname, phonenumber, address, birth, email, password } = profileData;
+    const { fullname, phonenumber, address, birth, email, password, username } = profileData;
     
     let hashedPassword = password;
     // only hash the password if it's provided
@@ -26,11 +26,10 @@ class UserModel {
        SET fullName = ?, 
            phoneNumber = ?, 
            address = ?,
-           birth = ?,
            email = ?,
            passWord = ?
        WHERE id = ?`,
-      [fullname, phonenumber, address, birth, email, hashedPassword, id]
+      [fullname, phonenumber, address, email, hashedPassword, id]
     );
     
     return result.affectedRows > 0;
