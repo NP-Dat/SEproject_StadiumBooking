@@ -2,13 +2,13 @@ const pool = require('../config/db');
 const bcrypt = require('bcryptjs');
 
 class UserModel {
-  static async findByEmail(email) {
-    const [users] = await pool.query('SELECT 1 FROM Customers WHERE email = ?', [email]);
-    return users[0] ? true : false;
+  static async findByUsername(username) {
+    const [users] = await pool.query('SELECT * FROM Customers WHERE username = ?', [username]);
+    return users[0];
   }
 
-  static async findPasswordByEmail(email) {
-    const [passwords] = await pool.query('SELECT passWord FROM Customers WHERE email = ?', [email]);
+  static async findPasswordByUsername(username) {
+    const [passwords] = await pool.query('SELECT passWord FROM Customers WHERE username = ?', [username]);
     return passwords.length > 0 ? passwords[0].passWord : null;
   }
 
@@ -17,13 +17,22 @@ class UserModel {
     return users[0];
   }
 
-  static async create(username, email, password) {
+  static async create(username, password, fullname, birth, phonenumber, email, address) {
     const hashedPassword = await bcrypt.hash(password, 10);
     const [result] = await pool.query(
       'INSERT INTO Customers (userName, email, passWord, fullName, birth, phoneNumber, address) VALUES (?, ?, ?, ?, ?, ?, ?)',
-      [username, email, hashedPassword,"Dat", "2000-01-01", "0123456789", "HCM"]
+      [username, email, hashedPassword,fullname, birth, phonenumber, address]
     );
     return result.insertId;
+  }
+  static async setRole(id){
+    const [result] = await pool.query(
+      'INSERT INTO Roles (userID, role) VALUES (?, ?)',
+      [id, 'user']
+    );
+  
+    return result.insertId;
+
   }
 
   static async verifyPassword(plainPassword, hashedPassword) {
