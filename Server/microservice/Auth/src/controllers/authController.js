@@ -35,7 +35,7 @@ class AuthController {
       const { username, password } = req.body;
 
       if (!username || !password) {
-        return res.status(400).json({ message: 'Email and password are required' });
+        return res.status(400).json({ message: 'Username and password are required' });
       }
 
       const user = await UserModel.findByUsername(username);
