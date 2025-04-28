@@ -1,28 +1,16 @@
 const axios = require('axios');
 
 async function authenticateToken(req, res, next) {
-  const token = req.headers['authorization'];
+  const token = req.body.token;
   if (!token) {
     return res.status(401).json({ message: 'No token provided' });
   }
 
-  try {
-    // Get userId from request - can be from req.params, req.query, or req.body
-    // depending on how your API is structured
-    const userId = req.params.userId || req.query.userId || (req.body && req.body.userId);
-    
-    if (!userId) {
-      return res.status(403).json({ message: 'User ID is required' });
-    }
-
-    // Clean token if it comes with "Bearer " prefix
-    const cleanToken = token.startsWith('Bearer ') ? token.slice(7) : token;
-    
+  try {    
     // Call the Auth microservice to verify the token
-    const authServiceUrl = process.env.AUTH_SERVICE_URL || 'http://localhost:3000/api/auth';
+    const authServiceUrl = process.env.AUTH_SERVICE_URL || 'http://localhost:8001/api/auth';
     const response = await axios.post(`${authServiceUrl}/verify-token`, {
-      token: cleanToken,
-      userId: userId
+      token: token
     });
 
     // Token is verified by Auth service, set user info for use in routes
