@@ -1,75 +1,42 @@
-const EventModel = require('../models/eventModels');
+const Event = require('../models/eventModel');
 
-class EventController {
-  static async createEvent(req, res) {
-    try {
-      const eventData = req.body;
-      const userId = req.user.userId;
-      
-      const eventId = await EventModel.create(eventData, userId);
-      res.status(201).json({
-        message: 'Event created successfully',
-        eventId
-      });
-    } catch (error) {
-      console.error('Create event error:', error);
-      res.status(500).json({ message: 'Internal server error' });
-    }
-  }
+// Public
+exports.listApproved = async (req, res) => {
+  const events = await Event.listApproved();
+  res.json({ success: true, events });
+};
+exports.findById = async (req, res) => {
+  const event = await Event.findById(req.params.id);
+  if (!event || event.status !== 'approved') return res.status(404).json({ success: false, message: 'Event not found' });
+  res.json({ success: true, event });
+};
 
-  static async getEvents(req, res) {
-    try {
-      const filters = {
-        category: req.query.category,
-        date: req.query.date
-      };
-      
-      const events = await EventModel.findAll(filters);
-      res.json(events);
-    } catch (error) {
-      console.error('Get events error:', error);
-      res.status(500).json({ message: 'Internal server error' });
-    }
-  }
+// Organizer
+exports.listByOwner = async (req, res) => {
+  const events = await Event.listByOwner(req.user.id);
+  res.json({ success: true, events });
+};
+exports.create = async (req, res) => {
+  const event = await Event.create({ ...req.body, owner: req.user.id });
+  res.status(201).json({ success: true, event });
+};
+exports.update = async (req, res) => {
+  const updated = await Event.update(req.params.id, req.body);
+  if (!updated) return res.status(403).json({ success: false, message: 'Forbidden or not pending' });
+  res.json({ success: true, message: 'Event updated' });
+};
+exports.delete = async (req, res) => {
+  const deleted = await Event.delete(req.params.id);
+  if (!deleted) return res.status(403).json({ success: false, message: 'Forbidden or not pending' });
+  res.json({ success: true, message: 'Event deleted' });
+};
 
-  static async getEvent(req, res) {
-    try {
-      const event = await EventModel.findById(req.params.id);
-      if (!event) {
-        return res.status(404).json({ message: 'Event not found' });
-      }
-      res.json(event);
-    } catch (error) {
-      console.error('Get event error:', error);
-      res.status(500).json({ message: 'Internal server error' });
-    }
-  }
-
-  static async updateEvent(req, res) {
-    try {
-      const success = await EventModel.update(req.params.id, req.body);
-      if (!success) {
-        return res.status(404).json({ message: 'Event not found' });
-      }
-      res.json({ message: 'Event updated successfully' });
-    } catch (error) {
-      console.error('Update event error:', error);
-      res.status(500).json({ message: 'Internal server error' });
-    }
-  }
-
-  static async deleteEvent(req, res) {
-    try {
-      const success = await EventModel.delete(req.params.id);
-      if (!success) {
-        return res.status(404).json({ message: 'Event not found' });
-      }
-      res.json({ message: 'Event deleted successfully' });
-    } catch (error) {
-      console.error('Delete event error:', error);
-      res.status(500).json({ message: 'Internal server error' });
-    }
-  }
-}
-
-module.exports = EventController;
+// Admin
+exports.listAll = async (req, res) => {
+  const events = await Event.listAll();
+  res.json({ success: true, events });
+};
+exports.setStatus = async (req, res) => {
+  await Event.setStatus(req.params.id, req.body.status);
+  res.json({ success: true, message: `Event ${req.body.status}` });
+};
