@@ -3,6 +3,7 @@ import styles from './Register.module.css';
 import Button from '../../../components/ui/Button/Button';
 import Input from '../../../components/ui/Input/Input';
 import { AuthService } from '../../../services/AuthService';
+import {SuccessMessage} from './SuccessMess';
 
 interface RegisterProps {
     onClose: () => void;
@@ -21,23 +22,33 @@ const Register: React.FC<RegisterProps> = ({ onClose, onSwitchToLogin, onRegiste
     const [address, setAddress] = useState('');
     const [error, setError] = useState('');
     const [agreed, setAgreed] = useState(false);
+    const [success, setSuccess] = useState(false);
+    const errorRef = React.useRef<HTMLParagraphElement>(null);
+
+    const raiseError = (message: string) => {
+        setError(message);
+        setTimeout(() => {
+            errorRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        , 0);
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         
         // Validate all required fields
         if (!username || !fullname || !email || !password || !confirmPassword || !birth || !phonenumber || !address) {
-            setError('Please fill in all fields');
+            raiseError('Please fill in all fields');
             return;
         }
 
         if (password !== confirmPassword) {
-            setError('Passwords do not match');
+            raiseError('Passwords do not match');
             return;
         }
 
         if (!agreed) {
-            setError('Please agree to the terms and conditions');
+            raiseError('Please agree to the terms and conditions');
             return;
         }
 
@@ -51,28 +62,64 @@ const Register: React.FC<RegisterProps> = ({ onClose, onSwitchToLogin, onRegiste
                 email,
                 address
             });
+            setTimeout(() => {
+                onSwitchToLogin(); // navigate to Login without setting user
+              }, 1000);
+
+            if (authState.isAuthenticated) {
+                setSuccess(true);
+                return;
+            }
 
             if (authState.error) {
                 setError(authState.error);
                 return;
             }
 
-            onRegister(username, email, password, fullname, birth, phonenumber, address);
-            onClose();
+            
+            raiseError('Unexpected error. Try again.');
         } catch {
-            setError('Registration failed. Please try again.');
+            raiseError('Unexpected error. Try again.');
         }
     };
 
+    if (success) {
+        return (
+          <div className={styles.modalOverlay}>
+            <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+              <SuccessMessage>
+                <h2>🎉 Registration Successful!</h2>
+                <p>You can now sign in to your account.</p>
+                <Button
+                  variant="primary"
+                  size="large"
+                  className={styles.submitButton}
+                  onClick={() => {
+                    onRegister(username, email, password, fullname, birth, phonenumber, address);
+                    onSwitchToLogin();
+                  }}
+                >
+                  Continue to Login
+                </Button>
+              </SuccessMessage>
+            </div>
+          </div>
+        );
+      }
+
     return (
-        <div className={styles.modalOverlay} onClick={onClose}>
+        <div className={styles.modalOverlay}>
             <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
                 <button className={styles.closeButton} onClick={onClose}>×</button>
                 <div className={styles.modalHeader}>
                     <h2 className={styles.title}>Create Account</h2>
                     <p className={styles.subtitle}>Join us to start booking your events</p>
                 </div>
-                {error && <p className={styles.error}>{error}</p>}
+                {error && (
+                    <p ref={errorRef} className={styles.error}>
+                        {error}
+                    </p>
+                    )}
                 <form onSubmit={handleSubmit} className={styles.form}>
                     <div className={styles.inputGroup}>
                         <Input

@@ -4,6 +4,7 @@ import styles from './Login.module.css';
 import Button from '../../../components/ui/Button/Button';
 import Input from '../../../components/ui/Input/Input';
 import { AuthService } from '../../../services/AuthService';
+import { useAuth } from '../../../hooks/useAuth';
 
 interface LoginProps {
     onClose: () => void;
@@ -15,7 +16,7 @@ const Login: React.FC<LoginProps> = ({ onClose, onSwitchToRegister, onLogin }) =
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-
+    const { login } = useAuth();
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');  // Clear previous errors
@@ -32,6 +33,12 @@ const Login: React.FC<LoginProps> = ({ onClose, onSwitchToRegister, onLogin }) =
         try {
             const response = await AuthService.login({ username, password });
             
+            await login(username, password); // Call the login function from AuthContext
+            if (response.loading) {
+                setError('Loading...');
+                return;
+            }
+
             if (response.error) {
                 setError(response.error);
                 return;
@@ -51,7 +58,7 @@ const Login: React.FC<LoginProps> = ({ onClose, onSwitchToRegister, onLogin }) =
     };
 
     return (
-        <div className={styles.modalOverlay} onClick={onClose}>
+        <div className={styles.modalOverlay} onClick={onClose} tabIndex={0}>
             <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
                 <button className={styles.closeButton} onClick={onClose}>×</button>
                 <div className={styles.modalHeader}>
