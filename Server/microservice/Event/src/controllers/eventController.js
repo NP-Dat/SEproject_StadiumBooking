@@ -1,75 +1,57 @@
-const EventModel = require('../models/eventModels');
+const Event = require('../models/eventModels');
 
-class EventController {
-  static async createEvent(req, res) {
-    try {
-      const eventData = req.body;
-      const userId = req.user.userId;
-      
-      const eventId = await EventModel.create(eventData, userId);
-      res.status(201).json({
-        message: 'Event created successfully',
-        eventId
-      });
-    } catch (error) {
-      console.error('Create event error:', error);
-      res.status(500).json({ message: 'Internal server error' });
-    }
+exports.getAllEvents = async (req, res) => {
+  try {
+    const events = await Event.getAllEvent();
+    res.status(200).json({ success: true, data: events });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
   }
+};
 
-  static async getEvents(req, res) {
-    try {
-      const filters = {
-        category: req.query.category,
-        date: req.query.date
-      };
-      
-      const events = await EventModel.findAll(filters);
-      res.json(events);
-    } catch (error) {
-      console.error('Get events error:', error);
-      res.status(500).json({ message: 'Internal server error' });
+exports.getEventById = async (req, res) => {
+  try {
+    const event = await Event.getEventById(req.params.id);
+    if (!event) {
+      return res.status(404).json({ success: false, message: 'Event not found' });
     }
+    res.status(200).json({ success: true, data: event });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
   }
+};
 
-  static async getEvent(req, res) {
-    try {
-      const event = await EventModel.findById(req.params.id);
-      if (!event) {
-        return res.status(404).json({ message: 'Event not found' });
-      }
-      res.json(event);
-    } catch (error) {
-      console.error('Get event error:', error);
-      res.status(500).json({ message: 'Internal server error' });
+exports.createEvent = async (req, res) => {
+  try {
+    const event = await Event.create(req.body);
+    res.status(201).json({ success: true, data: event });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+exports.updateEvent = async (req, res) => {
+  try {
+    const event = await Event.findById(req.params.id);
+    if (!event) {
+      return res.status(404).json({ success: false, message: 'Event not found' });
     }
+    const updatedEvent = await Event.update(req.params.id, req.body);
+    res.status(200).json({ success: true, data: updatedEvent });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
   }
+};
 
-  static async updateEvent(req, res) {
-    try {
-      const success = await EventModel.update(req.params.id, req.body);
-      if (!success) {
-        return res.status(404).json({ message: 'Event not found' });
-      }
-      res.json({ message: 'Event updated successfully' });
-    } catch (error) {
-      console.error('Update event error:', error);
-      res.status(500).json({ message: 'Internal server error' });
+exports.deleteEvent = async (req, res) => {
+  try {
+    const event = await Event.findById(req.params.id);
+    if (!event) {
+      return res.status(404).json({ success: false, message: 'Event not found' });
     }
+    await Event.delete(req.params.id);
+    res.status(200).json({ success: true, data: {} });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
   }
-
-  static async deleteEvent(req, res) {
-    try {
-      const success = await EventModel.delete(req.params.id);
-      if (!success) {
-        return res.status(404).json({ message: 'Event not found' });
-      }
-      res.json({ message: 'Event deleted successfully' });
-    } catch (error) {
-      console.error('Delete event error:', error);
-      res.status(500).json({ message: 'Internal server error' });
-    }
-  }
-}
-
-module.exports = EventController;
+};

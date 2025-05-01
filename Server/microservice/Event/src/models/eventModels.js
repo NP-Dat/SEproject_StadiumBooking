@@ -1,77 +1,38 @@
 const pool = require('../config/db');
 
-class EventModel {
-  static async create(eventData, userId) {
-    const { title, description, venue, event_date, category, total_tickets, price } = eventData;
-    
+class Event {
+  static async getAllEvent() {
+    const [rows] = await pool.query('SELECT * FROM EventList');
+    return rows;
+  }
+
+  static async getEventById(id) {
+    const [rows] = await pool.query('SELECT * FROM EventList WHERE id = ?', [id]);
+    return rows[0];
+  }
+
+  static async create(event) {
+    const { name, date, owner } = event;
     const [result] = await pool.query(
-      `INSERT INTO events (title, description, venue, event_date, category, 
-        total_tickets, available_tickets, price, created_by)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [title, description, venue, event_date, category, 
-       total_tickets, total_tickets, price, userId]
+      'INSERT INTO EventList (name, date, owner) VALUES (?, ?, ?)',
+      [name, date, owner]
     );
-    return result.insertId;
+    return { id: result.insertId, name, date, owner };
   }
 
-  static async findById(id) {
-    const [events] = await pool.query(
-      'SELECT * FROM events WHERE id = ?',
-      [id]
+  static async update(id, event) {
+    const { name, date, owner } = event;
+    await pool.query(
+      'UPDATE EventList SET name = ?, date = ?, owner = ? WHERE id = ?',
+      [name, date, owner, id]
     );
-    return events[0];
-  }
-
-  static async findAll(filters = {}) {
-    let query = 'SELECT * FROM events WHERE 1=1';
-    const params = [];
-
-    if (filters.category) {
-      query += ' AND category = ?';
-      params.push(filters.category);
-    }
-
-    if (filters.date) {
-      query += ' AND DATE(event_date) = ?';
-      params.push(filters.date);
-    }
-
-    query += ' ORDER BY event_date ASC';
-
-    const [events] = await pool.query(query, params);
-    return events;
-  }
-
-  static async update(id, eventData) {
-    const { title, description, venue, event_date, category, price } = eventData;
-    
-    const [result] = await pool.query(
-      `UPDATE events 
-       SET title = ?, description = ?, venue = ?, 
-           event_date = ?, category = ?, price = ?
-       WHERE id = ?`,
-      [title, description, venue, event_date, category, price, id]
-    );
-    return result.affectedRows > 0;
-  }
-
-  static async updateAvailableTickets(id, quantity) {
-    const [result] = await pool.query(
-      `UPDATE events 
-       SET available_tickets = available_tickets + ?
-       WHERE id = ?`,
-      [quantity, id]
-    );
-    return result.affectedRows > 0;
+    return { id, name, date, owner };
   }
 
   static async delete(id) {
-    const [result] = await pool.query(
-      'DELETE FROM events WHERE id = ?',
-      [id]
-    );
-    return result.affectedRows > 0;
+    await pool.query('DELETE FROM EventList WHERE id = ?', [id]);
+    return { id };
   }
 }
 
-module.exports = EventModel;
+module.exports = Event;
