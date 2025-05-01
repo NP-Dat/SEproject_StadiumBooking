@@ -63,6 +63,7 @@ class AuthController {
 
       res.json({
         message: 'Login successful',
+        userId: user.id
       });
     } catch (error) {
       console.error('Login error:', error);
