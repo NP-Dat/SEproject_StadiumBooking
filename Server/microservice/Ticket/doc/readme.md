@@ -78,9 +78,11 @@ Use this Postman collection to test all endpoints:
   ```json
   {
     "name": "VIP Zone",
-    "size": 100,
+    "startSeatID": 1,
+    "endSeatID": 100,
     "price": 200.00,
-    "status": "active"
+    "status": "active",
+    "eventScheduleID": 1 
   }
   ```
 
@@ -91,7 +93,8 @@ Use this Postman collection to test all endpoints:
   ```json
   {
     "name": "Premium Zone",
-    "size": 80,
+    "startSeatID": 101,
+    "endSeatID": 180,
     "price": 250.00,
     "status": "active"
   }
