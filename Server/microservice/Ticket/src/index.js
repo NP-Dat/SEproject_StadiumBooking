@@ -3,8 +3,6 @@ const cors = require('cors');
 require('dotenv').config();
 
 const ticketTypesRoutes = require('./routes/ticketTypeRoutes');
-const ticketsRoutes = require('./routes/ticketRoutes');
-
 const app = express();
 
 // Middleware
@@ -12,8 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use('/api/events', ticketTypesRoutes);
-app.use('/api', ticketsRoutes);
+app.use('/api', ticketTypesRoutes);
 
 // Health check endpoint
 app.get('/health', (req, res) => {
