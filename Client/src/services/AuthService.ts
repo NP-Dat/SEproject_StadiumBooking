@@ -1,58 +1,48 @@
 import axios, { AxiosError } from 'axios';
-import { User, AuthState } from '../types/auth';
+import { User, AuthState, LoginCredentials, RegisterCredentials } from '../types/auth';
 
 const API_URL = 'http://localhost:8001/api/auth';
-
-interface LoginCredentials {
-    username: string;
-    password: string;
-}
-
-interface RegisterCredentials {
-    username: string;
-    password: string;
-    fullname: string;
-    birth: string;
-    phonenumber: string;
-    email: string;
-    address: string;
-}
 
 interface ErrorResponse {
     message: string;
 }
 
 export class AuthService {
-    private static token: string | null = null;
     private static user: User | null = null;
 
     static async login(credentials: LoginCredentials): Promise<AuthState> {
         try {
             const response = await axios.post(`${API_URL}/login`, credentials);
             
-            const { token, role } = response.data;
-            
-            if (token) {
-                this.setToken(token);
+            if (response.data.message === 'Login successful') {
+                // Get the user ID from the response
+                const userId = response.data.userId || 'unknown';
+                
+                // Store user data
                 this.user = {
-                    id: response.data.userId,
-                    username: credentials.username,
-                    role: role
+                    id: userId,
+                    username: credentials.username
                 };
                 
+                // Store in localStorage for persistence
+                localStorage.setItem('userId', userId);
+                localStorage.setItem('username', credentials.username);
+                
                 return {
+                    message: 'Login successful',
                     user: this.user,
-                    token,
+                    token: null,
                     isAuthenticated: true,
                     loading: false,
                     error: null
                 };
             }
             
-            throw new Error('Invalid response format');
+            throw new Error('Login failed: ' + (response.data.message || 'Unknown error'));
         } catch (error) {
             const axiosError = error as AxiosError<ErrorResponse>;
             return {
+                message: 'Login failed',
                 user: null,
                 token: null,
                 isAuthenticated: false,
@@ -74,10 +64,11 @@ export class AuthService {
                 });
             }
             
-            throw new Error('Registration failed');
+            throw new Error('Registration failed: ' + (response.data.message || 'Unknown error'));
         } catch (error) {
             const axiosError = error as AxiosError<ErrorResponse>;
             return {
+                message: 'Registration failed',
                 user: null,
                 token: null,
                 isAuthenticated: false,
@@ -87,37 +78,20 @@ export class AuthService {
         }
     }
 
-    static setToken(token: string): void {
-        this.token = token;
-        localStorage.setItem('token', token);
-    }
-
-    static getToken(): string | null {
-        return this.token || localStorage.getItem('token');
-    }
-
-    static removeToken(): void {
-        this.token = null;
-        localStorage.removeItem('token');
-    }
-
     static isAuthenticated(): boolean {
-        return !!this.getToken();
+        return !!localStorage.getItem('userId');
     }
 
     static async getCurrentUser(): Promise<User | null> {
         if (!this.user) {
-            const token = this.getToken();
-            if (token) {
-                try {
-                    const response = await axios.get(`${API_URL}/me`, {
-                        headers: { Authorization: `Bearer ${token}` }
-                    });
-                    this.user = response.data;
-                } catch {
-                    this.removeToken();
-                    return null;
-                }
+            const userId = localStorage.getItem('userId');
+            const username = localStorage.getItem('username');
+            
+            if (userId && username) {
+                this.user = {
+                    id: userId,
+                    username: username
+                };
             }
         }
         return this.user;
@@ -125,6 +99,7 @@ export class AuthService {
 
     static logout(): void {
         this.user = null;
-        this.removeToken();
+        localStorage.removeItem('userId');
+        localStorage.removeItem('username');
     }
 }

@@ -1,128 +1,112 @@
-import React, { useState, useCallback } from 'react';
-import { authAPI } from '../utils/api';
-import { User, RegisterCredentials, AuthResponse } from '../types/auth';
+import React, { useState, useEffect } from 'react';
+import { AuthService } from '../services/AuthService';
+import { User, RegisterCredentials } from '../types/auth';
 import { AuthContext } from './AuthContextDef';
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [user, setUser] = useState<User | null>(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [isAdmin, setIsAdmin] = useState(false);
-
-    const verifyToken = useCallback(async (token: string, userId: string) => {
-        try {
-            const response = await authAPI.verifyToken(token, userId);
-            if (response.message === 'Valid token') {
-                const userDataResponse = await authAPI.getCurrentUser();
-                // Convert the response to User type after validation
-                const userData = {
-                    id: userDataResponse.userId || '',
-                    username: userDataResponse.userId || '', // Use userId as username if username is not available
-                    role: (userDataResponse.role as 'user' | 'admin') || 'user'
-                };
+    
+    // Check for stored user on component mount
+    useEffect(() => {
+        const checkStoredUser = () => {
+            try {
+                const userId = localStorage.getItem('userId');
+                const username = localStorage.getItem('username');
                 
-                if (userData.id) {
+                if (userId && username) {
+                    // Create user object directly from localStorage
+                    const userData = {
+                        id: userId,
+                        username: username
+                    };
+                    
                     setUser(userData);
                     setIsAuthenticated(true);
-                    setIsAdmin(userData.role === 'admin');
-                } else {
-                    logout();
                 }
-            } else {
+            } catch (error) {
+                console.error('User verification failed:', error);
                 logout();
             }
-        } catch (error) {
-            console.error('Token verification failed:', error);
-            logout();
-        }
-    }, []);
+        };
 
-    React.useEffect(() => {
-        const token = localStorage.getItem('token');
-        const userId = localStorage.getItem('userId');
-        if (token && userId) {
-            verifyToken(token, userId);
-        }
-    }, [verifyToken]);
+        checkStoredUser();
+    }, []);
 
     const login = async (username: string, password: string) => {
         try {
-            const response = await authAPI.login(username, password) as AuthResponse;
-            if (response.token) {
-                localStorage.setItem('token', response.token);
-                localStorage.setItem('userId', response.userId!);
-                
-                const userData: User = {
-                    id: response.userId!,
-                    username: username,
-                    role: response.role as 'user' | 'admin'
-                };
-                
-                setUser(userData);
+            const response = await AuthService.login({ username, password });
+            
+            if (response.isAuthenticated && response.user) {
+                // Set state
+                setUser(response.user);
                 setIsAuthenticated(true);
-                setIsAdmin(response.role === 'admin');
+                return { success: true, message: 'Login successful' };
             } else {
-                throw new Error('Invalid login response');
+                throw new Error(response.error || 'Login failed');
             }
         } catch (error) {
             console.error('Login failed:', error);
-            throw error;
+            return { 
+                success: false, 
+                message: error instanceof Error ? error.message : 'Login failed'
+            };
         }
     };
 
     const register = async (
-        username: string,
-        email: string,
-        password: string,
-        fullname: string,
-        birth: string,
-        phonenumber: string,
+        username: string, 
+        email: string, 
+        password: string, 
+        fullname: string, 
+        birth: string, 
+        phonenumber: string, 
         address: string
-    ): Promise<void> => {
+    ) => {
         try {
             const credentials: RegisterCredentials = {
                 username,
-                email,
                 password,
                 fullname,
                 birth,
                 phonenumber,
+                email,
                 address
             };
             
-            const response = await authAPI.register(credentials);
-            if (response.message === 'User registered successfully') {
-                // After successful registration, log in automatically
-                await login(username, password);
+            const response = await AuthService.register(credentials);
+            
+            if (response.isAuthenticated && response.user) {
+                setUser(response.user);
+                setIsAuthenticated(true);
+                return { success: true, message: 'Registration successful' };
             } else {
-                throw new Error('Registration failed');
+                throw new Error(response.error || 'Registration failed');
             }
         } catch (error) {
             console.error('Registration failed:', error);
-            throw error;
+            return { 
+                success: false, 
+                message: error instanceof Error ? error.message : 'Registration failed'
+            };
         }
     };
 
     const logout = () => {
-        localStorage.removeItem('token');
         localStorage.removeItem('userId');
+        localStorage.removeItem('username');
         setUser(null);
         setIsAuthenticated(false);
-        setIsAdmin(false);
-    };
-
-    const loginAsAdmin = () => {
-        setIsAdmin(true);
+        AuthService.logout();
     };
 
     return (
         <AuthContext.Provider value={{
             user,
             isAuthenticated,
-            isAdmin,
             login,
             register,
-            logout,
-            loginAsAdmin
+            logout
         }}>
             {children}
         </AuthContext.Provider>
