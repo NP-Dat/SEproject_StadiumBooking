@@ -18,7 +18,7 @@ app.get('/health', (req, res) => {
   res.json({ status: 'OK', message: 'Booking service is running' });
 });
 
-const PORT = process.env.PORT || 8004;
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Booking service running on port ${PORT}`);
 });
