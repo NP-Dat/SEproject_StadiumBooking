@@ -1,0 +1,241 @@
+.header {
+    background-color: rgba(255, 255, 255, 0.95);
+    color: #1e293b;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(0, 180, 216, 0.1);
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.logo {
+    flex-shrink: 0;
+}
+
+.logoText {
+    font-size: 1.75rem;
+    font-weight: 800;
+    cursor: pointer;
+    background: linear-gradient(135deg, #00B4D8, #0096C7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: transform 0.2s ease;
+    margin: 0;
+    padding: 0;
+}
+
+.logoText:hover {
+    transform: scale(1.05);
+}
+
+.logoAccent {
+    background: linear-gradient(135deg, #0096C7, #0077B6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.navLinks {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.navLink {
+    text-decoration: none;
+    color: #1e293b;
+    font-weight: 500;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    position: relative;
+    font-size: 0.95rem;
+}
+
+.navLink::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 50%;
+    background-color: #00B4D8;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.navLink:hover {
+    color: #00B4D8;
+}
+
+.navLink:hover::after {
+    width: 80%;
+}
+
+.navLinkActive {
+    color: #00B4D8;
+    font-weight: 600;
+}
+
+.navLinkActive::after {
+    width: 80%;
+}
+
+.searchContainer {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.searchInput {
+    padding: 0.4rem 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    width: 200px;
+    transition: border-color 0.3s ease;
+}
+
+.searchInput:focus {
+    outline: none;
+    border-color: #00B4D8;
+}
+
+.searchButton {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: #1e293b;
+    transition: color 0.3s ease;
+}
+
+.searchButton:hover {
+    color: #00B4D8;
+}
+
+.buttonContainer {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.userActions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.profileButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s;
+}
+
+.profileButton:hover {
+    transform: translateY(-1px);
+}
+
+.userName {
+    color: #1e293b;
+    font-weight: 500;
+    margin-right: 0.5rem;
+}
+
+.cartButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    color: #1e293b;
+    transition: all 0.2s;
+    position: relative;
+}
+
+.cartButton:hover {
+    color: #00B4D8;
+    transform: translateY(-1px);
+}
+
+.loginButton,
+.signUpButton {
+    padding: 0.4rem 1rem;
+    font-size: 0.95rem;
+    border-radius: 20px;
+    font-weight: 500;
+    cursor: pointer;
+    height: 2.4rem;
+    min-width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+.loginButton {
+    background-color: transparent;
+    border: 1px solid #00B4D8;
+    color: #00B4D8;
+}
+
+.loginButton:hover {
+    background-color: #00B4D8;
+    color: white;
+    transform: scale(1.05);
+}
+
+.signUpButton {
+    background-color: #00B4D8;
+    border: 1px solid #00B4D8;
+    color: white;
+}
+
+.signUpButton:hover {
+    background-color: white;
+    color: #00B4D8;
+    transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+    .nav {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .navLinks {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .searchContainer {
+        width: 100%;
+        margin: 1rem 0;
+    }
+
+    .searchInput {
+        width: 100%;
+    }
+
+    .buttonContainer {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .userActions {
+        width: 100%;
+        justify-content: center;
+    }
+}

@@ -1,0 +1,158 @@
+.profileContainer {
+    padding: 2rem;
+    min-height: 100vh;
+    background-color: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 6rem;
+}
+
+.profileCard {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    width: 100%;
+    max-width: 500px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.title {
+    color: #333;
+    font-size: 1.8rem;
+    margin: 0;
+}
+
+.editButton {
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.editButton:hover {
+    background-color: #357abd;
+}
+
+.userInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.infoItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+.label {
+    color: #666;
+    font-weight: 500;
+}
+
+.value {
+    color: #333;
+    font-weight: 600;
+}
+
+.input {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 0.5rem;
+    font-size: 1rem;
+    width: 200px;
+}
+
+.input:focus {
+    outline: none;
+    border-color: #4a90e2;
+}
+
+.buttonGroup {
+    display: flex;
+    gap: 1rem;
+}
+
+.saveButton {
+    flex: 1;
+    padding: 0.8rem;
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.saveButton:hover {
+    background-color: #357abd;
+}
+
+.cancelButton {
+    flex: 1;
+    padding: 0.8rem;
+    background-color: #f0f0f0;
+    color: #666;
+    border: none;
+    border-radius: 5px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.cancelButton:hover {
+    background-color: #e0e0e0;
+}
+
+.logoutButton {
+    width: 100%;
+    padding: 0.8rem;
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.logoutButton:hover {
+    background-color: #e60000;
+}
+
+@media (max-width: 768px) {
+    .profileContainer {
+        padding: 1rem;
+        padding-top: 5rem;
+    }
+
+    .profileCard {
+        padding: 1.5rem;
+    }
+
+    .infoItem {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .input {
+        width: 100%;
+    }
+} 
