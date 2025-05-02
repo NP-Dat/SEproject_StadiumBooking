@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { AuthService } from '../../../services/AuthService';
 import styles from './Login.module.css';
 import Button from '../../../components/ui/Button/Button';
@@ -12,7 +12,6 @@ interface LoginProps {
 }
 
 const Login: React.FC<LoginProps> = ({ onClose, onSwitchToRegister, onLogin }) => {
-    const navigate = useNavigate();
     const { login: authLogin } = AuthService.useAuth();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');

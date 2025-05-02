@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 import { privateRoutes } from './privateRoutes'
 import { publicRoutes } from './publicRoutes'
 import { RouteType } from '../types/routes'
+import ProtectedRoute from './ProtectedRoute'
 
 export const AppRoutes = () => {
   return (
@@ -18,7 +19,11 @@ export const AppRoutes = () => {
         <Route
           key={route.path}
           path={route.path}
-          element={route.element}
+          element={
+            <ProtectedRoute>
+              {route.element}
+            </ProtectedRoute>
+          }
         />
       ))}
     </Routes>

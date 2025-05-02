@@ -10,6 +10,8 @@ import Privacy from '../pages/Support/Privacy'
 import Refund from '../pages/Support/Refund'
 import Accessibility from '../pages/Support/Accessibility'
 import Stadium from '../pages/Stadium/Stadium'
+import SchedulePage from '../pages/ScheduleEvent/Schedule'
+// import Stadium from '../pages/Stadium/Stadium'
 
 export const publicRoutes: RouteType[] = [
   {
@@ -53,10 +55,14 @@ export const publicRoutes: RouteType[] = [
     path: '/accessibility',
     element: <Accessibility />
   },
+  {
+    path: '/schedules/event/:eventId',
+    element: <SchedulePage />
+  },
 
   // This is for testing the stadium seat page
   {
-    path: '/stadium',
+     path: '/stadium',
     element: <Stadium />
   },
 ]

@@ -1,0 +1,158 @@
+.schedulePage {
+    background: linear-gradient(135deg, #e2e8f0, #f1f5f9);
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+  
+  .schedulePage::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 50% 50%, rgba(0, 180, 216, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  
+  .container {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  
+  .title {
+    font-size: 2.5rem; /* Adjusted font size for better readability */
+    font-weight: 700;
+    background: linear-gradient(135deg, #00B4D8, #CAF0F8);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 1rem;
+  }
+  
+  .subtitle {
+    font-size: 1.125rem; /* Adjusted for better readability */
+    color: #1e293b;
+  }
+  
+  .scheduleList {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    justify-items: center; /* Center the cards */
+    padding: 2rem 0;
+  }
+  
+  .scheduleCard {
+    background: rgba(241, 245, 249, 0.9);
+    border: 1px solid rgba(0, 180, 216, 0.1);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+    transition: all 0.3s ease;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+  
+  .scheduleCard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 180, 216, 0.2);
+  }
+  
+  .scheduleInfo {
+    margin-bottom: 1rem;
+  }
+  
+  .scheduleDate {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 0.75rem;
+  }
+  
+  .scheduleTime,
+  .scheduleLocation,
+  .scheduleEvent {
+    font-size: 1.125rem;
+    color: #1e293b;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+  
+  .bookButton {
+    background: linear-gradient(135deg, #00B4D8, #0096C7);
+    color: white;
+    font-weight: 600;
+    padding: 0.75rem 1.25rem;
+    border-radius: 9999px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+  }
+  
+  .bookButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 180, 216, 0.3);
+  }
+  
+  .noSchedules {
+    text-align: center;
+    font-size: 1.5rem;
+    color: #888;
+  }
+  
+  .loading {
+    text-align: center;
+    font-size: 1.5rem;
+    color: #007bff;
+  }
+  
+  .error {
+    text-align: center;
+    font-size: 1.5rem;
+    color: red;
+  }
+  
+  @media (max-width: 768px) {
+    .container {
+      padding: 3rem 1rem;
+    }
+  
+    .title {
+      font-size: 2rem;
+    }
+  
+    .subtitle {
+      font-size: 1rem;
+    }
+  
+    .scheduleDate {
+      font-size: 1.125rem;
+    }
+  
+    .scheduleTime,
+    .scheduleLocation,
+    .scheduleEvent {
+      font-size: 1rem;
+    }
+  
+    .bookButton {
+      padding: 0.75rem 1rem;
+    }
+  }
+  

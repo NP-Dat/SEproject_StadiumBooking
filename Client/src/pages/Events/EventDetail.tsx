@@ -140,7 +140,7 @@ const EventDetail = () => {
             setShowLoginModal(true);
         } else {
             // TODO: Implement booking logic
-            console.log('Booking event:', eventId);
+            navigate(`/schedules/event/${eventId}`);
         }
     };
 
