@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const UserModel = require('../models/User');
+const AuthModel = require('../models/AuthModel');
 
 class AuthController {
   static async register(req, res) {
@@ -10,16 +10,16 @@ class AuthController {
         return res.status(400).json({ message: 'All fields are required' });
       }
 
-      const existingUser = await UserModel.findByUsername(username);
+      const existingUser = await AuthModel.findByUsername(username);
       if (existingUser) {
         return res.status(409).json({ message: 'User already exists' });
       }
 
-      const userId = await UserModel.create(username, password, fullname, birth, phonenumber, email, address);
-      const role = await UserModel.setRole(userId);
-      if (!role) {
-        return res.status(500).json({ message: 'Failed to set user role' });
-      }
+      const userId = await AuthModel.create(username, password, fullname, birth, phonenumber, email, address);
+      // const role = await AuthModel.setRole(userId);
+      // if (!role) {
+      //   return res.status(500).json({ message: 'Failed to set user role' });
+      // }
 
       res.status(201).json({
         message: 'User registered successfully',
@@ -35,39 +35,35 @@ class AuthController {
       const { username, password } = req.body;
 
       if (!username || !password) {
-        return res.status(400).json({ message: 'Email and password are required' });
+        return res.status(400).json({ message: 'Username and password are required' });
       }
 
-      const user = await UserModel.findByUsername(username);
-      // console.log(user);
+      const user = await AuthModel.findByUsername(username);
       if (!user) {
         return res.status(401).json({ message: 'Invalid credentials' });
       }
-      const role = await UserModel.getRole(user.id);
+      // const role = await AuthModel.getRole(user.id);
 
       // Fix: Change email to username since we're using username for login
-      const hashedPassword = await UserModel.findPasswordByUsername(username);
-      const validPassword = await UserModel.verifyPassword(password, hashedPassword);
+      const hashedPassword = await AuthModel.findPasswordByUsername(username);
+      const validPassword = await AuthModel.verifyPassword(password, hashedPassword);
       if (!validPassword) {
         return res.status(401).json({ message: 'Invalid credentials' });
       }
 
-      const token = jwt.sign(
-        { userId: user.id, email: user.email },
-        process.env.JWT_SECRET || 'default_secret_key',
-        { expiresIn: '1h' }
-      );
+      // const token = jwt.sign(
+      //   { userId: user.id, email: user.email },
+      //   process.env.JWT_SECRET || 'default_secret_key',
+      //   { expiresIn: '1h' }
+      // );
 
       // Decode token to get expiration time
-      const decoded = jwt.decode(token);
-      const expiresAt = new Date(decoded.exp * 1000);
+      // const decoded = jwt.decode(token);
+      // const expiresAt = new Date(decoded.exp * 1000);
 
       res.json({
         message: 'Login successful',
-        token,
-        role,
-        expiresAt: expiresAt.toISOString(),
-        expiresIn: 3600 
+        userId: user.id
       });
     } catch (error) {
       console.error('Login error:', error);

@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import styles from './Login.module.css';
 import Button from '../../../components/ui/Button/Button';
 import Input from '../../../components/ui/Input/Input';
-import { AuthService } from '../../../services/AuthService';
 import { useAuth } from '../../../hooks/useAuth';
 
 interface LoginProps {
@@ -16,44 +15,45 @@ const Login: React.FC<LoginProps> = ({ onClose, onSwitchToRegister, onLogin }) =
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
     const { login } = useAuth();
+    
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');  // Clear previous errors
+        setLoading(true);
         
         if (!username) {
             setError('Please enter your username');
+            setLoading(false);
             return;
         }
         if (!password) {
             setError('Please enter your password');
+            setLoading(false);
             return;
         }
 
         try {
-            const response = await AuthService.login({ username, password });
+            const result = await login(username, password);
             
-            await login(username, password); // Call the login function from AuthContext
-            if (response.loading) {
-                setError('Loading...');
-                return;
+            if (result.success) {
+                onLogin(username, password);
+                onClose();
+            } else {
+                setError(result.message);
             }
-
-            if (response.error) {
-                setError(response.error);
-                return;
-            }
-
-            if (!response.isAuthenticated || !response.token) {
-                setError('Authentication failed. Please try again.');
-                return;
-            }
-
-            onLogin(username, password);
-            onClose();
         } catch (err: unknown) {
             console.error('Login error:', err);
-            setError('An unexpected error occurred. Please try again later.');
+            
+            // Try to extract more specific error message
+            if (err instanceof Error) {
+                setError(err.message);
+            } else {
+                setError('An unexpected error occurred. Please try again later.');
+            }
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -97,8 +97,9 @@ const Login: React.FC<LoginProps> = ({ onClose, onSwitchToRegister, onLogin }) =
                         variant="primary"
                         size="large"
                         className={styles.submitButton}
+                        disabled={loading}
                     >
-                        Sign In
+                        {loading ? 'Signing In...' : 'Sign In'}
                     </Button>
                     <div className={styles.divider}>
                         <span>or</span>
