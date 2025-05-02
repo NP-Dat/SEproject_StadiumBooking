@@ -3,6 +3,7 @@ import Home from '../pages/Home/Home'
 import About from '../pages/About/About'
 import Venues from '../pages/Venues/Venues'
 import Events from '../pages/Events/Events'
+import EventDetail from '../pages/Events/EventDetail'
 import FAQ from '../pages/Support/FAQ'
 import Terms from '../pages/Support/Terms'
 import Privacy from '../pages/Support/Privacy'
@@ -18,6 +19,10 @@ export const publicRoutes: RouteType[] = [
   {
     path: '/events',
     element: <Events />
+  },
+  {
+    path: '/events/:eventId',
+    element: <EventDetail />
   },
   {
     path: '/venues',

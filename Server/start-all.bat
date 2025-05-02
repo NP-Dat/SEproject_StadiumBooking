@@ -16,12 +16,12 @@ call npm install
 start "User Service (Port 8002)" cmd /k npm run dev
 cd ../..
 
-@REM REM Start Event Service
-@REM echo Starting Event Service...
-@REM cd microservice/Event
-@REM call npm install
-@REM start "Event Service (Port 8003)" cmd /k npm run dev
-@REM cd ../..
+REM Start Event Service
+echo Starting Event Service...
+cd microservice/Event
+call npm install
+start "Event Service (Port 8003)" cmd /k npm run dev
+cd ../..
 
 @REM REM Start Booking Service
 @REM echo Starting Booking Service...
