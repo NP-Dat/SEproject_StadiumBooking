@@ -7,12 +7,12 @@
     padding: 6rem 2rem;
     position: relative;
     overflow: hidden;
-    background: linear-gradient(135deg, rgba(226, 232, 240, 0.95), rgba(241, 245, 249, 0.95)),
-        url('https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=1920&h=1080&fit=crop');
+    background: url("https://i.imgur.com/yir6WUu.jpeg");
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
 }
+
 
 .hero::before {
     content: '';

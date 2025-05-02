@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import styles from "./Feature.module.css";
 
 const features = [
@@ -38,31 +37,23 @@ const Feature = () => {
     return (
         <section className={styles.features}>
             <div className={styles.container}>
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
-                    className={styles.header}
-                >
+                <div className={styles.header}>
                     <h2 className={styles.title}>Why Choose Us</h2>
                     <p className={styles.subtitle}>
                         Experience the best in stadium booking with our premium features
                     </p>
-                </motion.div>
+                </div>
 
                 <div className={styles.featuresGrid}>
                     {features.map((feature, index) => (
-                        <motion.div
+                        <div
                             key={index}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: index * 0.1 }}
                             className={styles.featureCard}
                         >
                             <div className={styles.icon}>{feature.icon}</div>
                             <h3 className={styles.featureTitle}>{feature.title}</h3>
                             <p className={styles.description}>{feature.description}</p>
-                        </motion.div>
+                        </div>
                     ))}
                 </div>
             </div>

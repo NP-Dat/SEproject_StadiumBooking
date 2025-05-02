@@ -1,45 +1,37 @@
-import { motion } from "framer-motion";
 import styles from "./Hero.module.css";
+import Button from "../../../../components/ui/Button/Button";
 
 const Hero = () => {
     return (
         <section className={styles.hero}>
-            <div className={styles.heroBackground} />
+            <div
+                className={styles.heroBackground}
+                style={{ backgroundImage: `url("https://i.imgur.com/vc5mmpw.jpeg")` }}
+            />
             <div className={styles.heroContent}>
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8 }}
-                >
+                <div>
                     <h1 className={styles.title}>
-                        Experience the Thrill of Live Sports
+                        Experience the Thrill of Live Events
                     </h1>
                     <p className={styles.subtitle}>
-                        Book your seats for the most exciting sports events.
-                        Get the best view of the action with our premium seating options.
+                        From thrilling sports action to unforgettable concerts and performances,
+                        our multi-purpose stadium offers premium seating for every occasion.
+                        Experience the best in entertainment, all under one roof.
                     </p>
-                </motion.div>
+                </div>
 
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.2 }}
-                    className={styles.ctaContainer}
-                >
-                    <button className={styles.primaryButton}>
-                        Book Now
-                    </button>
-                    <button className={styles.secondaryButton}>
+                <div className={styles.ctaContainer}>
+                    <Button
+                        variant="primary"
+                        size="large"
+                        className={styles.button}
+                        to="/events"
+                    >
                         View Events
-                    </button>
-                </motion.div>
+                    </Button>
+                </div>
 
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.4 }}
-                    className={styles.statsContainer}
-                >
+                <div className={styles.statsContainer}>
                     <div className={styles.statItem}>
                         <div className={styles.statNumber}>50+</div>
                         <div className={styles.statLabel}>Events Monthly</div>
@@ -52,7 +44,7 @@ const Hero = () => {
                         <div className={styles.statNumber}>24/7</div>
                         <div className={styles.statLabel}>Support</div>
                     </div>
-                </motion.div>
+                </div>
             </div>
         </section>
     );
