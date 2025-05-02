@@ -1,8 +1,7 @@
 .eventsContainer {
-    padding: 4rem 2rem;
-    max-width: 1400px;
+    max-width: 1200px;
     margin: 0 auto;
-    width: 100%;
+    padding: 2rem;
 }
 
 .header {
@@ -12,17 +11,84 @@
 
 .title {
     font-size: 2.5rem;
-    font-weight: 700;
-    color: #1e293b;
+    color: #333;
     margin-bottom: 1rem;
-    background: linear-gradient(135deg, #00B4D8, #0096C7);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
 }
 
 .subtitle {
-    color: #64748b;
-    font-size: 1.125rem;
+    font-size: 1.2rem;
+    color: #666;
+}
+
+.eventsList {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.eventCard {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+    display: flex;
+    flex-direction: column;
+}
+
+.eventCard:hover {
+    transform: translateY(-5px);
+}
+
+.eventTitle {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.eventDate {
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+.eventOwner {
+    color: #888;
+    font-style: italic;
+    margin-bottom: 1.5rem;
+}
+
+.bookButton {
+    background: linear-gradient(135deg, #00B4D8, #0096C7);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: auto;
+    align-self: flex-start;
+}
+
+.bookButton:hover {
+    background: linear-gradient(135deg, #0096C7, #0077B6);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.loading {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #666;
+    padding: 2rem;
+}
+
+.error {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #dc3545;
+    padding: 2rem;
 }
 
 .filters {
@@ -79,28 +145,9 @@
     box-shadow: 0 0 0 2px rgba(0, 180, 216, 0.15);
 }
 
-.eventsGrid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 2rem;
-}
-
-.eventCard {
-    background: white;
-    border-radius: 1rem;
-    overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-}
-
-.eventCard:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-}
-
 .eventImage {
     position: relative;
-    height: 150px;
+    height: 200px;
     overflow: hidden;
 }
 
@@ -128,22 +175,11 @@
     text-transform: uppercase;
 }
 
-.eventContent {
-    padding: 1rem;
-}
-
-.eventTitle {
-    font-size: 1.125rem;
-    font-weight: 600;
-    color: #1e293b;
-    margin-bottom: 0.75rem;
-}
-
 .eventDetails {
     margin-bottom: 1rem;
 }
 
-.eventDate, .eventVenue {
+.eventVenue {
     color: #64748b;
     font-size: 0.875rem;
     margin: 0.25rem 0;
@@ -153,8 +189,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 0.5rem;
-    padding-top: 0.5rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
     border-top: 1px solid rgba(0, 180, 216, 0.1);
 }
 
@@ -162,23 +198,6 @@
     font-size: 1.25rem;
     font-weight: 600;
     color: #00B4D8;
-}
-
-.bookButton {
-    padding: 0.5rem 1rem;
-    background: linear-gradient(135deg, #00B4D8, #0096C7);
-    color: white;
-    border: none;
-    border-radius: 20px;
-    font-weight: 600;
-    font-size: 0.875rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.bookButton:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 180, 216, 0.25);
 }
 
 @media (max-width: 768px) {
@@ -214,7 +233,7 @@
         font-size: 1.75rem;
     }
 
-    .eventsGrid {
+    .eventsList {
         grid-template-columns: 1fr;
     }
 } 

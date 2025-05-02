@@ -1,61 +1,127 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../hooks/useAuth';
 import styles from './Events.module.css';
+import Login from '../Auth/Login/Login';
+import Register from '../Auth/Register/Register';
+
+interface Event {
+    id: number;
+    name: string;
+    date: string;
+    owner: string;
+}
 
 const Events = () => {
-    const [selectedCategory, setSelectedCategory] = useState('all');
-    const [selectedDate, setSelectedDate] = useState('all');
+    const [events, setEvents] = useState<Event[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const [showLoginModal, setShowLoginModal] = useState(false);
+    const [showRegisterModal, setShowRegisterModal] = useState(false);
+    const [selectedEventId, setSelectedEventId] = useState<number | null>(null);
+    const navigate = useNavigate();
+    const { isAuthenticated, login, register } = useAuth();
 
-    const categories = [
-        { id: 'all', name: 'All Events' },
-        { id: 'sports', name: 'Sports' },
-        { id: 'concerts', name: 'Concerts' },
-        { id: 'family', name: 'Family' },
-        { id: 'special', name: 'Special Events' }
-    ];
+    useEffect(() => {
+        const fetchEvents = async () => {
+            try {
+                console.log('Fetching events from:', 'http://localhost:8003/api/events/');
+                const response = await fetch('http://localhost:8003/api/events/', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => null);
+                    console.error('API Response:', {
+                        status: response.status,
+                        statusText: response.statusText,
+                        errorData
+                    });
+                    throw new Error(`Failed to fetch events: ${response.status} ${response.statusText}`);
+                }
+                
+                const responseData = await response.json();
+                console.log('Received events data:', responseData);
+                
+                if (responseData.success && Array.isArray(responseData.data)) {
+                    setEvents(responseData.data);
+                } else {
+                    throw new Error('Invalid response format from server');
+                }
+            } catch (err) {
+                console.error('Fetch error:', err);
+                setError(err instanceof Error ? err.message : 'An error occurred while fetching events');
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    const events = [
-        {
-            id: 1,
-            title: 'Championship Final',
-            category: 'sports',
-            date: '2024-06-15',
-            time: '7:00 PM',
-            venue: 'Main Stadium',
-            image: '/event1.jpg',
-            price: '$50'
-        },
-        {
-            id: 2,
-            title: 'Summer Concert Series',
-            category: 'concerts',
-            date: '2024-07-20',
-            time: '8:00 PM',
-            venue: 'Arena Hall',
-            image: '/event2.jpg',
-            price: '$75'
-        },
-        {
-            id: 3,
-            title: 'Summer Concert Series',
-            category: 'concerts',
-            date: '2024-07-20',
-            time: '8:00 PM',
-            venue: 'Arena Hall',
-            image: '/event2.jpg',
-            price: '$75'
-        },
-        {
-            id: 4,
-            title: 'Summer Concert Series',
-            category: 'concerts',
-            date: '2024-07-20',
-            time: '8:00 PM',
-            venue: 'Arena Hall',
-            image: '/event2.jpg',
-            price: '$75'
-        },
-       
-    ];
+        fetchEvents();
+    }, []);
+
+    const formatDate = (dateString: string) => {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    };
+
+    const handleBookEvent = (eventId: number) => {
+        if (!isAuthenticated) {
+            setSelectedEventId(eventId);
+            setShowLoginModal(true);
+        } else {
+            navigate(`/events/${eventId}`);
+        }
+    };
+
+    const handleLoginSuccess = async (username: string, password: string) => {
+        try {
+            await login(username, password);
+            setShowLoginModal(false);
+            if (selectedEventId) {
+                navigate(`/events/${selectedEventId}`);
+            }
+        } catch (error) {
+            console.error('Login failed:', error);
+        }
+    };
+
+    const handleRegisterSuccess = async (
+        username: string,
+        email: string,
+        password: string,
+        fullname: string,
+        birth: string,
+        phonenumber: string,
+        address: string
+    ) => {
+        try {
+            await register(username, email, password, fullname, birth, phonenumber, address);
+            setShowRegisterModal(false);
+            if (selectedEventId) {
+                navigate(`/events/${selectedEventId}`);
+            }
+        } catch (error) {
+            console.error('Registration failed:', error);
+        }
+    };
+
+    if (loading) {
+        return <div className={styles.loading}>Loading events...</div>;
+    }
+
+    if (error) {
+        return <div className={styles.error}>Error: {error}</div>;
+    }
 
     return (
         <div className={styles.eventsContainer}>
@@ -64,55 +130,43 @@ const Events = () => {
                 <p className={styles.subtitle}>Find and book tickets for the best events in town</p>
             </div>
 
-            <div className={styles.filters}>
-                <div className={styles.categoryFilter}>
-                    {categories.map(category => (
-                        <button
-                            key={category.id}
-                            className={`${styles.filterButton} ${selectedCategory === category.id ? styles.active : ''}`}
-                            onClick={() => setSelectedCategory(category.id)}
-                        >
-                            {category.name}
-                        </button>
-                    ))}
-                </div>
-
-                <div className={styles.dateFilter}>
-                    <select
-                        value={selectedDate}
-                        onChange={(e) => setSelectedDate(e.target.value)}
-                        className={styles.dateSelect}
-                    >
-                        <option value="all">All Dates</option>
-                        <option value="today">Today</option>
-                        <option value="tomorrow">Tomorrow</option>
-                        <option value="week">This Week</option>
-                        <option value="month">This Month</option>
-                    </select>
-                </div>
-            </div>
-
-            <div className={styles.eventsGrid}>
-                {events.map(event => (
+            <div className={styles.eventsList}>
+                {events.map((event) => (
                     <div key={event.id} className={styles.eventCard}>
-                        <div className={styles.eventImage}>
-                            <img src={event.image} alt={event.title} />
-                            <span className={styles.eventCategory}>{event.category}</span>
-                        </div>
-                        <div className={styles.eventContent}>
-                            <h3 className={styles.eventTitle}>{event.title}</h3>
-                            <div className={styles.eventDetails}>
-                                <p className={styles.eventDate}>{event.date} at {event.time}</p>
-                                <p className={styles.eventVenue}>{event.venue}</p>
-                            </div>
-                            <div className={styles.eventFooter}>
-                                <span className={styles.eventPrice}>{event.price}</span>
-                                <button className={styles.bookButton}>Book Now</button>
-                            </div>
-                        </div>
+                        <h2 className={styles.eventTitle}>{event.name}</h2>
+                        <p className={styles.eventDate}>{formatDate(event.date)}</p>
+                        <p className={styles.eventOwner}>Organized by: {event.owner}</p>
+                        <button 
+                            className={styles.bookButton}
+                            onClick={() => handleBookEvent(event.id)}
+                        >
+                            Book Now
+                        </button>
                     </div>
                 ))}
             </div>
+
+            {showLoginModal && (
+                <Login
+                    onClose={() => setShowLoginModal(false)}
+                    onSwitchToRegister={() => {
+                        setShowLoginModal(false);
+                        setShowRegisterModal(true);
+                    }}
+                    onLogin={handleLoginSuccess}
+                />
+            )}
+
+            {showRegisterModal && (
+                <Register
+                    onClose={() => setShowRegisterModal(false)}
+                    onSwitchToLogin={() => {
+                        setShowRegisterModal(false);
+                        setShowLoginModal(true);
+                    }}
+                    onRegister={handleRegisterSuccess}
+                />
+            )}
         </div>
     );
 };
