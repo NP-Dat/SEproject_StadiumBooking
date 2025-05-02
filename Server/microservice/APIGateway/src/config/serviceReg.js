@@ -41,8 +41,7 @@ const services = {
     payments: {
       url: process.env.PAYMENT_SERVICE_URL || 'http://localhost:8005',
       routes: [
-        '/api/payments',
-        '/api/wallets'
+        '/api/payments'
       ]
     }
     // Add other services here as needed

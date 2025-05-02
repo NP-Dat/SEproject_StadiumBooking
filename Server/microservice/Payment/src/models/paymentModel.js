@@ -1,4 +1,4 @@
-const { Paymentpool } = require('../config/db');
+const Paymentpool = require('../config/db');
 
 class PaymentModel {
   // Wallet operations
@@ -11,8 +11,7 @@ class PaymentModel {
   }
 
   static async createOrUpdateWallet(userId, initialBalance = 0) {
-    testDatabaseConnection(); // Check database connection
-    
+  
     const [existingWallet] = await Paymentpool.query(
       'SELECT id FROM Wallet WHERE userID = ?',
       [userId]
@@ -120,10 +119,11 @@ class PaymentModel {
         [totalPrice, userId]
       );
       
-      // 4. Update cart status in the stadium booking database (via API call)
-      // This would be handled by an API call to the stadium booking service
-      // We assume the stadium booking service handles cart status updates
-      
+      // 4. Update cart status to 'paid'
+      await connection.query(
+        'UPDATE Carts SET status = "paid" WHERE id = ?',
+        [cartId]
+      );
       await connection.commit();
       
       return {

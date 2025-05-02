@@ -11,19 +11,9 @@ router.post('/process', authenticateToken, PaymentController.processPayment);
 // Get Payment Status
 router.get('/:id/status', PaymentController.getPaymentStatus);
 
-// Wallet Management
-router.post('/initialize', authenticateToken, PaymentController.initializeWallet);
-
 // Get Wallet Balance
 router.get('/balance/:userID', authenticateToken, PaymentController.getWalletBalance);
 
-// Top Up Wallet
-router.post('/topup', authenticateToken, PaymentController.topUpWallet);
-
-// Process Refund
-router.post('/refund', authenticateToken, PaymentController.processRefund);
-
-// Process Stripe Payment
-router.post('/stripe', authenticateToken, PaymentController.processStripePayment);
-
+//Add funds to Wallet
+router.post('/addFunds', authenticateToken, PaymentController.addFundsToWallet);
 module.exports = router;

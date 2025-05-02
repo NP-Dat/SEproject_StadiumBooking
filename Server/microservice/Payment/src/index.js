@@ -12,13 +12,12 @@ app.use(express.json());
 
 // Routes
 app.use('/api/payments', paymentRoutes);
-app.use('/api/wallets', paymentRoutes);
 // Health check endpoint
 app.get('/health', (req, res) => {
-  res.json({ status: 'OK', message: 'Booking service is running' });
+  res.json({ status: 'OK', message: 'Payment service is running' });
 });
 
 const PORT = process.env.PORT || 8004;
 app.listen(PORT, () => {
-  console.log(`Booking service running on port ${PORT}`);
+  console.log(`Payment service running on port ${PORT}`);
 });

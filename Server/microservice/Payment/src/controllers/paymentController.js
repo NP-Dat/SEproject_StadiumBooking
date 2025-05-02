@@ -2,9 +2,7 @@ const PaymentModel = require('../models/paymentModel');
 const PaymentService = require('../services/paymentService');
 
 class PaymentController {
-  // Process Payment (Wallet)
   static async processPayment(req, res) {
-    console.log('Processing payment...');
     try {
       const { userID, amount, cartID } = req.body;
       
@@ -27,10 +25,14 @@ class PaymentController {
         return res.status(statusCode).json(result);
       }
       
-      res.json(result);
+      res.json({
+        success: true,
+        message: 'Payment processed successfully',
+        payment: result.payment
+      });
       
     } catch (error) {
-      console.error('Payment error:', error);
+      console.error('Error processing payment:', error);
       const statusCode = error.message.includes('balance') || 
                         error.message.includes('funds') ? 402 : 500;
       res.status(statusCode).json({ 
@@ -40,10 +42,8 @@ class PaymentController {
     }
   }
 
-  // Get Payment Status
   static async getPaymentStatus(req, res) {
     try {
-      // Optionally include userID if available for balance information
       const userID = req.query.userID || null;
       const payment = await PaymentService.getPaymentStatus(req.params.id, userID);
       
@@ -59,7 +59,7 @@ class PaymentController {
         payment
       });
     } catch (error) {
-      console.error('Status check error:', error);
+      console.error('Error retrieving payment status:', error);
       res.status(500).json({ 
         success: false, 
         message: 'Failed to retrieve payment status' 
@@ -67,36 +67,32 @@ class PaymentController {
     }
   }
 
-  // Wallet Management
-  static async initializeWallet(req, res) {
-    console.log('Initializing wallet...');
+  static async getPaymentHistory(req, res) {
     try {
-      const { userID } = req.body;
+      const userID = req.params.userID;
+      const history = await PaymentService.getPaymentHistory(userID);
       
-      if (!userID) {
-        return res.status(400).json({ 
+      if (!history) {
+        return res.status(404).json({ 
           success: false, 
-          message: 'User ID is required' 
+          message: 'No payment history found' 
         });
       }
       
-      const balance = await PaymentService.initializeWallet(userID);
-      
-      res.json({ 
-        success: true, 
-        userID, 
-        balance 
+      res.json({
+        success: true,
+        userID,
+        history
       });
     } catch (error) {
-      console.log(error);
+      console.error('Error retrieving payment history:', error);
       res.status(500).json({ 
         success: false, 
-        message: 'Wallet initialization failed' 
+        message: 'Failed to retrieve payment history' 
       });
     }
   }
 
-  // Get Wallet Balance
   static async getWalletBalance(req, res) {
     try {
       const userID = req.params.userID;
@@ -108,7 +104,7 @@ class PaymentController {
         balance
       });
     } catch (error) {
-      console.error('Balance check error:', error);
+      console.error('Error retrieving wallet balance:', error);
       res.status(500).json({ 
         success: false, 
         message: 'Failed to retrieve wallet balance' 
@@ -116,95 +112,33 @@ class PaymentController {
     }
   }
 
-  // Top Up Wallet
-  static async topUpWallet(req, res) {
+  static async addFundsToWallet(req, res) {
     try {
       const { userID, amount } = req.body;
       
       if (!userID || !amount) {
         return res.status(400).json({ 
           success: false, 
-          message: 'User ID and amount are required' 
+          message: 'Missing required parameters' 
         });
       }
       
-      const result = await PaymentService.topUpWallet(userID, parseFloat(amount));
+      const result = await PaymentService.addFundsToWallet(userID, parseFloat(amount));
       
       if (!result.success) {
-        return res.status(400).json(result);
+        return res.status(500).json(result);
       }
       
-      res.json(result);
-    } catch (error) {
-      console.error('Top-up error:', error);
-      res.status(500).json({ 
-        success: false, 
-        message: 'Wallet top-up failed' 
+      res.json({
+        success: true,
+        message: 'Funds added successfully',
+        wallet: result.wallet
       });
-    }
-  }
-
-  // Process Refund
-  static async processRefund(req, res) {
-    try {
-      const { paymentID, userID, amount } = req.body;
-      
-      if (!paymentID || !userID) {
-        return res.status(400).json({ 
-          success: false, 
-          message: 'Payment ID and User ID are required' 
-        });
-      }
-      
-      const result = await PaymentService.processRefund(
-        paymentID,
-        userID,
-        amount ? parseFloat(amount) : null
-      );
-      
-      if (!result.success) {
-        return res.status(400).json(result);
-      }
-      
-      res.json(result);
     } catch (error) {
-      console.error('Refund error:', error);
+      console.error('Error adding funds to wallet:', error);
       res.status(500).json({ 
         success: false, 
-        message: 'Refund processing failed' 
-      });
-    }
-  }
-
-  // For Stripe payments
-  static async processStripePayment(req, res) {
-    try {
-      const { userID, amount, cartID, paymentToken } = req.body;
-      
-      if (!userID || !amount || !cartID || !paymentToken) {
-        return res.status(400).json({ 
-          success: false, 
-          message: 'Missing required parameters for Stripe payment' 
-        });
-      }
-      
-      const result = await PaymentService.processStripePayment(
-        userID,
-        parseFloat(amount),
-        cartID,
-        paymentToken
-      );
-      
-      if (!result.success) {
-        return res.status(400).json(result);
-      }
-      
-      res.json(result);
-    } catch (error) {
-      console.error('Stripe payment error:', error);
-      res.status(500).json({ 
-        success: false, 
-        message: error.message 
+        message: 'Failed to add funds to wallet' 
       });
     }
   }
