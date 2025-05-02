@@ -1,6 +1,12 @@
 @echo off
 echo Starting all microservices... 
 
+REM Start API Gateway
+echo Starting API Gateway...
+cd microservice/APIGateway
+call npm install
+start "API Gateway (Port 8000)" cmd /k npm run dev
+cd ../..
 
 REM Start Auth Service
 echo Starting Auth Service...
@@ -23,12 +29,19 @@ call npm install
 start "Event Service (Port 8003)" cmd /k npm run dev
 cd ../..
 
-@REM REM Start Booking Service
-@REM echo Starting Booking Service...
-@REM cd microservice/Booking
-@REM call npm install
-@REM start "Booking Service (Port 8004)" cmd /k npm run dev
-@REM cd ../..
+REM Start Booking Service
+echo Starting Booking Service...
+cd microservice/Booking
+call npm install
+start "Booking Service (Port 8004)" cmd /k npm run dev
+cd ../..
+
+REM Start Ticket Service
+echo Starting Ticket Service...
+cd microservice/Ticket
+call npm install
+start "Ticket Service (Port 8005)" cmd /k npm run dev
+cd ../..
 
 @REM REM Start Event Owner Service
 @REM echo Starting Event Owner Service...
@@ -37,12 +50,6 @@ cd ../..
 @REM start "Event Owner Service (Port 8008)" cmd /k npm run dev
 @REM cd ../..
 
-REM Start API Gateway
-echo Starting API Gateway...
-cd microservice/APIGateway
-call npm install
-start "API Gateway (Port 8000)" cmd /k npm run dev
-cd ../..
 
 @REM REM Start Client
 @REM echo Starting Client...

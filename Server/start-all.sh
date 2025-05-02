@@ -1,77 +1,56 @@
 #!/bin/bash
-
-# Function to terminate all services
-terminate_services() {
-  echo "Terminating all services..."
-  # Kill all background jobs
-  pkill -P $$
-  exit 0
-}
-
-# Set trap for Ctrl+C (SIGINT)
-trap terminate_services SIGINT
+# filepath: d:/Phuc Dat/IU/MY PROJECT/SE/SEproject_StadiumBooking/Server/start-all.sh
 
 echo "Starting all microservices..."
 
-# Start Auth Service
-echo "Starting Auth Service (Port 8001)..."
-cd microservice/Auth || exit
-npm install --silent &> /dev/null
-nohup npm run dev --silent &> auth_service.log &
-echo -e "Auth Service started on Port 8001\n"
-cd ../..
+# Function to start a service
+start_service() {
+    local service_name=$1
+    local port=$2
+    local dir=$3
+    
+    echo "Starting $service_name..."
+    pushd $dir > /dev/null
+    npm install
+    echo "[$service_name ($port)] Starting in new terminal..."
+    gnome-terminal --title="$service_name (Port $port)" -- bash -c "npm run dev; read -p 'Press Enter to close...'" 2>/dev/null || \
+    xterm -T "$service_name (Port $port)" -e "npm run dev; read -p 'Press Enter to close...'" 2>/dev/null || \
+    konsole --new-tab -p tabtitle="$service_name (Port $port)" -e bash -c "npm run dev; read -p 'Press Enter to close...'" 2>/dev/null || \
+    x-terminal-emulator -T "$service_name (Port $port)" -e bash -c "npm run dev; read -p 'Press Enter to close...'" 2>/dev/null || \
+    echo "Could not open terminal window for $service_name, running in background instead" && npm run dev &
+    popd > /dev/null
+}
 
 # Start API Gateway
-echo "Starting API Gateway (Port 8000)..."
-cd microservice/APIGateway || exit
-npm install --silent &> /dev/null
-nohup npm run dev --silent &> api_gateway.log &
-echo -e "API Gateway started on Port 8000\n"
-cd ../..
+start_service "API Gateway" 8000 "microservice/APIGateway"
 
-# Uncomment and modify the following blocks as needed for other services:
+# Start Auth Service
+start_service "Auth Service" 8001 "microservice/Auth"
 
 # Start User Service
-# echo "Starting User Service (Port 8002)..."
-# cd microservice/User || exit
-# npm install --silent &> /dev/null
-# nohup npm run dev --silent &> user_service.log &
-# echo "User Service started on Port 8002"
-# cd ../..
+start_service "User Service" 8002 "microservice/User"
 
 # Start Event Service
-# echo "Starting Event Service (Port 8003)..."
-# cd microservice/Event || exit
-# npm install --silent &> /dev/null
-# nohup npm run dev --silent &> event_service.log &
-# echo "Event Service started on Port 8003"
-# cd ../..
+start_service "Event Service" 8003 "microservice/Event"
 
 # Start Booking Service
-# echo "Starting Booking Service (Port 8004)..."
-# cd microservice/Booking || exit
-# npm install --silent &> /dev/null
-# nohup npm run dev --silent &> booking_service.log &
-# echo "Booking Service started on Port 8004"
-# cd ../..
+start_service "Booking Service" 8004 "microservice/Booking"
 
-# Start Event Owner Service
-# echo "Starting Event Owner Service (Port 8008)..."
-# cd microservice/event_owner || exit
-# npm install --silent &> /dev/null
-# nohup npm run dev --silent &> event_owner_service.log &
-# echo "Event Owner Service started on Port 8008"
-# cd ../..
+# Start Ticket Service
+start_service "Ticket Service" 8005 "microservice/Ticket"
 
-# Start Client (if needed)
-# echo "Starting Client (Port 3000)..."
-# cd client/event-owner-client || exit
-# npm install --silent &> /dev/null
-# nohup npm start --silent &> client.log &
-# echo "Client started on Port 3000"
-# cd ../..
+# Commented services
+# Uncomment to enable
 
-echo "All services are starting in the background..."
+# # Start Event Owner Service
+# start_service "Event Owner Service" 8008 "microservice/event_owner"
 
-# Wait indefinitely so the script doesn't exit and terminates services when Ctrl+C is pressed
-wait
+# # Start Client
+# start_service "Client" 3000 "client/event-owner-client"
+
+echo "All services are starting in separate terminal windows."
+echo "Note: This script attempts to use gnome-terminal, xterm, konsole, or a generic terminal"
+echo "If no terminal is available, services will run in background"
+
+# "chmod +x start-all.sh" to make the script executable
+# "./start-all.sh" to run the script
