@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import styles from "./JoinUs.module.css";
 import Button from "../../../../components/ui/Button/Button";
 import Input from "../../../../components/ui/Input/Input";
@@ -15,38 +14,25 @@ const JoinUs = () => {
     return (
         <section className={styles.joinUs}>
             <div className={styles.container}>
-                <motion.div
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.6 }}
-                    className={styles.content}
-                >
+                <div className={styles.content}>
                     <h2 className={styles.title}>Join Our Community</h2>
                     <p className={styles.description}>
                         Become part of our exclusive community and unlock a world of premium sports and entertainment experiences.
                     </p>
                     <div className={styles.benefitsList}>
                         {benefits.map((benefit, index) => (
-                            <motion.div
+                            <div
                                 key={index}
-                                initial={{ opacity: 0, x: -20 }}
-                                whileInView={{ opacity: 1, x: 0 }}
-                                transition={{ duration: 0.6, delay: index * 0.1 }}
                                 className={styles.benefitItem}
                             >
                                 <span className={styles.benefitIcon}>✓</span>
                                 <span>{benefit}</span>
-                            </motion.div>
+                            </div>
                         ))}
                     </div>
-                </motion.div>
+                </div>
 
-                <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.6 }}
-                    className={styles.formContainer}
-                >
+                <div className={styles.formContainer}>
                     <h3 className={styles.formTitle}>Create Your Account</h3>
                     <form className={styles.form}>
                         <Input
@@ -85,7 +71,7 @@ const JoinUs = () => {
                             Sign Up Now
                         </Button>
                     </form>
-                </motion.div>
+                </div>
             </div>
         </section>
     );

@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import styles from "./Venue.module.css";
 
 const venues = [
@@ -33,30 +32,17 @@ const Venue = () => {
         <section className={styles.venues}>
             <div className={styles.container}>
                 <div className={styles.sectionHeader}>
-                    <motion.h2
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
-                        className={styles.sectionTitle}
-                    >
+                    <h2 className={styles.sectionTitle}>
                         Featured Venues
-                    </motion.h2>
-                    <motion.p
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
-                        className={styles.sectionSubtitle}
-                    >
+                    </h2>
+                    <p className={styles.sectionSubtitle}>
                         Experience world-class events at these iconic stadiums
-                    </motion.p>
+                    </p>
                 </div>
                 <div className={styles.venuesGrid}>
-                    {venues.map((venue, index) => (
-                        <motion.div
+                    {venues.map((venue) => (
+                        <div
                             key={venue.name}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: index * 0.2 }}
                             className={styles.venueCard}
                         >
                             <div className={styles.venueImage}>
@@ -89,7 +75,7 @@ const Venue = () => {
                                     Explore Venue
                                 </button>
                             </div>
-                        </motion.div>
+                        </div>
                     ))}
                 </div>
             </div>

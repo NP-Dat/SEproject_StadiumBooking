@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import styles from "./Event.module.css";
 import Button from "../../../../components/ui/Button/Button";
 
@@ -33,25 +32,17 @@ const Event = () => {
     return (
         <section className={styles.events}>
             <div className={styles.container}>
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
-                    className={styles.header}
-                >
+                <div className={styles.header}>
                     <h2 className={styles.title}>Upcoming Events</h2>
                     <p className={styles.subtitle}>
                         Discover exciting sports events and secure your seats for the best matches
                     </p>
-                </motion.div>
+                </div>
 
                 <div className={styles.eventsGrid}>
-                    {events.map((event, index) => (
-                        <motion.div
+                    {events.map((event) => (
+                        <div
                             key={event.id}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: index * 0.2 }}
                             className={styles.eventCard}
                         >
                             <img
@@ -98,7 +89,7 @@ const Event = () => {
                                     </Button>
                                 </div>
                             </div>
-                        </motion.div>
+                        </div>
                     ))}
                 </div>
             </div>

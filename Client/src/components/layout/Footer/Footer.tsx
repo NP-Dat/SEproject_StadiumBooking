@@ -11,8 +11,7 @@ const Footer = () => {
                         Weblify<span className={styles.logoAccent}> Co.</span>
                     </h1>
                     <p className={styles.description}>
-                        Your premier destination for stadium seat bookings. Experience the thrill of live events with the best seats in the house.
-                    </p>
+                        Your premier destination for booking seats at multi-use stadiums. Whether it's sports events, concerts, or conferences, we provide the best seats in the house for all kinds of live experiences.                    </p>
                     <p className={styles.address}>
                         Thu Duc District, Ho Chi Minh City
                     </p>
@@ -61,16 +60,10 @@ const Footer = () => {
                     </div>
                     <div className={styles.socialLinks}>
                         <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
-                            <i className="fab fa-facebook"></i>
-                        </a>
-                        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
-                            <i className="fab fa-twitter"></i>
+                            <img src="https://i.imgur.com/BhYjdSJ.png" alt="Facebook" className={styles.socialIcon} />
                         </a>
                         <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
-                            <i className="fab fa-instagram"></i>
-                        </a>
-                        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
-                            <i className="fab fa-linkedin"></i>
+                            <img src="https://i.imgur.com/jaWNNeC.png" alt="Instagram" className={styles.socialIcon} />
                         </a>
                     </div>
                 </div>

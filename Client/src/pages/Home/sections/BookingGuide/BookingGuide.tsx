@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { useState } from "react";
 import styles from "./BookingGuide.module.css";
 import Button from "../../../../components/ui/Button/Button";
@@ -32,23 +31,15 @@ const BookingGuide = () => {
     return (
         <section className={styles.bookingGuide}>
             <div className={styles.container}>
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
-                    className={styles.header}
-                >
+                <div className={styles.header}>
                     <h2 className={styles.title}>How to Book Your Seats</h2>
                     <p className={styles.subtitle}>Follow these simple steps to secure your spot</p>
-                </motion.div>
+                </div>
 
                 <div className={styles.stepsGrid}>
                     {steps.map((step, index) => (
-                        <motion.div
+                        <div
                             key={index}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: index * 0.2 }}
                             className={`${styles.step} ${currentStep === index ? styles.active : ''}`}
                             onClick={() => setCurrentStep(index)}
                         >
@@ -71,16 +62,11 @@ const BookingGuide = () => {
                                     </svg>
                                 </div>
                             )}
-                        </motion.div>
+                        </div>
                     ))}
                 </div>
 
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.5 }}
-                    className={styles.cta}
-                >
+                <div className={styles.cta}>
                     <Button
                         variant="primary"
                         size="large"
@@ -89,7 +75,7 @@ const BookingGuide = () => {
                     >
                         Start Booking Now
                     </Button>
-                </motion.div>
+                </div>
             </div>
         </section>
     );
