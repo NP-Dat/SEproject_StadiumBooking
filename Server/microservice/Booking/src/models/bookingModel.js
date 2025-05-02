@@ -2,114 +2,124 @@ const pool = require('../config/db');
 const moment = require('moment');
 
 class BookingModel {
-  static async create(userId, eventId, tickets, totalAmount) {
-    const connection = await pool.getConnection();
-    
+  /**
+   * Get the biggest seatID for tickets with specific scheduleID and zoneID
+   * @param {number} scheduleID - The schedule ID
+   * @param {number} zoneID - The zone ID
+   * @returns {Promise<number>} - The biggest seatID or 0 if no records found
+   */
+  async getBiggestSeatID(scheduleID, zoneID) {
     try {
-      await connection.beginTransaction();
-
-      const bookingNumber = `BKG-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+      const query = `
+        SELECT MAX(seatID) AS maxSeatID
+        FROM Tickets
+        WHERE scheduleID = ? AND zoneID = ?
+      `;
       
-      const [booking] = await connection.query(
-        `INSERT INTO bookings (user_id, event_id, booking_number, 
-          total_tickets, total_amount)
-         VALUES (?, ?, ?, ?, ?)`,
-        [userId, eventId, bookingNumber, tickets.length, totalAmount]
-      );
-
-      for (const ticketId of tickets) {
-        await connection.query(
-          `INSERT INTO booking_details (booking_id, ticket_id, price)
-           VALUES (?, ?, ?)`,
-          [booking.insertId, ticketId, totalAmount / tickets.length]
-        );
-      }
-
-      await connection.commit();
-      return booking.insertId;
+      const [result] = await pool.query(query, [scheduleID, zoneID]);
+      
+      // Return the maxSeatID if found, otherwise return 0
+      return result[0]?.maxSeatID || 0;
     } catch (error) {
-      await connection.rollback();
+      console.error('Error getting biggest seatID:', error);
       throw error;
-    } finally {
-      connection.release();
     }
   }
 
-  static async updatePaymentStatus(bookingId, paymentIntentId, status) {
-    const [result] = await pool.query(
-      `UPDATE bookings 
-       SET payment_intent_id = ?, payment_status = ?, status = ?
-       WHERE id = ?`,
-      [paymentIntentId, status, status === 'paid' ? 'confirmed' : 'pending', bookingId]
-    );
-    return result.affectedRows > 0;
-  }
-
-  static async findById(id) {
-    const [bookings] = await pool.query(
-      `SELECT b.*, e.title as event_title, e.event_date, e.venue
-       FROM bookings b
-       JOIN events e ON b.event_id = e.id
-       WHERE b.id = ?`,
-      [id]
-    );
-    return bookings[0];
-  }
-
-  static async findByUser(userId) {
-    const [bookings] = await pool.query(
-      `SELECT b.*, e.title as event_title, e.event_date, e.venue
-       FROM bookings b
-       JOIN events e ON b.event_id = e.id
-       WHERE b.user_id = ?
-       ORDER BY b.created_at DESC`,
-      [userId]
-    );
-    return bookings;
-  }
-
-  static async cancel(id, userId) {
-    const connection = await pool.getConnection();
-    
+  /**
+   * Insert multiple tickets with incrementing seatIDs
+   * @param {number} userID - User ID for the tickets
+   * @param {number} startSeatID - Starting seat ID (will increment from this value)
+   * @param {number} scheduleID - Schedule ID for the tickets
+   * @param {number} zoneID - Zone ID for the tickets
+   * @param {number} cartID - Cart ID for the tickets
+   * @param {number} count - Number of tickets to insert
+   * @returns {Promise<Array>} - Array of inserted ticket IDs
+   */
+  async insertMultipleTickets(userID, startSeatID, scheduleID, zoneID, cartID, count) {
     try {
-      await connection.beginTransaction();
-
-      const [booking] = await connection.query(
-        `SELECT * FROM bookings 
-         WHERE id = ? AND user_id = ? AND status = 'confirmed'`,
-        [id, userId]
-      );
-
-      if (!booking[0]) {
-        throw new Error('Booking not found or cannot be cancelled');
+      const insertedTicketIds = [];
+      
+      // Begin transaction
+      await pool.query('START TRANSACTION');
+      
+      for (let i = 0; i < count; i++) {
+        const currentSeatID = startSeatID + i + 1; // Increment from the starting seat ID
+        
+        const query = `
+          INSERT INTO Tickets (userID, seatID, scheduleID, zoneID, cartID)
+          VALUES (?, ?, ?, ?, ?)
+        `;
+        
+        const [result] = await pool.query(query, [userID, currentSeatID, scheduleID, zoneID, cartID]);
+        insertedTicketIds.push(result.insertId);
       }
-
-      // Check cancellation deadline (e.g., 24 hours before event)
-      const [event] = await connection.query(
-        'SELECT event_date FROM events WHERE id = ?',
-        [booking[0].event_id]
-      );
-
-      const eventDate = moment(event[0].event_date);
-      const now = moment();
-      if (eventDate.diff(now, 'hours') < 24) {
-        throw new Error('Cannot cancel booking within 24 hours of event');
-      }
-
-      await connection.query(
-        `UPDATE bookings 
-         SET status = 'cancelled'
-         WHERE id = ?`,
-        [id]
-      );
-
-      await connection.commit();
-      return true;
+      
+      // Commit transaction
+      await pool.query('COMMIT');
+      
+      return insertedTicketIds;
     } catch (error) {
-      await connection.rollback();
+      // Rollback transaction in case of error
+      await pool.query('ROLLBACK');
+      console.error('Error inserting multiple tickets:', error);
       throw error;
-    } finally {
-      connection.release();
+    }
+  }
+
+  /**
+   * Create a new cart for a user with ticket information
+   * @param {number} userID - ID of the user creating the cart
+   * @param {Array<Object>} ticketInfo - Array of ticket information objects
+   *                                    Each object should have: {zoneID, scheduleID, quantity}
+   * @returns {Promise<Object>} - The created cart with ID and calculated values
+   */
+  async createCart(userID, ticketInfo) {
+    try {
+      // Begin transaction
+      await pool.query('START TRANSACTION');
+      
+      // Calculate total number of tickets
+      const numberOfTickets = ticketInfo.reduce((total, item) => total + item.quantity, 0);
+      
+      // Calculate total price by querying zone prices and multiplying by quantities
+      let totalPrice = 0;
+      for (const item of ticketInfo) {
+        const query = 'SELECT price FROM eventZone WHERE id = ?';
+        const [results] = await pool.query(query, [item.zoneID]);
+        
+        if (results.length === 0) {
+          throw new Error(`Zone with ID ${item.zoneID} not found`);
+        }
+        
+        const zonePrice = results[0].price;
+        totalPrice += zonePrice * item.quantity;
+      }
+      
+      // Insert the cart with unpaid status
+      const insertCartQuery = `
+        INSERT INTO Carts (userID, numberOfTicket, totalPrice, status)
+        VALUES (?, ?, ?, 'unPaid')
+      `;
+      
+      const [result] = await pool.query(insertCartQuery, [userID, numberOfTickets, totalPrice]);
+      const cartID = result.insertId;
+      
+      // Commit transaction
+      await pool.query('COMMIT');
+      
+      return {
+        id: cartID,
+        userID,
+        numberOfTicket: numberOfTickets,
+        totalPrice,
+        status: 'unPaid'
+      };
+    } catch (error) {
+      // Rollback transaction in case of error
+      await pool.query('ROLLBACK');
+      console.error('Error creating cart:', error);
+      throw error;
     }
   }
 }

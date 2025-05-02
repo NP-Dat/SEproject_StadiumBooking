@@ -2,8 +2,7 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 
-const userRoutes = require('./routes/userRoutes');
-
+const ticketTypesRoutes = require('./routes/ticketTypeRoutes');
 const app = express();
 
 // Middleware
@@ -11,14 +10,14 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use('/api/users', userRoutes);
+app.use('/api', ticketTypesRoutes);
 
 // Health check endpoint
 app.get('/health', (req, res) => {
-  res.json({ status: 'OK', message: 'User service is running' });
+  res.json({ status: 'OK', message: 'Ticket service is running' });
 });
 
-const PORT = process.env.PORT ;
+const PORT = process.env.PORT || 8005;
 app.listen(PORT, () => {
-  console.log(`User service running on port ${PORT}`);
+  console.log(`Ticket service running on port ${PORT}`);
 });

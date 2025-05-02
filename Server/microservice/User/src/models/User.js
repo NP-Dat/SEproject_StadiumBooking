@@ -1,42 +1,69 @@
 const pool = require('../config/db');
+const bcrypt = require('bcrypt');
 
 class UserModel {
   static async findById(id) {
     const [users] = await pool.query(
-      'SELECT id, username, email, full_name, phone, address, preferences FROM user_profiles WHERE user_id = ?',
+      'SELECT id, phoneNumber, address, birth, fullName, userName, email FROM Customers WHERE id = ?',
       [id]
     );
+    if (!users.length) return null;
     return users[0];
   }
 
-  static async updateProfile(userId, profileData) {
-    const { full_name, phone, address, preferences } = profileData;
+  static async updateProfile(id, profileData) {
+    const { fullname, phonenumber, address, birth, email, password, username } = profileData;
+    
+    let hashedPassword = password;
+    // only hash the password if it's provided
+    if (password) {
+      const saltRounds = 10;
+      hashedPassword = await bcrypt.hash(password, saltRounds);
+    }
+    
     const [result] = await pool.query(
-      `UPDATE user_profiles 
-       SET full_name = ?, phone = ?, address = ?, preferences = ?, updated_at = CURRENT_TIMESTAMP
-       WHERE user_id = ?`,
-      [full_name, phone, address, JSON.stringify(preferences), userId]
+      `UPDATE Customers 
+       SET fullName = ?, 
+           phoneNumber = ?, 
+           address = ?,
+           email = ?,
+           passWord = ?
+       WHERE id = ?`,
+      [fullname, phonenumber, address, email, hashedPassword, id]
     );
+    
     return result.affectedRows > 0;
   }
 
-  static async createProfile(userId, profileData) {
-    const { full_name, phone, address, preferences } = profileData;
-    const [result] = await pool.query(
-      `INSERT INTO user_profiles (user_id, full_name, phone, address, preferences)
-       VALUES (?, ?, ?, ?, ?)`,
-      [userId, full_name, phone, address, JSON.stringify(preferences)]
-    );
-    return result.insertId;
-  }
+  // method to verify passwords if user is updating password
+  // static async verifyPassword(userId, password) {
+  //   const [users] = await pool.query(
+  //     'SELECT passWord FROM Customers WHERE id = ?',
+  //     [userId]
+  //   );
+    
+  //   if (!users.length) return false;
+  //   console.log('Hashed password:', users[0].passWord);
+  //   const hashedPassword = users[0].passWord;
+  //   return await bcrypt.compare(password, hashedPassword);
+  // }
 
   static async deleteProfile(userId) {
     const [result] = await pool.query(
-      'DELETE FROM user_profiles WHERE user_id = ?',
+      'DELETE FROM Customers WHERE id = ?',
       [userId]
     );
     return result.affectedRows > 0;
   }
+  static async findAllUsers() {
+    console.log('findAllUsers method called');
+    const [users] = await pool.query(
+      'SELECT id, userName, email, fullName, birth, passWord, phoneNumber, address FROM Customers'
+    );
+    console.log('Users retrieved successfully');
+    return users;
+  }
+
 }
 
 module.exports = UserModel;

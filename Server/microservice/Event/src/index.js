@@ -3,7 +3,7 @@ const cors = require('cors');
 require('dotenv').config();
 
 const eventRoutes = require('./routes/eventRoutes');
-const ticketRoutes = require('./routes/ticketRoutes');
+const eventScheduleRoutes = require('./routes/eventScheduleRoutes');
 
 const app = express();
 
@@ -13,7 +13,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/events', eventRoutes);
-app.use('/api/tickets', ticketRoutes);
+app.use('/api/schedules', eventScheduleRoutes);
 
 // Health check endpoint
 app.get('/health', (req, res) => {

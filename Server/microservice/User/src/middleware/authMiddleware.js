@@ -1,22 +1,31 @@
-const jwt = require('jsonwebtoken');
+const axios = require('axios');
 
-const authenticateToken = (req, res, next) => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
-
+async function authenticateToken(req, res, next) {
+  const token = req.body.token;
   if (!token) {
-    return res.status(401).json({ message: 'Access token is required' });
+    return res.status(401).json({ message: 'No token provided' });
   }
 
-  jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key', (err, user) => {
-    if (err) {
-      return res.status(403).json({ message: 'Invalid or expired token' });
-    }
-    req.user = user;
-    next();
-  });
-};
+  try {    
+    // Call the Auth microservice to verify the token
+    const authServiceUrl = process.env.AUTH_SERVICE_URL || 'http://localhost:8001/api/auth';
+    const response = await axios.post(`${authServiceUrl}/verify-token`, {
+      token: token
+    });
 
-module.exports = {
-  authenticateToken
-};
+    // Token is verified by Auth service, set user info for use in routes
+    req.user = { userId: response.data.userId };
+    next();
+  } catch (error) {
+    if (error.response) {
+      // The auth service responded with an error
+      return res.status(error.response.status).json(error.response.data);
+    } else {
+      // Network error or other issue
+      console.error('Authentication error:', error.message);
+      return res.status(500).json({ message: 'Error during authentication' });
+    }
+  }
+}
+
+module.exports = { authenticateToken };
