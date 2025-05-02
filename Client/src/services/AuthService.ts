@@ -23,7 +23,10 @@ export class AuthService {
 
     static async login(credentials: LoginCredentials): Promise<AuthState> {
         try {
+            console.log('Attempting login with:', credentials.username);
             const response = await axios.post(`${API_URL}/login`, credentials);
+            
+            console.log('Login response:', response.data);
             
             if (response.data.message === 'Login successful') {
                 // Get the user ID from the response
@@ -39,10 +42,15 @@ export class AuthService {
                 localStorage.setItem('userId', userId);
                 localStorage.setItem('username', credentials.username);
                 
+                console.log('Authentication data saved:', {
+                    userId,
+                    username: credentials.username
+                });
+                
                 return {
                     message: 'Login successful',
                     user: this.user,
-                    token: null,
+                    token: null, // Set token to null 
                     isAuthenticated: true,
                     loading: false,
                     error: null
@@ -52,6 +60,7 @@ export class AuthService {
             throw new Error('Login failed: ' + (response.data.message || 'Unknown error'));
         } catch (error) {
             const axiosError = error as AxiosError<ErrorResponse>;
+            console.error('Login error:', axiosError.response?.data || axiosError.message);
             return {
                 message: 'Login failed',
                 user: null,
