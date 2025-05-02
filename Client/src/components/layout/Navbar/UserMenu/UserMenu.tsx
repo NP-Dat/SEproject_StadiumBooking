@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../../../hooks/useAuth';
+import { AuthService } from '../../../../services/AuthService';
 import styles from './UserMenu.module.css';
 
 
@@ -14,7 +14,7 @@ interface UserMenuProps {
 
 const UserMenu = ({ showProfileMenu, setShowProfileMenu }: UserMenuProps) => {
     const navigate = useNavigate();
-    const { user, logout } = useAuth();
+    const { user, logout } = AuthService.useAuth();
     const menuRef = useRef<HTMLDivElement>(null);
 
     const handleLogout = () => {
