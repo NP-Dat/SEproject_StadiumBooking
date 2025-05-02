@@ -1,10 +1,10 @@
 export interface User {
     id: string;
     username: string;
-    role: 'user' | 'admin';
 }
 
 export interface AuthState {
+    message: string;
     user: User | null;
     token: string | null;
     isAuthenticated: boolean;
@@ -29,9 +29,5 @@ export interface RegisterCredentials {
 
 export interface AuthResponse {
     message: string;
-    token?: string;
-    role?: string;
     userId?: string;
-    expiresAt?: string;
-    expiresIn?: number;
 }

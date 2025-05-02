@@ -1,7 +1,7 @@
 const pool = require('../config/db');
 const bcrypt = require('bcryptjs');
 
-class UserModel {
+class AuthModel {
   static async findByUsername(username) {
     const [users] = await pool.query('SELECT * FROM Customers WHERE username = ?', [username]);
     return users[0];
@@ -45,4 +45,4 @@ class UserModel {
   }
 }
 
-module.exports = UserModel;
+module.exports = AuthModel;
