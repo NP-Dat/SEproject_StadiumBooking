@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../hooks/useAuth';
+import { AuthService } from '../../services/AuthService';
 import styles from './Profile.module.css';
 
 const Profile = () => {
     const navigate = useNavigate();
-    const { user, logout, login } = useAuth();
+    const { user, logout, login } = AuthService.useAuth();
     const [isEditing, setIsEditing] = useState(false);
     const [editedUsername, setEditedUsername] = useState(user?.username || '');
 

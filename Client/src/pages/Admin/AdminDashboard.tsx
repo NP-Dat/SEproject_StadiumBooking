@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
+import { AuthService } from '../../services/AuthService';
 import styles from './AdminDashboard.module.css';
 
 const AdminDashboard = () => {
     const navigate = useNavigate();
-    const { isAdmin } = useAuth();
+    const { isAdmin } = AuthService.useAuth();
 
     useEffect(() => {
         if (!isAdmin) {

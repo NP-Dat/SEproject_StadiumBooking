@@ -1,5 +1,7 @@
 import axios, { AxiosError } from 'axios';
 import { User, AuthState, LoginCredentials, RegisterCredentials } from '../types/auth';
+import { useContext } from 'react';
+import { AuthContext } from '../contexts/AuthContextDef';
 
 const API_URL = 'http://localhost:8001/api/auth';
 
@@ -9,6 +11,15 @@ interface ErrorResponse {
 
 export class AuthService {
     private static user: User | null = null;
+
+    // Hook for using auth context
+    static useAuth() {
+        const context = useContext(AuthContext);
+        if (context === undefined) {
+            throw new Error('useAuth must be used within an AuthProvider');
+        }
+        return context;
+    }
 
     static async login(credentials: LoginCredentials): Promise<AuthState> {
         try {

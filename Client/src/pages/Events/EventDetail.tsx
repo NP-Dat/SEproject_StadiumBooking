@@ -1,35 +1,13 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import styles from './EventDetail.module.css';
-import { useAuth } from '../../hooks/useAuth';
+import { AuthService } from '../../services/AuthService';
+import { EventService } from '../../services/EventService';
+import { Event, TicketDetails, Benefit } from '../../types/event';
 import Login from '../Auth/Login/Login';
 import Register from '../Auth/Register/Register';
 
-interface Event {
-    id: number;
-    name: string;
-    date: string;
-    owner: string;
-    description?: string;
-    venue?: string;
-    capacity?: number;
-    price?: number;
-    ticketDetails?: {
-        types: {
-            name: string;
-            price: number;
-            benefits: string[];
-            available: number;
-        }[];
-        notice: string[];
-    };
-    benefits?: {
-        title: string;
-        items: string[];
-    }[];
-}
-
-const mockTicketDetails = {
+const mockTicketDetails: TicketDetails = {
     types: [
         {
             name: "Standard Ticket",
@@ -73,7 +51,7 @@ const mockTicketDetails = {
     ]
 };
 
-const mockBenefits = [
+const mockBenefits: Benefit[] = [
     {
         title: "What's Included",
         items: [
@@ -105,44 +83,20 @@ const EventDetail = () => {
     const [error, setError] = useState<string | null>(null);
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [showRegisterModal, setShowRegisterModal] = useState(false);
-    const { isAuthenticated, login, register } = useAuth();
+    const { isAuthenticated, login, register } = AuthService.useAuth();
 
     useEffect(() => {
         const fetchEvent = async () => {
             try {
-                console.log('Fetching event details for ID:', eventId);
-                const response = await fetch(`http://localhost:8003/api/events/${eventId}`, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                    },
-                });
-                
-                if (!response.ok) {
-                    const errorData = await response.json().catch(() => null);
-                    console.error('API Response:', {
-                        status: response.status,
-                        statusText: response.statusText,
-                        errorData
-                    });
-                    throw new Error(`Failed to fetch event details: ${response.status} ${response.statusText}`);
-                }
-                
-                const responseData = await response.json();
-                console.log('Received event data:', responseData);
-                
-                if (responseData.success && responseData.data) {
-                    // Add mock data to the event
-                    const eventWithMockData = {
-                        ...responseData.data,
-                        ticketDetails: mockTicketDetails,
-                        benefits: mockBenefits
-                    };
-                    setEvent(eventWithMockData);
-                } else {
-                    throw new Error('Invalid response format from server');
-                }
+                if (!eventId) return;
+                const eventData = await EventService.getEventById(eventId);
+                // Add mock data to the event
+                const eventWithMockData = {
+                    ...eventData,
+                    ticketDetails: mockTicketDetails,
+                    benefits: mockBenefits
+                };
+                setEvent(eventWithMockData);
             } catch (err) {
                 console.error('Fetch error:', err);
                 setError(err instanceof Error ? err.message : 'An error occurred while fetching event details');
@@ -153,26 +107,12 @@ const EventDetail = () => {
 
         const fetchRelatedEvents = async () => {
             try {
-                const response = await fetch('http://localhost:8003/api/events/', {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                    },
-                });
-                
-                if (!response.ok) {
-                    throw new Error('Failed to fetch related events');
-                }
-                
-                const responseData = await response.json();
-                if (responseData.success && Array.isArray(responseData.data)) {
-                    // Filter out the current event and take first 8 events
-                    const filteredEvents = responseData.data
-                        .filter((e: Event) => e.id !== Number(eventId))
-                        .slice(0, 8);
-                    setRelatedEvents(filteredEvents);
-                }
+                const eventsData = await EventService.getEvents();
+                // Filter out the current event and take first 8 events
+                const filteredEvents = eventsData
+                    .filter((e: Event) => e.id !== Number(eventId))
+                    .slice(0, 8);
+                setRelatedEvents(filteredEvents);
             } catch (err) {
                 console.error('Error fetching related events:', err);
             }

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { AuthService } from '../../../services/AuthService';
 import styles from './Login.module.css';
 import Button from '../../../components/ui/Button/Button';
 import Input from '../../../components/ui/Input/Input';
-import { useAuth } from '../../../hooks/useAuth';
 
 interface LoginProps {
     onClose: () => void;
@@ -12,11 +12,12 @@ interface LoginProps {
 }
 
 const Login: React.FC<LoginProps> = ({ onClose, onSwitchToRegister, onLogin }) => {
+    const navigate = useNavigate();
+    const { login: authLogin } = AuthService.useAuth();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-    const { login } = useAuth();
     
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -35,7 +36,7 @@ const Login: React.FC<LoginProps> = ({ onClose, onSwitchToRegister, onLogin }) =
         }
 
         try {
-            const result = await login(username, password);
+            const result = await authLogin(username, password);
             
             if (result.success) {
                 onLogin(username, password);
