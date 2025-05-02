@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import styles from "./Event.module.css";
 import Button from "../../../../components/ui/Button/Button";
 import { EventService } from "../../../../services/EventService";
 import type { Event } from "../../../../types/event";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Event = () => {
     const [events, setEvents] = useState<Event[]>([]);
