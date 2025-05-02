@@ -1,5 +1,4 @@
 import React from "react";
-import { motion } from "framer-motion";
 import styles from "./Contact.module.css";
 
 interface ContactProps {
@@ -15,12 +14,7 @@ const Contact: React.FC<ContactProps> = ({ title, description, email, phone, add
         <section className={styles.contact}>
             <div className={styles.container}>
                 <div className={styles.contactContent}>
-                    <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.6 }}
-                        className={styles.contactInfo}
-                    >
+                    <div className={styles.contactInfo}>
                         <h2 className={styles.contactTitle}>{title}</h2>
                         <p className={styles.contactDescription}>{description}</p>
                         <div className={styles.contactDetails}>
@@ -37,13 +31,8 @@ const Contact: React.FC<ContactProps> = ({ title, description, email, phone, add
                                 <span>{address}</span>
                             </div>
                         </div>
-                    </motion.div>
-                    <motion.div
-                        initial={{ opacity: 0, x: 20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.6 }}
-                        className={styles.contactForm}
-                    >
+                    </div>
+                    <div className={styles.contactForm}>
                         <form>
                             <div className={styles.formGroup}>
                                 <label className={styles.formLabel}>Name</label>
@@ -61,7 +50,7 @@ const Contact: React.FC<ContactProps> = ({ title, description, email, phone, add
                                 Send Message
                             </button>
                         </form>
-                    </motion.div>
+                    </div>
                 </div>
             </div>
         </section>

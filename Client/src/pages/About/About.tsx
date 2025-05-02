@@ -71,7 +71,8 @@ const About = () => {
             <Mission
                 title="Our Mission"
                 description="We're on a mission to transform how people experience stadium events. By combining cutting-edge technology with a deep understanding of fan needs, we're creating a future where booking your perfect seat is as exciting as the event itself."
-                imageUrl="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=1920&h=1080&fit=crop"
+                imageUrl="https://i.imgur.com/vRdN4bY.jpeg
+"
             />
             <Journey
                 title="Our Journey"
@@ -86,9 +87,9 @@ const About = () => {
             <Contact
                 title="Get in Touch"
                 description="Have questions or want to learn more? We'd love to hear from you."
-                email="contact@stadiumbooking.com"
-                phone="+1 (555) 123-4567"
-                address="123 Innovation Street, Tech City, TC 12345"
+                email="contact@weblifyco.com"
+                phone="090-988-1111"
+                address="Thu Duc City, Ho Chi Minh City"
             />
         </div>
     );
