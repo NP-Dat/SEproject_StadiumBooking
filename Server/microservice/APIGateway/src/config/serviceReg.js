@@ -37,6 +37,13 @@ const services = {
       routes: [
         '/api/bookings'
       ]
+    },
+    payments: {
+      url: process.env.PAYMENT_SERVICE_URL || 'http://localhost:8005',
+      routes: [
+        '/api/payments',
+        '/api/wallets'
+      ]
     }
     // Add other services here as needed
   };
