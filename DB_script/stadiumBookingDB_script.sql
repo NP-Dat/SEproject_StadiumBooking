@@ -34,6 +34,8 @@ CREATE TABLE EventSchedules (  -- Renamed from Schedules
 CREATE TABLE eventZone (
     id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
+    startSeatID INT NOT NULL, -- Added start seat ID
+    endSeatID INT NOT NULL,   -- Added end seat ID
     size INT NOT NULL,
     eventScheduleID INT NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
@@ -91,7 +93,7 @@ CREATE TABLE Carts ( -- Handle for Payments
     FOREIGN KEY (userID) REFERENCES Customers(id) ON DELETE CASCADE
 );
 
-CREATE TABLE Tickets ( -- Renamed from Ticket
+CREATE TABLE Tickets ( 
     id INT NOT NULL AUTO_INCREMENT,
     userID INT NOT NULL,
     seatID INT NOT NULL,
