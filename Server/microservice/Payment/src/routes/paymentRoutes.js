@@ -7,8 +7,8 @@ const { authenticateToken } = require('../middleware/authMiddleware');
 // Process Payment (Wallet)
 router.post('/process', PaymentController.processPayment);
 
-// Get Payment Status
-router.get('/:id/status', PaymentController.getPaymentStatus);
+// Get Payment History
+router.get('/history/:userID', PaymentController.getPaymentHistory);
 
 // Get Wallet Balance
 router.get('/balance/:userID', PaymentController.getWalletBalance);

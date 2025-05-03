@@ -3,34 +3,27 @@ const PaymentModel = require('../models/paymentModel');
 class PaymentController {
   static async processPayment(req, res) {
     try {
-      const { userID, amount, cartID, service = 'WALLET' } = req.body;
+      const { userID, cartID, amount } = req.body;
       
-      if (!userID || !amount || !cartID) {
+      if (!userID || !amount) {
         return res.status(400).json({ 
           success: false, 
           message: 'Missing required parameters' 
         });
       }
       
-      // Create payment data object matching the model's expected format
+      // Create payment data object
       const paymentData = {
         totalCost: parseFloat(amount),
-        cartID,
-        service
+        cartID: cartID || null,
+        service: 'WALLET'
       };
       
-      // Create payment record
-      const paymentId = await PaymentModel.createPayment(paymentData);
-      
-      // Process the payment using wallet
-      const result = await PaymentModel.processPaymentWithWallet(userID, {
-        id: cartID,
-        totalPrice: parseFloat(amount)
-      });
+      // Process payment without trying to update a Carts table
+      const result = await PaymentModel.createAndProcessPayment(userID, paymentData);
       
       if (!result.success) {
-        const statusCode = result.message.includes('balance') || 
-                          result.message.includes('funds') ? 402 : 500;
+        const statusCode = result.message.includes('funds') ? 402 : 500;
         return res.status(statusCode).json(result);
       }
       
@@ -83,10 +76,26 @@ class PaymentController {
     try {
       const userID = req.params.userID;
       
-      // Placeholder response
-      res.status(501).json({
-        success: false,
-        message: 'Payment history functionality not implemented yet'
+      if (!userID) {
+        return res.status(400).json({
+          success: false,
+          message: 'Missing required userID parameter'
+        });
+      }
+      
+      const payments = await PaymentModel.getPaymentHistory(userID);
+      
+      if (!payments) {
+        return res.status(404).json({
+          success: false,
+          message: 'No payment history found'
+        });
+      }
+      
+      res.json({
+        success: true,
+        userID,
+        payments
       });
       
     } catch (error) {
@@ -101,6 +110,13 @@ class PaymentController {
   static async getWalletBalance(req, res) {
     try {
       const userID = req.params.userID;
+      
+      if (!userID) {
+        return res.status(400).json({
+          success: false,
+          message: 'Missing required userID parameter'
+        });
+      }
       
       // Use the appropriate model method
       const wallet = await PaymentModel.getWallet(userID);
