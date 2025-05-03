@@ -4,7 +4,7 @@ class PaymentModel {
   // Wallet operations
   static async getWallet(userId) {
     const [rows] = await Paymentpool.query(
-      'SELECT id, balance, status FROM Wallet WHERE userID = ? AND status = "ACTIVE"',
+      'SELECT id, balance, status FROM Wallet WHERE userID = ? AND status = \'ACTIVE\'',
       [userId]
     );
     return rows.length > 0 ? rows[0] : null;
@@ -20,14 +20,14 @@ class PaymentModel {
     if (existingWallet.length > 0) {
       // Update existing wallet
       await Paymentpool.query(
-        'UPDATE Wallet SET status = "ACTIVE" WHERE userID = ?',
+        'UPDATE Wallet SET status = \'ACTIVE\' WHERE userID = ?',
         [userId]
       );
       return this.getWallet(userId);
     } else {
       // Create new wallet
       const [result] = await Paymentpool.query(
-        'INSERT INTO Wallet (userID, balance, status) VALUES (?, ?, "ACTIVE")',
+        'INSERT INTO Wallet (userID, balance, status) VALUES (?, ?, \'ACTIVE\')',
         [userId, initialBalance]
       );
       return { id: result.insertId, balance: initialBalance, status: 'ACTIVE' };
@@ -49,7 +49,7 @@ class PaymentModel {
     const operation = isDeduction ? 'balance - ?' : 'balance + ?';
     
     const [result] = await Paymentpool.query(
-      `UPDATE Wallet SET balance = ${operation} WHERE userID = ? AND status = "ACTIVE"`,
+      `UPDATE Wallet SET balance = ${operation} WHERE userID = ? AND status = 'ACTIVE'`,
       [amount, userId]
     );
     
@@ -115,13 +115,13 @@ class PaymentModel {
       
       // 3. Update wallet balance
       await connection.query(
-        'UPDATE Wallet SET balance = balance - ? WHERE userID = ? AND status = "ACTIVE"',
+        'UPDATE Wallet SET balance = balance - ? WHERE userID = ? AND status = \'ACTIVE\'',
         [totalPrice, userId]
       );
       
       // 4. Update cart status to 'paid'
       await connection.query(
-        'UPDATE Carts SET status = "paid" WHERE id = ?',
+        'UPDATE Carts SET status = \'paid\' WHERE id = ?',
         [cartId]
       );
       await connection.commit();
@@ -142,25 +142,8 @@ class PaymentModel {
       connection.release();
     }
   }
-  static async getPaymentHistory(userId) {
-    try {
-      // Get all payments associated with user's carts
-      const [rows] = await Paymentpool.query(
-        `SELECT p.id, p.time, p.date, p.service, p.totalCost, p.cartID
-         FROM Payments p
-         JOIN Carts c ON p.cartID = c.id
-         WHERE c.userID = ?
-         ORDER BY p.date DESC, p.time DESC`,
-        [userId]
-      );
-      
-      return rows.length > 0 ? rows : [];
-    } catch (error) {
-      console.error('Error getting payment history:', error);
-      return null;
-    }
-  }
-  // Add funds to wallet  
+  
+  //Add funds to wallet
   static async addFundsToWallet(userId, amount) {
     const connection = await Paymentpool.getConnection();
     await connection.beginTransaction();
@@ -206,8 +189,8 @@ class PaymentModel {
     } finally {
       connection.release();
     }
-  
   }
+  
   // Get user wallet balance with payment in a single response
   static async getPaymentWithUserBalance(paymentId, userId) {
     const payment = await this.getPayment(paymentId);
@@ -227,6 +210,32 @@ class PaymentModel {
       time: payment.time,
       userBalance
     };
+  }
+  
+  // Added method for getting payment history
+  static async getPaymentHistory(userId) {
+    try {
+      // Get all payments associated with user's carts
+      const [rows] = await Paymentpool.query(
+        `SELECT p.id, p.time, p.date, p.service, p.totalCost, p.cartID
+         FROM Payments p
+         JOIN Carts c ON p.cartID = c.id
+         WHERE c.userID = ?
+         ORDER BY p.date DESC, p.time DESC`,
+        [userId]
+      );
+      
+      return rows.length > 0 ? rows : [];
+    } catch (error) {
+      console.error('Error getting payment history:', error);
+      return null;
+    }
+  }
+
+  // Added method for getting wallet balance
+  static async getWalletBalance(userId) {
+    const wallet = await this.getWallet(userId);
+    return wallet ? wallet.balance : 0;
   }
   
   // Database connection utility

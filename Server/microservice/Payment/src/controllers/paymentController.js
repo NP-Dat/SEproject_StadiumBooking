@@ -3,7 +3,7 @@ const PaymentModel = require('../models/paymentModel');
 class PaymentController {
   static async processPayment(req, res) {
     try {
-      const { userID, amount, cartID} = req.body;
+      const { userID, amount, cartID, service = 'WALLET' } = req.body;
       
       if (!userID || !amount || !cartID) {
         return res.status(400).json({ 
@@ -18,7 +18,6 @@ class PaymentController {
         cartID,
         service
       };
-      console.log('Payment Data:', paymentData);
       
       // Create payment record
       const paymentId = await PaymentModel.createPayment(paymentData);
@@ -28,7 +27,7 @@ class PaymentController {
         id: cartID,
         totalPrice: parseFloat(amount)
       });
-      console.log('Payment Result:', result);
+      
       if (!result.success) {
         const statusCode = result.message.includes('balance') || 
                           result.message.includes('funds') ? 402 : 500;
@@ -40,7 +39,7 @@ class PaymentController {
         message: 'Payment processed successfully',
         paymentId: result.paymentId
       });
-      console.log('Payment processed successfully:', result.paymentId);
+      
     } catch (error) {
       console.error('Error processing payment:', error);
       const statusCode = error.message.includes('balance') || 
@@ -83,7 +82,6 @@ class PaymentController {
   static async getPaymentHistory(req, res) {
     try {
       const userID = req.params.userID;
-    
       
       // Placeholder response
       res.status(501).json({
@@ -104,6 +102,7 @@ class PaymentController {
     try {
       const userID = req.params.userID;
       
+      // Use the appropriate model method
       const wallet = await PaymentModel.getWallet(userID);
       
       if (!wallet) {
