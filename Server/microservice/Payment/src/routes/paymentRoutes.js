@@ -6,14 +6,14 @@ const { authenticateToken } = require('../middleware/authMiddleware');
 console.log('Stripe Key:', process.env.STRIPE_SECRET_KEY?.substring(0, 8) + '...');
 
 // Process Payment (Wallet)
-router.post('/process', authenticateToken, PaymentController.processPayment);
+router.post('/process', PaymentController.processPayment);
 
 // Get Payment Status
 router.get('/:id/status', PaymentController.getPaymentStatus);
 
 // Get Wallet Balance
-router.get('/balance/:userID', authenticateToken, PaymentController.getWalletBalance);
+router.get('/balance/:userID', PaymentController.getWalletBalance);
 
 //Add funds to Wallet
-router.post('/addFunds', authenticateToken, PaymentController.addFundsToWallet);
+router.post('/addFunds', PaymentController.addFundsToWallet);
 module.exports = router;
