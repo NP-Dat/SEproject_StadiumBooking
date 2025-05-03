@@ -8,9 +8,9 @@ router.get('/', eventScheduleController.getAllSchedules);
 router.get('/:id', eventScheduleController.getScheduleById);
 router.get('/event/:eventId', eventScheduleController.getScheduleByEventId);
 
-// Protected routes later with different user roles
-// router.post('/', authenticateToken, authorizeOwner, eventScheduleController.createSchedule);
-// router.put('/:id', authenticateToken, authorizeOwner, eventScheduleController.updateSchedule);
-// router.delete('/:id', authenticateToken, authorizeOwner, eventScheduleController.deleteSchedule);
+// Protected routes (admin or owner only)
+router.post('/create', eventScheduleController.createSchedule);
+router.put('/update', eventScheduleController.updateSchedule);
+router.delete('/delete', eventScheduleController.deleteSchedule);
 
 module.exports = router;
