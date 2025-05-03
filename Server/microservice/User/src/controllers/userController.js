@@ -5,7 +5,7 @@ class UserController {
   
   static async getProfile(req, res) {
     try {
-      const profile = await UserModel.findById(req.user.userId);
+      const profile = await UserModel.findById(req.body.userId);
       if (!profile) {
         return res.status(404).json({ message: 'Profile not found' });
       }
@@ -18,8 +18,8 @@ class UserController {
 
   static async updateProfile(req, res) {
     try {
-      const { fullname, phonenumber, address, email, password } = req.body;
-      const userId = req.user.userId;
+      const { userId, fullname, phonenumber, address, email, password } = req.body;
+      // const userId = req.body.userId;
   
       let updatedData = { fullname, phonenumber, address, email };
   
@@ -44,7 +44,7 @@ class UserController {
   }
   static async deleteProfile(req, res) {
     try {
-      const success = await UserModel.deleteProfile(req.user.userId);
+      const success = await UserModel.deleteProfile(req.body.userId);
       if (success) {
         res.json({ message: 'Profile deleted successfully' });
       } else {
@@ -59,9 +59,8 @@ class UserController {
   static async getAllUsers(req, res) {
     console.log('getAllUsers endpoint called'); 
 
-    const { page = 1, limit = 10 } = req.query;
     try {
-      const users = await UserModel.findAllUsers(page, limit);
+      const users = await UserModel.findAllUsers();
       if (!users.length) {
         return res.status(404).json({ message: 'No users found' });
       }
