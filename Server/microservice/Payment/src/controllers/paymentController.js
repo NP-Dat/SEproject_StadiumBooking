@@ -44,34 +44,6 @@ class PaymentController {
     }
   }
 
-  static async getPaymentStatus(req, res) {
-    try {
-      const paymentId = req.params.id;
-      const userID = req.query.userID || null;
-      
-      // Using the proper model method
-      const payment = await PaymentModel.getPaymentWithUserBalance(paymentId, userID);
-      
-      if (!payment) {
-        return res.status(404).json({ 
-          success: false, 
-          message: 'Payment not found' 
-        });
-      }
-      
-      res.json({
-        success: true,
-        payment
-      });
-    } catch (error) {
-      console.error('Error retrieving payment status:', error);
-      res.status(500).json({ 
-        success: false, 
-        message: 'Failed to retrieve payment status' 
-      });
-    }
-  }
-
   static async getPaymentHistory(req, res) {
     try {
       const userID = req.params.userID;

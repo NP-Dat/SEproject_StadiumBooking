@@ -55,58 +55,6 @@ class PaymentModel {
         if (connection) connection.release();
     }
 }
-
-  static async updateWalletBalance(userId, amount, isDeduction = false) {
-    // Get current balance first to ensure sufficient funds
-    const wallet = await this.getWallet(userId);
-    
-    if (!wallet) {
-      throw new Error('Wallet not found or not active');
-    }
-    
-    if (isDeduction && wallet.balance < amount) {
-      throw new Error('Insufficient funds');
-    }
-    
-    const operation = isDeduction ? 'balance - ?' : 'balance + ?';
-    
-    const [result] = await Paymentpool.query(
-      `UPDATE Wallet SET balance = ${operation} WHERE userID = ? AND status = 'ACTIVE'`,
-      [amount, userId]
-    );
-    
-    if (result.affectedRows === 0) {
-      throw new Error('Failed to update wallet balance');
-    }
-    
-    return this.getWallet(userId);
-  }
-
-  // Payment operations
-  static async createPayment(paymentData) {
-    const { totalCost, cartID, service } = paymentData;
-    
-    const [result] = await Paymentpool.query(
-      `INSERT INTO Payments 
-      (time, date, service, totalCost, cartID)
-      VALUES (CURRENT_TIME(), CURRENT_DATE(), ?, ?, ?)`,
-      [service, totalCost, cartID]
-    );
-    
-    return result.insertId;
-  }
-
-  static async getPayment(paymentId) {
-    const [rows] = await Paymentpool.query(
-      `SELECT id, totalCost, service, date, time, cartID
-      FROM Payments
-      WHERE id = ?`,
-      [paymentId]
-    );
-    
-    return rows.length > 0 ? rows[0] : null;
-  }
-
   static async createAndProcessPayment(userId, paymentData) {
     const { totalCost, cartID, service } = paymentData;
     
@@ -127,6 +75,13 @@ class PaymentModel {
       }
       
       const paymentId = paymentResult.insertId;
+      // 2. Create payment record
+      await connection.query(
+        `INSERT INTO Payments 
+        (time, date, service, totalCost, cartID)
+        VALUES (CURRENT_TIME(), CURRENT_DATE(), ?, ?, ?)`,
+        [service, totalCost, cartID]
+      );
       
       // 3. Update wallet balance
       await connection.query(
