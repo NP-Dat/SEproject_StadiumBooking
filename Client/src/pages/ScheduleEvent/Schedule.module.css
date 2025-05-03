@@ -1,8 +1,16 @@
+
+/* Added global font family */
+* {
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif !important;
+}
 .schedulePage {
     background: linear-gradient(135deg, #e2e8f0, #f1f5f9);
     position: relative;
     width: 100%;
     overflow: hidden;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+    padding: 2rem 0;
   }
   
   .schedulePage::before {
@@ -18,36 +26,37 @@
   }
   
   .container {
-    max-width: 72rem;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 3rem 2rem;
+    padding: 0 1rem; /* Reduced horizontal padding */
     position: relative;
     z-index: 1;
   }
   
   .header {
     text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: 2.5rem;
   }
   
   .title {
-    font-size: 2.5rem; /* Adjusted font size for better readability */
+    font-size: 2.5rem;
     font-weight: 700;
     background: linear-gradient(135deg, #00B4D8, #CAF0F8);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
+    color: #1a2b47;
   }
   
   .subtitle {
-    font-size: 1.125rem; /* Adjusted for better readability */
-    color: #1e293b;
+    font-size: 1.125rem;
+    color: #6c757d;
   }
   
   .scheduleList {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    display: flex;
+    flex-direction: column;
     gap: 2rem;
     justify-items: center; /* Center the cards */
     padding: 2rem 0;
@@ -66,15 +75,22 @@
     transition: all 0.3s ease;
     max-width: 100%;
     margin: 0 auto;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    transition: box-shadow 0.3s ease;
   }
   
   .scheduleCard:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 180, 216, 0.2);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
   }
   
   .scheduleInfo {
     margin-bottom: 1rem;
+    padding: 2rem;
+    border-bottom: 1px solid #eef0f3;
   }
   
   .scheduleDate {
@@ -82,6 +98,9 @@
     font-weight: 600;
     color: #1e293b;
     margin-bottom: 0.75rem;
+    font-size: 1.5rem;
+    color: #1a2b47;
+    margin-bottom: 1rem;
   }
   
   .scheduleTime,
@@ -91,41 +110,69 @@
     color: #1e293b;
     margin-bottom: 0.5rem;
     font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.1rem;
+    color: #495057;
+    margin: 0;
   }
   
   .bookButton {
-    background: linear-gradient(135deg, #00B4D8, #0096C7);
+    width: 100%;
+    padding: 16px;
+    font-size: 1.1rem;
+    border: none;
+    background-color: #0096c7;
     color: white;
     font-weight: 600;
-    padding: 0.75rem 1.25rem;
-    border-radius: 9999px;
-    border: none;
     cursor: pointer;
-    transition: all 0.3s ease;
-    margin-top: 1rem;
+    transition: background-color 0.2s;
+    border-radius: 0; /* Remove border radius for full-width button */
   }
   
   .bookButton:hover {
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(0, 180, 216, 0.3);
+    background-color: #0077b6;
   }
   
   .noSchedules {
     text-align: center;
     font-size: 1.5rem;
     color: #888;
+    padding: 3rem 0;
+    font-size: 1.2rem;
+    border-radius: 8px;
+    margin: 2rem auto;
+    max-width: 600px;
+    color: #6c757d;
   }
   
   .loading {
     text-align: center;
     font-size: 1.5rem;
     color: #007bff;
+    padding: 3rem 0;
+    font-size: 1.2rem;
+    border-radius: 8px;
+    margin: 2rem auto;
+    max-width: 600px;
+    color: #6c757d;
   }
   
   .error {
     text-align: center;
     font-size: 1.5rem;
     color: red;
+    padding: 3rem 0;
+    font-size: 1.2rem;
+    border-radius: 8px;
+    margin: 2rem auto;
+    max-width: 600px;
+    color: #dc3545;
+    background-color: rgba(220, 53, 69, 0.1);
+    padding: 1.5rem;
   }
   
   @media (max-width: 768px) {
@@ -155,4 +202,738 @@
       padding: 0.75rem 1rem;
     }
   }
+
+  .stadiumMapContainer {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
   
+  .zoneSelectionTitle {
+    margin-bottom: 16px;
+    color: #333;
+    font-size: 1.2rem;
+  }
+  
+  .zoneList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  
+  .zoneCard {
+    width: 100%;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    border: 2px solid transparent;
+    overflow: hidden;
+    height: 100%; /* Ensure consistent height */
+    height: 220px; /* Fixed height for consistency */
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  
+  .zoneCard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+    transform: translateY(-4px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+  }
+  
+  .zonePrice {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #2c7be5;
+    margin: 8px 0;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #0096c7;
+    margin-bottom: 1.2rem;
+    text-align: center;
+    margin: 15px 0;
+    width: 100%;
+  }
+  
+  .zoneAvailability {
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 15px;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .goodAvailability {
+    color: #00a854;
+    font-weight: bold;
+  }
+  
+  .limitedAvailability {
+    color: #f5222d;
+    font-weight: bold;
+  }
+  
+  .selectZoneButton {
+    width: 100%;
+    padding: 8px;
+    background-color: #2c7be5;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .selectZoneButton:hover:not(:disabled) {
+    background-color: #1a68d1;
+  }
+  
+  .selectZoneButton:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  
+  .stadiumVisualization {
+    margin-top: 24px;
+    border-top: 1px solid #ddd;
+    padding-top: 24px;
+  }
+  
+  .activeButton {
+    background-color: #ef476f;
+  }
+  
+  .activeButton:hover {
+    background-color: #d64161;
+  }
+
+  .bookingForm {
+    margin-top: 30px;
+    padding: 25px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    border-top: 4px solid #2c7be5;
+    background-color: white;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-top: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+  
+  .bookingFormTitle {
+    margin-bottom: 20px;
+    font-size: 1.25rem;
+    color: #333;
+    text-align: center;
+    font-size: 1.5rem;
+    color: #1a2b47;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    position: relative;
+  }
+  
+  .bookingFormTitle:after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background-color: #0096c7;
+    border-radius: 3px;
+  }
+  
+  .bookingDetails {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 25px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    margin-top: 1.5rem;
+  }
+  
+  .bookingDetail {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  
+  .bookingDetail span {
+    color: #666;
+    font-size: 0.9rem;
+  }
+  
+  .bookingDetail strong {
+    color: #333;
+    font-size: 1.1rem;
+  }
+  
+  .quantitySelect {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    font-size: 1rem;
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #dde1e7;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    color: #1a2b47;
+    background-color: white;
+    width: 100%;
+  }
+  
+  .checkoutButton {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+    padding: 14px;
+    background-color: #2c7be5;
+    color: white;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    width: 100%;
+    padding: 1.25rem;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 8px;
+    background-color: #0096c7;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .checkoutButton:hover {
+    background-color: #1a68d1;
+    background-color: #0077b6;
+  }
+  
+  .loading {
+    text-align: center;
+    padding: 30px;
+    color: #666;
+    font-size: 1rem;
+  }
+  
+  .error {
+    text-align: center;
+    padding: 20px;
+    color: #ff4d4f;
+    background-color: rgba(255, 77, 79, 0.1);
+    border-radius: 4px;
+    margin: 20px 0;
+  }
+
+  .zonesContainer {
+    margin-top: 20px;
+    padding: 20px 24px; /* Increased horizontal padding */
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    background-color: #f8f9fa;
+    width: 93%; /* Ensure it takes full width */
+  }
+  
+  .zoneSelectionTitle {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+    color: #333;
+    position: relative;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 1.5rem;
+    color: #1a2b47;
+    position: relative;
+  }
+  
+  .zoneSelectionTitle:after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(to right, #0096c7, #48cae4);
+    border-radius: 3px;
+  }
+  
+  .zoneGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Default 2 columns */
+    gap: 24px;
+    width: 100%;
+    margin-bottom: 30px;
+  }
+  
+  .zoneCard {
+    width: 100%; /* Ensure the card takes full width of its grid cell */
+    min-width: 280px; /* Set a minimum width */
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    border: 2px solid transparent;
+    overflow: hidden;
+    min-height: 200px; /* Set minimum height for consistency */
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    border: 2px solid transparent;
+    height: 100%; /* Ensure consistent height */
+    height: 220px; /* Fixed height for consistency */
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  
+  .zoneCard:hover:not(.soldOut) {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    transform: translateY(-4px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+  }
+  
+  .selectedZoneCard {
+    border-color: #2c7be5;
+    box-shadow: 0 4px 12px rgba(44, 123, 229, 0.2);
+    border-color: #0096c7;
+    background-color: #f0f9ff;
+  }
+  
+  .zoneName {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #1a2b47;
+    font-weight: 600;
+    flex: 1; /* Allow it to take available space */
+    white-space: normal; /* Allow text to wrap naturally */
+    margin: 0 0 10px 0;
+    font-size: 1.2rem;
+    color: #1a2b47;
+    font-weight: 600;
+    text-align: center; /* Ensure text is centered */
+    width: 100%;
+    padding: 5px 0;
+  }
+  
+  .zonePrice {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #0096c7;
+    margin-bottom: 1.2rem;
+    text-align: center;
+    margin: 15px 0;
+    width: 100%;
+  }
+  
+  .zoneAvailability {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the content */
+    gap: 8px;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 15px;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .goodAvailability {
+    color: #52c41a;
+    font-weight: 600;
+    margin-left: 5px;
+  }
+  
+  .limitedAvailability {
+    color: #dc3545;
+    font-weight: 600;
+    margin-left: 5px;
+    color: #dc3545;
+  }
+  
+  .zoneStatus {
+    margin-top: 10px;
+    margin-top: auto; /* Push to bottom */
+    padding-top: 10px;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .availableBadge, .soldOutBadge, .selectedBadge {
+    font-size: 0.85rem;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 500;
+    display: inline-block;
+  }
+  
+  .availableBadge {
+    background-color: rgba(82, 196, 26, 0.1);
+    color: #52c41a;
+  }
+  
+  .soldOutBadge {
+    background-color: #dc3545;
+    color: white;
+    font-size: 1rem;
+    padding: 10px 20px; /* Slightly larger padding */
+    border-radius: 4px;
+    font-weight: 600;
+    box-shadow: 0 3px 10px rgba(220, 53, 69, 0.4); /* Stronger shadow */
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    
+    /* Centered positioning */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-10deg);
+    z-index: 10;
+    animation: pulse 2s infinite ease-in-out;
+  }
+  
+  .selectedBadge {
+    background-color: rgba(44, 123, 229, 0.1);
+    color: #2c7be5;
+  }
+
+  .soldOutCard {
+    opacity: 0.85;
+    background-color: #f8f9fa;
+    cursor: not-allowed;
+    position: relative;
+    overflow: hidden;
+    filter: grayscale(30%);
+  }
+  
+  .soldOutCard::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.3); /* Lighter overlay */
+    z-index: 2; /* Between stripes and content */
+  }
+  
+  .soldOutCard::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: repeating-linear-gradient(
+      45deg,
+      rgba(220, 53, 69, 0.07), /* More subtle stripes */
+      rgba(220, 53, 69, 0.07) 10px,
+      transparent 10px,
+      transparent 20px
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+  
+  .soldOutCard .zonePrice {
+    text-decoration: line-through;
+    color: #6c757d;
+    opacity: 0.7; /* Slightly more visible than before */
+    position: relative;
+    z-index: 2;
+  }
+  
+  .soldOutCard .zoneAvailability {
+    display: none;
+  }
+
+  .soldOutCard .zoneName {
+    opacity: 0.85; /* More visible than before */
+    position: relative;
+    z-index: 3; /* Above the overlays */
+  }
+  
+  .zoneHeader {
+    width: 90%;
+    padding: 16px 20px;
+    background-color: #f8f9fa;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eef0f3;
+    padding: 1.25rem;
+    background-color: #f8f9fa;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #eef0f3;
+    text-align: center; /* Center zone name */
+    display: flex;
+    flex-direction: column; /* Stack name and badge vertically */
+    align-items: center;
+    position: relative; /* For absolute positioning of the sold out badge */
+    padding: 15px;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .zoneBody {
+    width: 90%;
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1.25rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center all content */
+    text-align: center;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center content vertically */
+    align-items: center; /* Center content horizontally */
+    padding: 15px;
+    justify-content: center;
+  }
+  
+  .zoneFooter {
+    padding: 12px 16px;
+    background-color: #f8f9fa;
+    border-top: 1px solid #eef0f3;
+    text-align: center;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-top: 1px solid #eef0f3;
+    text-align: center;
+  }
+  
+  .selectedIndicator {
+    color: #0096c7;
+    font-weight: 600;
+    font-size: 1rem;
+    display: block;
+    padding: 4px 0;
+    color: #0096c7;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  
+  .selectPrompt {
+    color: #6c757d;
+    font-size: 0.95rem;
+    color: #6c757d;
+    font-size: 0.9rem;
+  }
+  
+  .soldOutText {
+    color: #dc3545;
+    font-size: 1rem;
+    font-weight: 500;
+    text-align: center;
+    padding: 8px 0;
+    color: #dc3545;
+    font-size: 0.9rem;
+    color: #dc3545;
+    font-size: 1rem;
+    font-weight: 500;
+    text-align: center;
+    padding: 8px 0;
+    width: 100%;
+  }
+
+  .loadingZones {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    color: #6c757d;
+  }
+  
+  .loadingSpinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(0, 150, 199, 0.3);
+    border-top-color: #0096c7;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+  }
+  
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes pulse {
+    0% { transform: translate(-50%, -50%) rotate(-10deg) scale(1); }
+    50% { transform: translate(-50%, -50%) rotate(-10deg) scale(1.05); }
+    100% { transform: translate(-50%, -50%) rotate(-10deg) scale(1); }
+  }
+  
+  .detailLabel {
+    color: #6c757d;
+    font-size: 0.95rem;
+  }
+  
+  .detailValue {
+    color: #1a2b47;
+    font-size: 1.2rem;
+    font-weight: 500;
+  }
+  
+  .totalSection {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 0;
+    border-top: 1px solid #eef0f3;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .totalLabel {
+    font-size: 1.2rem;
+    color: #1a2b47;
+    font-weight: 600;
+  }
+  
+  .totalAmount {
+    font-size: 1.8rem;
+    color: #0096c7;
+    font-weight: 700;
+  }
+  
+  @media (max-width: 768px) {
+    .zoneGrid {
+      grid-template-columns: 1fr; /* Single column on mobile */
+    }
+    
+    .bookingDetails {
+      grid-template-columns: 1fr;
+    }
+    
+    .scheduleDetails {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (min-width: 1440px) {
+    .zoneGrid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 768px) {
+    .zoneGrid {
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+  }
+  
+  @media (min-width: 1200px) {
+    .zoneGrid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  @media (max-width: 767px) {
+    .zoneGrid {
+      grid-template-columns: 1fr;
+    }
+    
+    .zoneCard {
+      min-width: 100%;
+    }
+  }
+
+  @media (min-width: 992px) {
+    .zoneGrid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  /* Better grid layout with fixed columns */
+  .zoneGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Default 2 columns */
+    gap: 24px;
+    width: 100%;
+    margin-bottom: 30px;
+  }
+  
+  /* Media queries for responsive layout */
+  @media (min-width: 992px) {
+    .zoneGrid {
+      grid-template-columns: repeat(3, 1fr); /* 3 columns on large screens */
+    }
+  }
+  
+  @media (max-width: 767px) {
+    .zoneGrid {
+      grid-template-columns: 1fr; /* 1 column on mobile */
+    }
+  }

@@ -1,35 +1,56 @@
+/* Added global font family */
+* {
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif !important;
+}
 .profileContainer {
     display: flex;
     justify-content: center;
     padding: 2rem;
     min-height: 80vh;
-    background-color: #f5f5f5;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4eaf1 100%);
     align-items: center;
     padding-top: 6rem;
 }
 
 .profileCard {
     background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    padding: 2.5rem;
     width: 100%;
-    max-width: 600px;
+    max-width: 650px;
+    position: relative;
+    overflow: hidden;
+}
+
+.profileCard::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background: linear-gradient(90deg, #00B4D8, #0077cc);
 }
 
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 2rem;
-    padding-bottom: 1rem;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
     border-bottom: 1px solid #f0f0f0;
+    position: relative;
 }
 
 .title {
     margin: 0;
-    color: #333;
-    font-size: 1.8rem;
+    color: #2c3e50;
+    font-size: 2rem;
+    font-weight: 700;
+    background: linear-gradient(90deg, #0077cc, #00B4D8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .editButton, .saveButton, .cancelButton, .logoutButton, .retryButton, .deleteButton {
@@ -43,12 +64,24 @@
 }
 
 .editButton {
-    background-color: #3498db;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+    background: linear-gradient(135deg, #00B4D8, #0077cc);
     color: white;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 150, 199, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .editButton:hover {
-    background-color: #2980b9;
+    box-shadow: 0 6px 15px rgba(0, 150, 199, 0.3);
+    transform: translateY(-2px);
 }
 
 .userInfo {
@@ -58,41 +91,88 @@
     margin-bottom: 2rem;
 }
 
+/* Update infoItem styling to have box design with light blue color */
 .infoItem {
     display: flex;
     flex-direction: column;
-    margin-bottom: 1rem;
-    align-items: center;
+    margin-bottom: 1.2rem;
+    background-color: #e6f7ff; /* Light blue background */
+    border-radius: 12px;
+    padding: 1.2rem;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+    border: 1px solid #b3e0ff;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.infoItem:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 15px rgba(0, 150, 199, 0.15);
+    border-color: #00B4D8;
+}
+
+.infoItem::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, #00B4D8, transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.infoItem:hover::after {
+    opacity: 1;
 }
 
 .label {
-    width: 150px;
+    width: 100%;
     font-weight: bold;
-    color: #555;
-    margin-bottom: 0.5rem;
-    font-size: 0.9rem;
+    color: #0077cc; /* Darker blue for labels */
+    margin-bottom: 0.8rem;
+    font-size: 0.95rem;
+    border-bottom: 1px solid #b3e0ff;
+    padding-bottom: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.label::before {
+    content: '•';
+    color: #00B4D8;
+    margin-right: 8px;
+    font-size: 1.2rem;
 }
 
 .value {
     color: #333;
     font-weight: 600;
     font-size: 1.1rem;
+    width: 100%;
+    padding: 10px 8px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .input {
     flex: 1;
     padding: 0.5rem;
-    border: 1px solid #ddd;
+    border: 1px solid #b3e0ff;
     border-radius: 4px;
     font-size: 1rem;
     width: 100%;
     transition: border-color 0.2s;
+    background-color: white;
 }
 
 .input:focus {
     outline: none;
-    border-color: #3498db;
-    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+    border-color: #0096C7;
+    box-shadow: 0 0 0 2px rgba(0, 150, 199, 0.2);
 }
 
 .buttonGroup {
@@ -145,19 +225,22 @@
 
 .logoutButton {
     width: 100%;
-    padding: 0.5rem 1rem;
-    background-color: #3498db;
+    padding: 0.8rem 1rem;
+    background: linear-gradient(135deg, #3498db, #2980b9);
     color: white;
     border: none;
-    border-radius: 4px;
-    font-weight: 500;
+    border-radius: 30px;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s;
-    margin-top: 1rem;
+    transition: all 0.3s ease;
+    margin-top: 1.5rem;
+    box-shadow: 0 4px 10px rgba(52, 152, 219, 0.2);
 }
 
 .logoutButton:hover {
-    background-color: #c0392b;
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    box-shadow: 0 6px 15px rgba(231, 76, 60, 0.2);
+    transform: translateY(-2px);
 }
 
 .deleteButton {
@@ -281,6 +364,7 @@
     }
 }
 
+/* Update media query for better responsiveness */
 @media (min-width: 768px) {
     .infoItem {
         flex-direction: row;
@@ -290,9 +374,354 @@
     .label {
         width: 120px;
         margin-bottom: 0;
+        border-bottom: none;
+        border-right: 1px solid #b3e0ff;
+        padding-right: 15px;
+        padding-bottom: 0;
     }
 
     .value, .input {
         flex: 1;
+        margin-left: 15px;
     }
+}
+
+/* Tab Navigation */
+.tabs {
+    display: flex;
+    margin-bottom: 2rem;
+    background-color: #f8f9fa;
+    border-radius: 30px;
+    padding: 5px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.tabButton {
+    padding: 0.8rem 1.5rem;
+    background: none;
+    border: none;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    border-radius: 25px;
+    flex: 1;
+    text-align: center;
+}
+
+.tabButton:hover {
+    color: #00B4D8;
+}
+
+.activeTab {
+    color: white;
+    font-weight: 600;
+    background: linear-gradient(135deg, #00B4D8, #0077cc);
+    box-shadow: 0 4px 10px rgba(0, 150, 199, 0.2);
+}
+
+.activeTab:hover {
+    color: white;
+}
+
+.activeTab::after {
+    display: none;
+}
+
+/* Bookings Tab */
+.bookingsTab {
+    min-height: 400px;
+}
+
+.refreshButton {
+    padding: 0.4rem 0.8rem;
+    background-color: #f0f0f0;
+    color: #333;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+}
+
+.refreshButton:hover {
+    background-color: #e0e0e0;
+}
+
+.emptyState {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #666;
+}
+
+.browseEventsButton {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.6rem 1.2rem;
+    background-color: #3498db;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.browseEventsButton:hover {
+    background-color: #2980b9;
+}
+
+/* Booking Cards */
+.bookingsList {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    margin-top: 1rem;
+}
+
+.bookingCard {
+    display: flex;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 1px solid #eee;
+}
+
+.bookingCard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+.bookingImageContainer {
+    width: 120px;
+    height: 100%;
+    min-height: 120px;
+}
+
+.bookingImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.bookingDetails {
+    flex: 1;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.bookingTitle {
+    font-size: 1.2rem;
+    margin: 0 0 0.5rem;
+    color: #333;
+}
+
+.bookingInfo {
+    margin-bottom: 0.8rem;
+}
+
+.bookingDate, .bookingTime, .bookingVenue {
+    margin: 0.25rem 0;
+    color: #555;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+}
+
+.infoIcon {
+    margin-right: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.bookingMeta {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 0.8rem;
+    border-top: 1px solid #eee;
+}
+
+.bookingTickets {
+    display: flex;
+    flex-direction: column;
+}
+
+.ticketCount {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.bookingPrice {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2c7be5;
+}
+
+.bookingActions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.bookingStatus {
+    padding: 0.3rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.statusPaid {
+    background-color: rgba(82, 196, 26, 0.1);
+    color: #52c41a;
+}
+
+.statusUnpaid {
+    background-color: rgba(250, 173, 20, 0.1);
+    color: #faad14;
+}
+
+.statusCancelled {
+    background-color: rgba(255, 77, 79, 0.1);
+    color: #ff4d4f;
+}
+
+.viewDetailsButton {
+    background-color: #2c7be5;
+    color: white;
+    text-decoration: none;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 0.8rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: background-color 0.2s;
+    text-align: center;
+}
+
+.viewDetailsButton:hover {
+    background-color: #1a68d1;
+}
+
+@media (max-width: 768px) {
+    .bookingCard {
+        flex-direction: column;
+    }
+    
+    .bookingImageContainer {
+        width: 100%;
+        height: 140px;
+    }
+    
+    .bookingMeta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.8rem;
+    }
+    
+    .bookingActions {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
+
+.deleteAccountButton {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    background: transparent;
+    color: #e74c3c;
+    border: 2px solid #e74c3c;
+    border-radius: 30px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+}
+
+.deleteAccountButton:hover {
+    background: rgba(231, 76, 60, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(231, 76, 60, 0.2);
+}
+
+.confirmationModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.confirmationContent {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.confirmationContent h3 {
+    color: #e74c3c;
+    margin-top: 0;
+    font-size: 1.5rem;
+}
+
+.confirmationContent p {
+    margin-bottom: 2rem;
+    color: #555;
+    line-height: 1.5;
+}
+
+.confirmationButtons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.confirmDeleteButton {
+    padding: 0.8rem 1.5rem;
+    background: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.confirmDeleteButton:hover {
+    background: #c0392b;
+}
+
+.confirmDeleteButton:disabled {
+    background: #f5b7b1;
+    cursor: not-allowed;
+}
+
+.cancelDeleteButton {
+    padding: 0.8rem 1.5rem;
+    background: #ecf0f1;
+    color: #333;
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cancelDeleteButton:hover {
+    background: #bdc3c7;
 }
