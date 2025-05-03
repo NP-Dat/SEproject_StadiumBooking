@@ -253,6 +253,13 @@
     margin-bottom: 1.5rem;
 }
 
+.passwordFields {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
 @media (max-width: 768px) {
     .profileContainer {
         padding: 1rem;
