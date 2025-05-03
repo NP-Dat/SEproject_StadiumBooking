@@ -142,7 +142,44 @@ class PaymentModel {
       connection.release();
     }
   }
-
+  //Add funds to wallet
+  static async addFundsToWallet(userId, amount) {
+    const connection = await Paymentpool.getConnection();
+    await connection.beginTransaction();
+    
+    try {
+      // 1. Check if wallet exists
+      let wallet = await this.getWallet(userId);
+      
+      if (!wallet) {
+        // Create a new wallet if it doesn't exist
+        wallet = await this.createOrUpdateWallet(userId, amount);
+      } else {
+        // Update existing wallet balance
+        await this.updateWalletBalance(userId, amount, false);
+      }
+      
+      const paymentId = paymentResult.insertId;
+      
+      await connection.commit();
+      
+      return {
+        success: true,
+        paymentId,
+        message: 'Funds added successfully',
+        wallet: wallet
+      };
+      
+    } catch (error) {
+      await connection.rollback();
+      return {
+        success: false,
+        message: error.message
+      };
+    } finally {
+      connection.release();
+    }
+  }
   // Get user wallet balance with payment in a single response
   static async getPaymentWithUserBalance(paymentId, userId) {
     const payment = await this.getPayment(paymentId);
