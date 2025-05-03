@@ -1,7 +1,31 @@
 const pool = require('../config/db');
-const moment = require('moment');
 
 class BookingModel {
+
+  async getStartAndEndOfZone(zoneID) {
+    try {
+      const query = `
+        SELECT startSeatID, endSeatID
+        FROM eventZone
+        WHERE id = ?
+      `;
+      
+      const [result] = await pool.query(query, [zoneID]);
+      
+      // Return the start and end seat IDs as an object if found, otherwise return null
+      if (result[0]) {
+        return { start: result[0].startSeatID, 
+                end: result[0].endSeatID 
+              };
+      }
+      console.log(`No start and end found with ID ${zoneID}`);
+      return null;
+    } catch (error) {
+      console.error('Error getting start and end seat IDs:', error);
+      throw error;
+    }
+  }
+
   /**
    * Get the biggest seatID for tickets with specific scheduleID and zoneID
    * @param {number} scheduleID - The schedule ID
@@ -17,9 +41,12 @@ class BookingModel {
       `;
       
       const [result] = await pool.query(query, [scheduleID, zoneID]);
+
+      const zone = await this.getStartAndEndOfZone(zoneID);
       
-      // Return the maxSeatID if found, otherwise return 0
-      return result[0]?.maxSeatID || 0;
+      // Return the maxSeatID if found, otherwise return startSeatID
+
+      return result[0]?.maxSeatID || zone.start - 1; // -1 because we will increment it in the insertMultipleTickets method
     } catch (error) {
       console.error('Error getting biggest seatID:', error);
       throw error;
