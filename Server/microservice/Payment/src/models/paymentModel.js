@@ -142,7 +142,25 @@ class PaymentModel {
       connection.release();
     }
   }
-  //Add funds to wallet
+  static async getPaymentHistory(userId) {
+    try {
+      // Get all payments associated with user's carts
+      const [rows] = await Paymentpool.query(
+        `SELECT p.id, p.time, p.date, p.service, p.totalCost, p.cartID
+         FROM Payments p
+         JOIN Carts c ON p.cartID = c.id
+         WHERE c.userID = ?
+         ORDER BY p.date DESC, p.time DESC`,
+        [userId]
+      );
+      
+      return rows.length > 0 ? rows : [];
+    } catch (error) {
+      console.error('Error getting payment history:', error);
+      return null;
+    }
+  }
+  // Add funds to wallet  
   static async addFundsToWallet(userId, amount) {
     const connection = await Paymentpool.getConnection();
     await connection.beginTransaction();
@@ -157,7 +175,16 @@ class PaymentModel {
       } else {
         // Update existing wallet balance
         await this.updateWalletBalance(userId, amount, false);
+        wallet = await this.getWallet(userId);
       }
+      
+      // Create a record of the fund addition
+      const [paymentResult] = await connection.query(
+        `INSERT INTO Payments 
+        (time, date, service, totalCost, cartID)
+        VALUES (CURRENT_TIME(), CURRENT_DATE(), 'DEPOSIT', ?, NULL)`,
+        [amount]
+      );
       
       const paymentId = paymentResult.insertId;
       
@@ -179,6 +206,7 @@ class PaymentModel {
     } finally {
       connection.release();
     }
+  
   }
   // Get user wallet balance with payment in a single response
   static async getPaymentWithUserBalance(paymentId, userId) {

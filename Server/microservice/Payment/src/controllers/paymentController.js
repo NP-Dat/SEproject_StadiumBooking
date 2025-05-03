@@ -1,10 +1,9 @@
 const PaymentModel = require('../models/paymentModel');
-const PaymentService = require('../services/paymentService');
 
 class PaymentController {
   static async processPayment(req, res) {
     try {
-      const { userID, amount, cartID } = req.body;
+      const { userID, amount, cartID} = req.body;
       
       if (!userID || !amount || !cartID) {
         return res.status(400).json({ 
@@ -13,12 +12,23 @@ class PaymentController {
         });
       }
       
-      const result = await PaymentService.processPayment(
-        userID,
-        parseFloat(amount),
-        cartID
-      );
+      // Create payment data object matching the model's expected format
+      const paymentData = {
+        totalCost: parseFloat(amount),
+        cartID,
+        service
+      };
+      console.log('Payment Data:', paymentData);
       
+      // Create payment record
+      const paymentId = await PaymentModel.createPayment(paymentData);
+      
+      // Process the payment using wallet
+      const result = await PaymentModel.processPaymentWithWallet(userID, {
+        id: cartID,
+        totalPrice: parseFloat(amount)
+      });
+      console.log('Payment Result:', result);
       if (!result.success) {
         const statusCode = result.message.includes('balance') || 
                           result.message.includes('funds') ? 402 : 500;
@@ -28,9 +38,9 @@ class PaymentController {
       res.json({
         success: true,
         message: 'Payment processed successfully',
-        payment: result.payment
+        paymentId: result.paymentId
       });
-      
+      console.log('Payment processed successfully:', result.paymentId);
     } catch (error) {
       console.error('Error processing payment:', error);
       const statusCode = error.message.includes('balance') || 
@@ -44,8 +54,11 @@ class PaymentController {
 
   static async getPaymentStatus(req, res) {
     try {
+      const paymentId = req.params.id;
       const userID = req.query.userID || null;
-      const payment = await PaymentService.getPaymentStatus(req.params.id, userID);
+      
+      // Using the proper model method
+      const payment = await PaymentModel.getPaymentWithUserBalance(paymentId, userID);
       
       if (!payment) {
         return res.status(404).json({ 
@@ -70,20 +83,14 @@ class PaymentController {
   static async getPaymentHistory(req, res) {
     try {
       const userID = req.params.userID;
-      const history = await PaymentService.getPaymentHistory(userID);
+    
       
-      if (!history) {
-        return res.status(404).json({ 
-          success: false, 
-          message: 'No payment history found' 
-        });
-      }
-      
-      res.json({
-        success: true,
-        userID,
-        history
+      // Placeholder response
+      res.status(501).json({
+        success: false,
+        message: 'Payment history functionality not implemented yet'
       });
+      
     } catch (error) {
       console.error('Error retrieving payment history:', error);
       res.status(500).json({ 
@@ -96,12 +103,20 @@ class PaymentController {
   static async getWalletBalance(req, res) {
     try {
       const userID = req.params.userID;
-      const balance = await PaymentService.getWalletBalance(userID);
+      
+      const wallet = await PaymentModel.getWallet(userID);
+      
+      if (!wallet) {
+        return res.status(404).json({
+          success: false,
+          message: 'Wallet not found'
+        });
+      }
       
       res.json({
         success: true,
         userID,
-        balance
+        balance: wallet.balance
       });
     } catch (error) {
       console.error('Error retrieving wallet balance:', error);
@@ -123,7 +138,7 @@ class PaymentController {
         });
       }
       
-      const result = await PaymentService.addFundsToWallet(userID, parseFloat(amount));
+      const result = await PaymentModel.addFundsToWallet(userID, parseFloat(amount));
       
       if (!result.success) {
         return res.status(500).json(result);

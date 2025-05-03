@@ -3,7 +3,6 @@ const router = express.Router();
 const PaymentController = require('../controllers/paymentController');
 const { authenticateToken } = require('../middleware/authMiddleware');
 
-console.log('Stripe Key:', process.env.STRIPE_SECRET_KEY?.substring(0, 8) + '...');
 
 // Process Payment (Wallet)
 router.post('/process', PaymentController.processPayment);
