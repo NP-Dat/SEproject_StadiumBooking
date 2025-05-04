@@ -3,53 +3,23 @@ import { useEffect, useState } from 'react';
 import styles from './EventDetail.module.css';
 import { AuthService } from '../../services/AuthService';
 import { EventService } from '../../services/EventService';
-import { Event, TicketDetails, Benefit } from '../../types/event';
+import { Event, Benefit } from '../../types/event';
+import { Zone } from '../../types/Zone'; // Add this import
 import Login from '../Auth/Login/Login';
 import Register from '../Auth/Register/Register';
+import { ScheduleService } from '../../services/ScheduleService'; // Add this import
+import { TicketTypeService } from '../../services/TicketTypeService'; // Add this import
+import { TicketType } from '../../types/ticketType'; // Add this import
 
-const mockTicketDetails: TicketDetails = {
-    types: [
-        {
-            name: "Standard Ticket",
-            price: 50,
-            benefits: [
-                "Access to main event area",
-                "Standard seating",
-                "Event program booklet"
-            ],
-            available: 200
-        },
-        {
-            name: "VIP Ticket",
-            price: 100,
-            benefits: [
-                "Premium seating",
-                "VIP lounge access",
-                "Complimentary refreshments",
-                "Meet & greet with organizers",
-                "Exclusive merchandise"
-            ],
-            available: 50
-        },
-        {
-            name: "Early Bird Ticket",
-            price: 35,
-            benefits: [
-                "Access to main event area",
-                "Standard seating",
-                "Early bird discount"
-            ],
-            available: 100
-        }
-    ],
-    notice: [
-        "Tickets are non-refundable",
-        "Children under 12 must be accompanied by an adult",
-        "Doors open 1 hour before the event",
-        "Please arrive at least 30 minutes before the event starts",
-        "Valid ID required for ticket collection"
-    ]
-};
+// Define Zone type if not already defined
+// export interface Zone {
+//     id: number;
+//     name: string;
+//     price: number;
+//     availableSeats: number;
+//     capacity: number;
+//     benefits?: string[];
+// }
 
 const mockBenefits: Benefit[] = [
     {
@@ -84,16 +54,17 @@ const EventDetail = () => {
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [showRegisterModal, setShowRegisterModal] = useState(false);
     const { isAuthenticated, login, register } = AuthService.useAuth();
+    const [zones, setZones] = useState<Zone[]>([]);
+    const [loadingZones, setLoadingZones] = useState(true);
 
     useEffect(() => {
         const fetchEvent = async () => {
             try {
                 if (!eventId) return;
                 const eventData = await EventService.getEventById(eventId);
-                // Add mock data to the event
+                // Add mock benefits but use real zones
                 const eventWithMockData = {
                     ...eventData,
-                    ticketDetails: mockTicketDetails,
                     benefits: mockBenefits
                 };
                 setEvent(eventWithMockData);
@@ -118,9 +89,34 @@ const EventDetail = () => {
             }
         };
 
+        const fetchZones = async () => {
+            try {
+                if (!eventId) return;
+                
+                setLoadingZones(true);
+                // First fetch the schedules for this event to get a scheduleId
+                const schedules = await ScheduleService.getSchedulesByEventId(eventId);
+                
+                if (schedules && schedules.length > 0) {
+                    // Use the first available schedule
+                    const firstSchedule = schedules[0];
+                    
+                    // Now fetch ticket types for this schedule
+                    const zoneData = await TicketTypeService.getTicketTypesByScheduleId(firstSchedule.id);
+                    setZones(zoneData);
+                }
+            } catch (err) {
+                console.error('Error fetching zones:', err);
+                // Don't set main error to avoid blocking the whole component
+            } finally {
+                setLoadingZones(false);
+            }
+        };
+
         if (eventId) {
             fetchEvent();
             fetchRelatedEvents();
+            fetchZones(); // Add this call to fetch zones
         }
     }, [eventId]);
 
@@ -169,6 +165,40 @@ const EventDetail = () => {
         }
     };
 
+    const renderZones = () => {
+        if (loadingZones) {
+            return <div className={styles.loadingZones}>Loading available zones...</div>;
+        }
+
+        if (zones.length === 0) {
+            return <div className={styles.noZones}>No seating zones available for this event</div>;
+        }
+
+        return (
+            <div className={styles.ticketTypes}>
+                {zones.map((zone) => (
+                    <div key={zone.id} className={styles.ticketType}>
+                        <h3>{zone.name}</h3>
+                        <p className={styles.ticketPrice}>${Number(zone.price).toFixed(2)}</p>
+                        
+                        {/* Replace "Available: 0" with "Sold Out" tag */}
+                        {zone.availableSeats > 0 ? (
+                            <p className={styles.ticketAvailable}>Available: {zone.availableSeats}</p>
+                        ) : (
+                            <div className={styles.soldOutTag}>Sold Out</div>
+                        )}
+                        
+                        <ul className={styles.ticketBenefits}>
+                            {zone.benefits && zone.benefits.map((benefit, i) => (
+                                <li key={i}>{benefit}</li>
+                            ))}
+                        </ul>
+                    </div>
+                ))}
+            </div>
+        );
+    };
+
     if (loading) {
         return <div className={styles.loading}>Loading event details...</div>;
     }
@@ -192,7 +222,7 @@ const EventDetail = () => {
             </div>
 
             <div className={styles.eventContent}>
-                <div className={styles.eventInfo}>
+                <div className={styles.mainContent}>
                     {event.description && (
                         <div className={styles.eventDescription}>
                             <h2>About the Event</h2>
@@ -221,33 +251,23 @@ const EventDetail = () => {
                         )}
                     </div>
 
-                    {event.ticketDetails && (
-                        <div className={styles.ticketSection}>
-                            <h2>Ticket Details</h2>
-                            <div className={styles.ticketTypes}>
-                                {event.ticketDetails.types.map((type, index) => (
-                                    <div key={index} className={styles.ticketType}>
-                                        <h3>{type.name}</h3>
-                                        <p className={styles.ticketPrice}>${type.price}</p>
-                                        <p className={styles.ticketAvailable}>Available: {type.available}</p>
-                                        <ul className={styles.ticketBenefits}>
-                                            {type.benefits.map((benefit, i) => (
-                                                <li key={i}>{benefit}</li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                ))}
-                            </div>
-                            <div className={styles.noticeSection}>
-                                <h3>Important Notice</h3>
-                                <ul className={styles.noticeList}>
-                                    {event.ticketDetails.notice.map((notice, index) => (
-                                        <li key={index}>{notice}</li>
-                                    ))}
-                                </ul>
-                            </div>
+                    {/* Replace hardcoded ticket section with dynamic zones */}
+                    <div className={styles.ticketSection}>
+                        <h2>Ticket Details</h2>
+                        {renderZones()}
+                        
+                        {/* Keep the notice section if needed */}
+                        <div className={styles.noticeSection}>
+                            <h3>Important Notice</h3>
+                            <ul className={styles.noticeList}>
+                                <li>Tickets are non-refundable</li>
+                                <li>Children under 12 must be accompanied by an adult</li>
+                                <li>Doors open 1 hour before the event</li>
+                                <li>Please arrive at least 30 minutes before the event starts</li>
+                                <li>Valid ID required for ticket collection</li>
+                            </ul>
                         </div>
-                    )}
+                    </div>
 
                     {event.benefits && (
                         <div className={styles.benefitsSection}>
@@ -263,36 +283,32 @@ const EventDetail = () => {
                             ))}
                         </div>
                     )}
-                </div>
 
-                <div className={styles.bookingSection}>
                     <button 
                         className={styles.bookNowButton} 
                         onClick={handleBookNow}
                     >
                         Book Now
                     </button>
-                </div>
-            </div>
 
-            {relatedEvents.length > 0 && (
-                <div className={styles.relatedEvents}>
-                    <h2 className={styles.relatedEventsTitle}>You may also like</h2>
-                    <div className={styles.relatedEventsList}>
-                        {relatedEvents.map((relatedEvent) => (
-                            <div 
-                                key={relatedEvent.id} 
-                                className={styles.relatedEventCard}
-                                onClick={() => handleEventClick(relatedEvent.id)}
-                            >
-                                <h3 className={styles.relatedEventTitle}>{relatedEvent.name}</h3>
-                                <p className={styles.relatedEventDate}>{formatDate(relatedEvent.date)}</p>
-                                <p className={styles.relatedEventOwner}>Organized by: {relatedEvent.owner}</p>
-                            </div>
-                        ))}
+                    <div className={styles.relatedEventsSection}>
+                        <h2>You may also like</h2>
+                        <div className={styles.relatedEventsList}>
+                            {relatedEvents.map((relatedEvent) => (
+                                <div 
+                                    key={relatedEvent.id} 
+                                    className={styles.relatedEventCard}
+                                    onClick={() => handleEventClick(relatedEvent.id)}
+                                >
+                                    <h3 className={styles.relatedEventTitle}>{relatedEvent.name}</h3>
+                                    <p className={styles.relatedEventDate}>{formatDate(relatedEvent.date)}</p>
+                                    <p className={styles.relatedEventOwner}>Organized by: {relatedEvent.owner}</p>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
-            )}
+            </div>
 
             {showLoginModal && (
                 <Login
