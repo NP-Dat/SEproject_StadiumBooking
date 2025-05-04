@@ -57,46 +57,40 @@ class PaymentModel {
 }
   static async createAndProcessPayment(userId, paymentData) {
     const { totalCost, cartID, service } = paymentData;
-    
     // Start transaction
     const connection = await this.getConnection();
     await connection.beginTransaction();
-    
     try {
       // 1. Check wallet balance
       const wallet = await this.getWallet(userId);
-      
       if (!wallet) {
         throw new Error('Wallet not found or not active');
       }
-      
       if (wallet.balance < totalCost) {
         throw new Error('Insufficient funds in wallet');
       }
-      
-      const paymentId = paymentResult.insertId;
+      if (wallet.balance < 0) {
+        throw new Error('Wallet balance cannot be negative');
+      }
       // 2. Create payment record
-      await connection.query(
+      const [paymentResult] = await connection.query(
         `INSERT INTO Payments 
         (time, date, service, totalCost, cartID)
         VALUES (CURRENT_TIME(), CURRENT_DATE(), ?, ?, ?)`,
         [service, totalCost, cartID]
       );
-      
+      const paymentId = paymentResult.insertId;
       // 3. Update wallet balance
       await connection.query(
         "UPDATE Wallet SET balance = balance - ? WHERE userID = ? AND status = 'ACTIVE'",
         [totalCost, userId]
       );
-      
       await connection.commit();
-      
       return {
         success: true,
         paymentId,
         message: 'Payment processed successfully'
       };
-      
     } catch (error) {
       await connection.rollback();
       return {
