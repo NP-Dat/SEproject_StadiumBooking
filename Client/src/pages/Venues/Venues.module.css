@@ -1,8 +1,20 @@
-
 /* Added global font family */
 * {
   font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif !important;
 }
+
+.venuesPage {
+  padding: 2rem 0;
+  background-color: #f0f9ff;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
 .venuesContainer {
     padding: 4rem 2rem;
     max-width: 1400px;
@@ -240,4 +252,71 @@
     .venueFooter {
         flex-direction: column;
     }
-} 
+}
+
+.venueImageContainer {
+  position: relative;
+  height: 200px;
+}
+
+.venueTag {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: #0ea5e9;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+}
+
+.venueInfo {
+  padding: 1.5rem;
+}
+
+.venueDetails {
+  margin-bottom: 1.5rem;
+}
+
+.detailItem {
+  display: flex;
+  margin-bottom: 0.5rem;
+}
+
+.detailLabel {
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #94a3b8;
+  width: 100px;
+}
+
+.detailValue {
+  font-size: 0.9rem;
+  color: #334155;
+}
+
+.viewButton {
+  display: inline-block;
+  background-color: #0ea5e9;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.viewButton:hover {
+  background-color: #0284c7;
+}
+
+.loading, .error {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.2rem;
+}
+
+.error {
+  color: #ef4444;
+}

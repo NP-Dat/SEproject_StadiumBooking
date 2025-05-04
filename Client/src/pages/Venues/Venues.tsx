@@ -1,123 +1,96 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './Venues.module.css';
+import { Link } from 'react-router-dom';
 
-const Venues = () => {
-    const [selectedType, setSelectedType] = useState('all');
-    const [selectedLocation, setSelectedLocation] = useState('all');
+interface Stadium {
+  id: number;
+  name: string;
+  size: number;
+  status: string;
+  address: string;
+}
 
-    const types = [
-        { id: 'all', name: 'All Venues' },
-        { id: 'stadium', name: 'Stadiums' },
-        { id: 'arena', name: 'Arenas' },
-        { id: 'hall', name: 'Concert Halls' },
-        { id: 'field', name: 'Sports Fields' }
-    ];
+const Venues: React.FC = () => {
+  const [stadiums, setStadiums] = useState<Stadium[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
-    const locations = [
-        { id: 'all', name: 'All Locations' },
-        { id: 'north', name: 'North' },
-        { id: 'south', name: 'South' },
-        { id: 'east', name: 'East' },
-        { id: 'west', name: 'West' }
-    ];
+  useEffect(() => {
+    const fetchStadiums = async () => {
+      try {
+        // Replace with your actual API endpoint
+        const response = await fetch('/api/stadiums');
+        if (!response.ok) {
+          throw new Error('Failed to fetch stadiums');
+        }
+        const data = await response.json();
+        setStadiums(data);
+      } catch (err) {
+        setError('Failed to load stadiums. Please try again later.');
+        console.error('Error fetching stadiums:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    const venues = [
-        {
-            id: 1,
-            name: 'Main Stadium',
-            type: 'stadium',
-            location: 'north',
-            capacity: '50,000',
-            image: '/venue1.jpg',
-            description: 'State-of-the-art stadium with premium seating and amenities.',
-            upcomingEvents: 5
-        },
-        {
-            id: 2,
-            name: 'Arena Hall',
-            type: 'arena',
-            location: 'south',
-            capacity: '20,000',
-            image: '/venue2.jpg',
-            description: 'Modern arena perfect for concerts and indoor sports.',
-            upcomingEvents: 3
-        },
-        // Add more venues as needed
-    ];
+    fetchStadiums();
+  }, []);
 
-    return (
-        <div className={styles.venuesContainer}>
-            <div className={styles.header}>
-                <h1 className={styles.title}>Our Venues</h1>
-                <p className={styles.subtitle}>Discover the perfect venue for your next event</p>
-            </div>
-
-            <div className={styles.filters}>
-                <div className={styles.filterGroup}>
-                    <h3 className={styles.filterTitle}>Venue Type</h3>
-                    <div className={styles.typeFilter}>
-                        {types.map(type => (
-                            <button
-                                key={type.id}
-                                className={`${styles.filterButton} ${selectedType === type.id ? styles.active : ''}`}
-                                onClick={() => setSelectedType(type.id)}
-                            >
-                                {type.name}
-                            </button>
-                        ))}
-                    </div>
-                </div>
-
-                <div className={styles.filterGroup}>
-                    <h3 className={styles.filterTitle}>Location</h3>
-                    <div className={styles.locationFilter}>
-                        {locations.map(location => (
-                            <button
-                                key={location.id}
-                                className={`${styles.filterButton} ${selectedLocation === location.id ? styles.active : ''}`}
-                                onClick={() => setSelectedLocation(location.id)}
-                            >
-                                {location.name}
-                            </button>
-                        ))}
-                    </div>
-                </div>
-            </div>
-
-            <div className={styles.venuesGrid}>
-                {venues.map(venue => (
-                    <div key={venue.id} className={styles.venueCard}>
-                        <div className={styles.venueImage}>
-                            <img src={venue.image} alt={venue.name} />
-                            <span className={styles.venueType}>{venue.type}</span>
-                        </div>
-                        <div className={styles.venueContent}>
-                            <h3 className={styles.venueName}>{venue.name}</h3>
-                            <p className={styles.venueDescription}>{venue.description}</p>
-                            <div className={styles.venueDetails}>
-                                <div className={styles.venueDetail}>
-                                    <span className={styles.detailLabel}>Capacity:</span>
-                                    <span className={styles.detailValue}>{venue.capacity}</span>
-                                </div>
-                                <div className={styles.venueDetail}>
-                                    <span className={styles.detailLabel}>Location:</span>
-                                    <span className={styles.detailValue}>{venue.location}</span>
-                                </div>
-                                <div className={styles.venueDetail}>
-                                    <span className={styles.detailLabel}>Upcoming Events:</span>
-                                    <span className={styles.detailValue}>{venue.upcomingEvents}</span>
-                                </div>
-                            </div>
-                            <div className={styles.venueFooter}>
-                                <button className={styles.viewButton}>View Details</button>
-                                <button className={styles.bookButton}>Book Now</button>
-                            </div>
-                        </div>
-                    </div>
-                ))}
-            </div>
+  return (
+    <div className={styles.venuesPage}>
+      <div className={styles.container}>
+        <div className={styles.header}>
+          <h1 className={styles.title}>Our Venues</h1>
+          <p className={styles.subtitle}>Discover the perfect venue for your next event</p>
         </div>
-    );
+
+        {loading ? (
+          <div className={styles.loading}>Loading venues...</div>
+        ) : error ? (
+          <div className={styles.error}>{error}</div>
+        ) : (
+          <div className={styles.venuesGrid}>
+            {stadiums.map((stadium) => (
+              <div key={stadium.id} className={styles.venueCard}>
+                <div className={styles.venueImageContainer}>
+                  {/* Use a placeholder image or fetch actual images */}
+                  <img 
+                    src={`https://source.unsplash.com/random/800x600/?stadium&sig=${stadium.id}`} 
+                    alt={stadium.name}
+                    className={styles.venueImage}
+                  />
+                  <span className={styles.venueTag}>STADIUM</span>
+                </div>
+                <div className={styles.venueInfo}>
+                  <h2 className={styles.venueName}>{stadium.name}</h2>
+                  <p className={styles.venueDescription}>
+                    State-of-the-art stadium with premium seating and amenities.
+                  </p>
+                  <div className={styles.venueDetails}>
+                    <div className={styles.detailItem}>
+                      <span className={styles.detailLabel}>CAPACITY:</span>
+                      <span className={styles.detailValue}>{stadium.size} seats</span>
+                    </div>
+                    <div className={styles.detailItem}>
+                      <span className={styles.detailLabel}>LOCATION:</span>
+                      <span className={styles.detailValue}>{stadium.address}</span>
+                    </div>
+                    <div className={styles.detailItem}>
+                      <span className={styles.detailLabel}>STATUS:</span>
+                      <span className={styles.detailValue}>{stadium.status}</span>
+                    </div>
+                  </div>
+                  <Link to={`/stadiums/${stadium.id}`} className={styles.viewButton}>
+                    View Details
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
 };
 
-export default Venues; 
+export default Venues;

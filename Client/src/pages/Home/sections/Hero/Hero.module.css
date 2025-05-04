@@ -44,7 +44,6 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     /* Add glow effect */
-    filter: drop-shadow(0 0 12px rgba(0, 219, 222, 0.7));
     /* Remove previous text shadow */
     text-shadow: none;
 }
@@ -58,7 +57,6 @@
     /* Remove background and shadows, add glow */
     background-color: transparent;
     text-shadow: none;
-    filter: drop-shadow(0 0 12px rgba(0, 180, 216, 0.8));
     padding: 0;
     border-radius: 0;
     backdrop-filter: none;
@@ -142,7 +140,6 @@
     color: #00DBDE;
     margin-bottom: 0.5rem;
     text-shadow: none;
-    filter: drop-shadow(0 0 8px rgba(0, 219, 222, 0.7));
 }
 
 .statLabel {
@@ -150,7 +147,6 @@
     font-size: 1rem;
     font-weight: 500;
     text-shadow: none;
-    filter: drop-shadow(0 0 5px rgba(202, 240, 248, 0.6));
 }
 
 @media (max-width: 768px) {
