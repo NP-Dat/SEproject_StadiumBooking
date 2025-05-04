@@ -63,6 +63,6 @@ export const publicRoutes: RouteType[] = [
   // This is for testing the stadium seat page
   {
      path: '/stadium',
-    element: <Stadium />
+    element: <Stadium zones={[]} scheduleId={0} />
   },
 ]

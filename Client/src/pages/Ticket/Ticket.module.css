@@ -1,0 +1,191 @@
+.ticketContainer {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.ticketCard {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  width: 100%;
+  max-width: 550px;
+  padding: 1.5rem;
+}
+
+.ticketHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px dashed #e0e0e0;
+}
+
+.ticketTitle {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0;
+  color: #333;
+}
+
+.ticketId {
+  font-size: 1rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.eventDetails {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.eventName {
+  font-size: 1.8rem;
+  margin: 0 0 1rem 0;
+  color: #222;
+  font-weight: 600;
+}
+
+.eventDateTime {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.eventDate, .eventTime {
+  background: #f8f8f8;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.ticketDetails {
+  background: #f9f9f9;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.ticketRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.8rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid #eee;
+}
+
+.ticketRow:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.ticketLabel {
+  color: #666;
+  font-weight: 500;
+}
+
+.ticketValue {
+  font-weight: 600;
+  color: #333;
+}
+
+.ticketStatus {
+  font-weight: 600;
+  padding: 0.3rem 0.7rem;
+  border-radius: 4px;
+}
+
+.active {
+  background: #e6f7e6;
+  color: #2e7d32;
+}
+
+.used {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
+.cancelled {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.ticketActions {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.downloadButton, .backButton {
+  flex: 1;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.downloadButton {
+  background: #1976d2;
+  color: white;
+}
+
+.downloadButton:hover {
+  background: #1565c0;
+}
+
+.backButton {
+  background: #f5f5f5;
+  color: #333;
+}
+
+.backButton:hover {
+  background: #e0e0e0;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+  font-size: 1.2rem;
+  color: #d32f2f;
+  text-align: center;
+}
+
+@media print {
+  .ticketActions {
+    display: none;
+  }
+  
+  body * {
+    visibility: hidden;
+  }
+  
+  .ticketCard, .ticketCard * {
+    visibility: visible;
+  }
+  
+  .ticketCard {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    box-shadow: none;
+  }
+}

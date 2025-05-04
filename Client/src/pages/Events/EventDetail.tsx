@@ -136,12 +136,7 @@ const EventDetail = () => {
     };
 
     const handleBookNow = () => {
-        if (!isAuthenticated) {
-            setShowLoginModal(true);
-        } else {
-            // TODO: Implement booking logic
-            navigate(`/schedules/event/${eventId}`);
-        }
+        navigate(`/schedules/event/${event?.id}/zones`);
     };
 
     const handleEventClick = (eventId: number) => {
@@ -272,7 +267,7 @@ const EventDetail = () => {
 
                 <div className={styles.bookingSection}>
                     <button 
-                        className={styles.bookButton}
+                        className={styles.bookNowButton} 
                         onClick={handleBookNow}
                     >
                         Book Now

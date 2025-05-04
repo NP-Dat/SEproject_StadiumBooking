@@ -44,26 +44,8 @@ const SchedulePage: React.FC = () => {
   }, [eventId]);
 
   const handleBookNow = async (scheduleId: number) => {
-    // Toggle the zones view when clicking the same schedule
-    if (showZonesForScheduleId === scheduleId) {
-      setShowZonesForScheduleId(null);
-      setSelectedZoneId(null);
-      return;
-    }
-
-    setShowZonesForScheduleId(scheduleId);
-    setTicketLoading(true);
-    setSelectedZoneId(null);
-    
-    try {
-      const response = await TicketTypeService.getTicketTypesByScheduleId(scheduleId);
-      setTicketTypes(response);
-    } catch (err) {
-      console.error('Error fetching ticket types:', err);
-      setError('Failed to load ticket types');
-    } finally {
-      setTicketLoading(false);
-    }
+    // Navigate to the event details page
+    navigate(`/events/${eventId}`);
   };
 
   const handleZoneSelect = (zoneId: number) => {
@@ -92,7 +74,7 @@ const SchedulePage: React.FC = () => {
         return;
       }
       
-      // Call booking API
+      // Call booking API with updated method
       const response = await BookingService.createBooking(
         parseInt(userId),
         showZonesForScheduleId,
@@ -100,11 +82,56 @@ const SchedulePage: React.FC = () => {
         ticketQuantity
       );
       
-      // Redirect to payment page
-      navigate(`/cart`);
-    } catch (err) {
+      if (response.success) {
+        // Redirect to payment page with the cart ID from response
+        navigate(`/payment/${response.bookingId}`);
+      } else {
+        setError('Failed to create booking. Please try again.');
+      }
+    } catch (err: any) {
       console.error('Error creating booking:', err);
-      setError('Failed to create booking. Please try again.');
+      setError(err.message || 'Failed to create booking. Please try again.');
+    }
+  };
+
+  const handleConfirmBooking = async () => {
+    try {
+      if (!user) {
+        // Handle not logged in
+        setError('Please log in to book tickets');
+        return;
+      }
+      
+      // Create the booking
+      const response = await bookingService.createBooking(
+        user.id, 
+        parseInt(scheduleId as string, 10), 
+        selectedZone.id,
+        ticketQuantity
+      );
+      
+      if (response.success) {
+        // Save booking details to pass to payment page
+        const bookingData = {
+          eventId: eventId,
+          zoneName: selectedZone?.name,
+          quantity: ticketQuantity,
+          price: selectedZone?.price,
+          total: selectedZone ? (Number(selectedZone.price) * ticketQuantity).toFixed(2) : '0',
+          cartId: response.cartData.id  // Include cart ID for payment processing
+        };
+        
+        // Store in localStorage for payment page
+        localStorage.setItem('currentBooking', JSON.stringify(bookingData));
+        
+        // Navigate to payment page
+        navigate('/payment');
+      } else {
+        setError('Failed to create booking');
+      }
+    } catch (error) {
+      console.error('Error processing booking:', error);
+      setError('An error occurred while processing your booking');
     }
   };
 
@@ -157,10 +184,10 @@ const SchedulePage: React.FC = () => {
                   </div>
                 </div>
                 <button
-                  className={`${styles.bookButton} ${showZonesForScheduleId === schedule.id ? styles.activeButton : ''}`}
-                  onClick={() => handleBookNow(schedule.id)}
+                  className={`${styles.bookButton}`}
+                  onClick={() => navigate(`/events/${eventId}`)}
                 >
-                  {showZonesForScheduleId === schedule.id ? 'Hide Zones' : 'View Zones'}
+                  Select
                 </button>
                 
                 {/* Zones Section - Clean and Modern Design */}
