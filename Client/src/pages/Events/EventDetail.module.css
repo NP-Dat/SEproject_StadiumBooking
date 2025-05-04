@@ -1,3 +1,7 @@
+/* Added global font family */
+* {
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif !important;
+}
 .eventDetailContainer {
     max-width: 1200px;
     margin: 0 auto;
@@ -25,7 +29,7 @@
 
 .eventContent {
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 1fr; /* Change from 2fr 1fr to single column */
     gap: 2rem;
 }
 
@@ -82,6 +86,7 @@
     height: fit-content;
     position: sticky;
     top: 2rem;
+    display: none; /* Hide the empty box */
 }
 
 .bookButton {
@@ -205,63 +210,86 @@
     margin-bottom: 2rem;
 }
 
+/* Add these styles for the zones */
 .ticketTypes {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    margin-bottom: 3rem;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
 }
 
 .ticketType {
-    background: white;
-    border-radius: 8px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
     padding: 1.5rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-}
-
-.ticketType:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(0, 150, 199, 0.1);
 }
 
 .ticketType h3 {
-    font-size: 1.3rem;
+    font-size: 1.25rem;
+    font-weight: 600;
     color: #333;
+    margin-top: 0;
     margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #eee;
 }
 
 .ticketPrice {
-    font-size: 1.5rem;
-    color: #00B4D8;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-}
-
-.ticketAvailable {
-    color: #666;
-    font-size: 0.9rem;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #0096c7;
     margin-bottom: 1rem;
 }
 
+.ticketAvailable {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f0f9ff;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    color: #444;
+    font-weight: 500;
+}
+
 .ticketBenefits {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: 1.5rem;
 }
 
 .ticketBenefits li {
-    color: #666;
     padding: 0.5rem 0;
     position: relative;
     padding-left: 1.5rem;
+    color: #555;
 }
 
 .ticketBenefits li:before {
     content: "✓";
-    color: #00B4D8;
+    color: #0096c7;
     position: absolute;
     left: 0;
+}
+
+.loadingZones {
+    text-align: center;
+    padding: 2rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    color: #666;
+}
+
+.noZones {
+    text-align: center;
+    padding: 2rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    color: #666;
+    font-style: italic;
 }
 
 .noticeSection {
@@ -319,16 +347,17 @@
     padding: 0;
     margin: 0;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Increase from 200px */
     gap: 1rem;
 }
 
 .benefitsList li {
     background: #f8f9fa;
-    padding: 1rem;
+    padding: 1.2rem 1rem 1.2rem 2.5rem; /* More vertical padding */
     border-radius: 8px;
     color: #666;
     position: relative;
+    font-size: 1.1rem; /* Slightly larger text */
     padding-left: 2.5rem;
 }
 
@@ -347,4 +376,70 @@
     .benefitsList {
         grid-template-columns: 1fr;
     }
-} 
+
+    .mainContent {
+        max-width: 100%;
+    }
+}
+
+.bookNowButton {
+    background: linear-gradient(135deg, #00B4D8, #0096C7);
+    color: white;
+    border: none;
+    padding: 1.2rem 2.5rem; /* Increase from 1rem 2rem */
+    border-radius: 8px;
+    font-size: 1.3rem; /* Increase from 1.2rem */
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    margin: 3rem auto; /* More vertical margin */
+    display: block;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 180, 216, 0.3);
+    position: relative;
+    z-index: 2;
+}
+
+.bookNowButton:hover {
+    background: linear-gradient(135deg, #0096C7, #0077B6);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 180, 216, 0.4);
+}
+
+.relatedEventsSection {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid #eef0f3;
+}
+
+.relatedEventsSection h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Make the main content wider */
+.mainContent {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Add this style for the sold out tag */
+.soldOutTag {
+    background-color: #ef5350;
+    color: white;
+    font-weight: 600;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 4px rgba(239, 83, 80, 0.2);
+}
+
+/* Optionally, you can add a hover state to match the first image */
+.soldOutTag:hover {
+    background-color: #e53935;
+}

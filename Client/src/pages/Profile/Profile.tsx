@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { AuthService } from '../../services/AuthService';
+import { BookingService } from '../../services/BookingService';
 import axios from 'axios';
 import styles from './Profile.module.css';
+import { UserService } from '../../services/UserService';
 
 const API_URL = 'http://localhost:8002/api/users';
 
@@ -12,6 +14,25 @@ const Profile = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const [activeTab, setActiveTab] = useState('profile'); // 'profile' or 'bookings'
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+    // Define BookingType interface
+    interface BookingType {
+        cartId: number;
+        eventTitle: string;
+        eventImage?: string;
+        date: string;
+        timeStart: string;
+        timeEnd: string;
+        stadiumName: string;
+        numberOfTicket: number;
+        totalPrice: number;
+        status: 'paid' | 'unPaid' | 'cancelled';
+    }
+    
+    const [bookings, setBookings] = useState<BookingType[]>([]);
+    const [bookingsLoading, setBookingsLoading] = useState(false);
+    const [bookingsError, setBookingsError] = useState('');
     
     // Profile data from backend
     const [profileData, setProfileData] = useState({
@@ -21,7 +42,7 @@ const Profile = () => {
         fullName: '',
         phoneNumber: '',
         address: '',
-        birth: ''
+        birth: '',
     });
     
     // Editable fields
@@ -36,6 +57,13 @@ const Profile = () => {
     useEffect(() => {
         fetchProfileData();
     }, []);
+    
+    // Fetch bookings when tab changes to bookings
+    useEffect(() => {
+        if (activeTab === 'bookings') {
+            fetchUserBookings();
+        }
+    }, [activeTab]);
 
     const fetchProfileData = async () => {
         try {
@@ -101,6 +129,28 @@ const Profile = () => {
             setLoading(false);
         }
     };
+    
+    const fetchUserBookings = async () => {
+        try {
+            setBookingsLoading(true);
+            setBookingsError('');
+            
+            const userId = localStorage.getItem('userId');
+            
+            if (!userId) {
+                navigate('/login');
+                return;
+            }
+            
+            const bookingsData = await BookingService.getUserBookings(parseInt(userId));
+            setBookings(bookingsData);
+        } catch (err) {
+            console.error('Error fetching bookings:', err);
+            setBookingsError('Failed to load your booking history');
+        } finally {
+            setBookingsLoading(false);
+        }
+    };
 
     const handleLogout = () => {
         logout();
@@ -111,12 +161,25 @@ const Profile = () => {
         setIsEditing(true);
     };
 
-    const handleInputChange = (e) => {
+    // Update the handleInputChange function to validate phone number input
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setEditedData(prev => ({
-            ...prev,
-            [name]: value
-        }));
+        
+        // For phone number field, only allow numeric input
+        if (name === 'phonenumber') {
+            // Replace any non-digit characters with empty string
+            const numericValue = value.replace(/\D/g, '');
+            setEditedData(prev => ({
+                ...prev,
+                [name]: numericValue
+            }));
+        } else {
+            setEditedData(prev => ({
+                ...prev,
+                [name]: value
+            }));
+        }
     };
 
     const handleSave = async () => {
@@ -175,12 +238,46 @@ const Profile = () => {
         });
         setIsEditing(false);
     };
+    
+    const handleDeleteAccount = async () => {
+        try {
+          setLoading(true);
+          const result = await UserService.deleteAccount();
+          
+          if (result.success) {
+            // Account deleted successfully
+            logout(); // Log the user out
+            navigate('/'); // Redirect to home page
+            // You might want to show a toast or notification here
+          } else {
+            setError(result.message || 'Failed to delete account');
+          }
+        } catch (err) {
+          console.error('Error deleting account:', err);
+          setError('An unexpected error occurred while deleting your account');
+        } finally {
+          setLoading(false);
+          setShowDeleteConfirm(false);
+        }
+    };
+
+    const formatDate = (dateString: string | number | Date) => {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    };
 
     if (loading && !profileData.userName) {
         return (
             <div className={styles.profileContainer}>
                 <div className={styles.profileCard}>
-                    <div className={styles.loadingIndicator}>Loading profile...</div>
+                    <div className={styles.loadingContainer}>
+                        <div className={styles.spinner}></div>
+                        <div className={styles.loadingIndicator}>Loading profile...</div>
+                    </div>
                 </div>
             </div>
         );
@@ -189,128 +286,285 @@ const Profile = () => {
     return (
         <div className={styles.profileContainer}>
             <div className={styles.profileCard}>
-                <div className={styles.header}>
-                    <h1 className={styles.title}>My Profile</h1>
-                    {!isEditing && (
-                        <button
-                            onClick={handleEdit}
-                            className={styles.editButton}
-                        >
-                            Edit Profile
-                        </button>
-                    )}
+                <div className={styles.tabs}>
+                    <button 
+                        className={`${styles.tabButton} ${activeTab === 'profile' ? styles.activeTab : ''}`}
+                        onClick={() => setActiveTab('profile')}
+                    >
+                        My Profile
+                    </button>
+                    <button 
+                        className={`${styles.tabButton} ${activeTab === 'bookings' ? styles.activeTab : ''}`}
+                        onClick={() => setActiveTab('bookings')}
+                    >
+                        My Bookings
+                    </button>
                 </div>
                 
-                {error && <div className={styles.errorMessage}>{error}</div>}
-                
-                <div className={styles.userInfo}>
-                    <div className={styles.infoItem}>
-                        <span className={styles.label}>Username:</span>
-                        <span className={styles.value}>{profileData.userName}</span>
-                    </div>
-                    
-                    <div className={styles.infoItem}>
-                        <span className={styles.label}>Email:</span>
-                        {isEditing ? (
-                            <input
-                                type="email"
-                                name="email"
-                                value={editedData.email}
-                                onChange={handleInputChange}
-                                className={styles.input}
-                            />
-                        ) : (
-                            <span className={styles.value}>{profileData.email}</span>
-                        )}
-                    </div>
-                    
-                    <div className={styles.infoItem}>
-                        <span className={styles.label}>Full Name:</span>
-                        {isEditing ? (
-                            <input
-                                type="text"
-                                name="fullname"
-                                value={editedData.fullname}
-                                onChange={handleInputChange}
-                                className={styles.input}
-                            />
-                        ) : (
-                            <span className={styles.value}>{profileData.fullName}</span>
-                        )}
-                    </div>
-                    
-                    <div className={styles.infoItem}>
-                        <span className={styles.label}>Phone Number:</span>
-                        {isEditing ? (
-                            <input
-                                type="text"
-                                name="phonenumber"
-                                value={editedData.phonenumber}
-                                onChange={handleInputChange}
-                                className={styles.input}
-                            />
-                        ) : (
-                            <span className={styles.value}>{profileData.phoneNumber}</span>
-                        )}
-                    </div>
-                    
-                    <div className={styles.infoItem}>
-                        <span className={styles.label}>Address:</span>
-                        {isEditing ? (
-                            <input
-                                type="text"
-                                name="address"
-                                value={editedData.address}
-                                onChange={handleInputChange}
-                                className={styles.input}
-                            />
-                        ) : (
-                            <span className={styles.value}>{profileData.address}</span>
-                        )}
-                    </div>
-                    
-                    {profileData.birth && (
-                        <div className={styles.infoItem}>
-                            <span className={styles.label}>Birth Date:</span>
-                            <span className={styles.value}>
-                                {new Date(profileData.birth).toLocaleDateString()}
-                            </span>
+                {activeTab === 'profile' ? (
+                    <div className={styles.profileTab}>
+                        <div className={styles.header}>
+                            <h1 className={styles.title}>My Profile</h1>
+                            {!isEditing && (
+                                <button
+                                    onClick={handleEdit}
+                                    className={styles.editButton}
+                                >
+                                    Edit Profile
+                                </button>
+                            )}
                         </div>
-                    )}
-                </div>
-                
-                {isEditing ? (
-                    <div className={styles.buttonGroup}>
-                        <button
-                            onClick={handleSave}
-                            className={styles.saveButton}
-                            disabled={loading}
-                        >
-                        {loading ? 'Saving...' : 'Save Changes'}
-                        </button>
-                        <button
-                            onClick={handleCancel}
-                            className={styles.cancelButton}
-                        >
-                            Cancel
-                        </button>
+                        
+                        {error && <div className={styles.errorMessage}>{error}</div>}
+                        
+                        <div className={styles.userInfo}>
+                            <div className={styles.infoItem}>
+                                <span className={styles.label}>Username:</span>
+                                <span className={styles.value}>{profileData.userName}</span>
+                            </div>
+                            
+                            <div className={styles.infoItem}>
+                                <span className={styles.label}>Email:</span>
+                                {isEditing ? (
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        value={editedData.email}
+                                        onChange={handleInputChange}
+                                        className={styles.input}
+                                    />
+                                ) : (
+                                    <span className={styles.value}>{profileData.email}</span>
+                                )}
+                            </div>
+                            
+                            <div className={styles.infoItem}>
+                                <span className={styles.label}>Full Name:</span>
+                                {isEditing ? (
+                                    <input
+                                        type="text"
+                                        name="fullname"
+                                        value={editedData.fullname}
+                                        onChange={handleInputChange}
+                                        className={styles.input}
+                                    />
+                                ) : (
+                                    <span className={styles.value}>{profileData.fullName}</span>
+                                )}
+                            </div>
+                            
+                            <div className={styles.infoItem}>
+                                <span className={styles.label}>Phone Number:</span>
+                                {isEditing ? (
+                                    <input
+                                        type="tel" // Changed to tel type
+                                        name="phonenumber"
+                                        value={editedData.phonenumber}
+                                        onChange={handleInputChange}
+                                        className={styles.input}
+                                        pattern="[0-9]*" // Only allows numeric input
+                                        inputMode="numeric" // Shows numeric keyboard on mobile
+                                        placeholder="Enter numbers only"
+                                        title="Please enter numbers only" // Tooltip message
+                                    />
+                                ) : (
+                                    <span className={styles.value}>{profileData.phoneNumber}</span>
+                                )}
+                            </div>
+                            
+                            <div className={styles.infoItem}>
+                                <span className={styles.label}>Address:</span>
+                                {isEditing ? (
+                                    <input
+                                        type="text"
+                                        name="address"
+                                        value={editedData.address}
+                                        onChange={handleInputChange}
+                                        className={styles.input}
+                                    />
+                                ) : (
+                                    <span className={styles.value}>{profileData.address}</span>
+                                )}
+                            </div>
+                            
+                            {profileData.birth && (
+                                <div className={styles.infoItem}>
+                                    <span className={styles.label}>Birth Date:</span>
+                                    <span className={styles.value}>
+                                        {new Date(profileData.birth).toLocaleDateString()}
+                                    </span>
+                                </div>
+                            )}
+                        </div>
+                        
+                        {isEditing ? (
+                            <div className={styles.buttonGroup}>
+                                <button
+                                    onClick={handleSave}
+                                    className={styles.saveButton}
+                                    disabled={loading}
+                                >
+                                {loading ? 'Saving...' : 'Save Changes'}
+                                </button>
+                                <button
+                                    onClick={handleCancel}
+                                    className={styles.cancelButton}
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        ) : (
+                            <>
+                                <button
+                                    onClick={handleLogout}
+                                    className={styles.logoutButton}
+                                >
+                                    Logout
+                                </button>
+                                <button
+                                    onClick={() => setShowDeleteConfirm(true)}
+                                    className={styles.deleteAccountButton}
+                                >
+                                    Delete Account
+                                </button>
+                                
+                                {showDeleteConfirm && (
+                                    <div className={styles.confirmationModal}>
+                                        <div className={styles.confirmationContent}>
+                                            <h3>Delete Your Account?</h3>
+                                            <p>This action cannot be undone. All your tickets will be returned to available inventory.</p>
+                                            <div className={styles.confirmationButtons}>
+                                                <button 
+                                                    onClick={handleDeleteAccount}
+                                                    className={styles.confirmDeleteButton}
+                                                    disabled={loading}
+                                                >
+                                                    {loading ? 'Deleting...' : 'Yes, Delete My Account'}
+                                                </button>
+                                                <button
+                                                    onClick={() => setShowDeleteConfirm(false)}
+                                                    className={styles.cancelDeleteButton}
+                                                >
+                                                    Cancel
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                            </>
+                        )}
+                        
+                        {error && !loading && (
+                            <button 
+                                onClick={fetchProfileData}
+                                className={styles.retryButton}
+                            >
+                                Retry
+                            </button>
+                        )}
                     </div>
                 ) : (
-                    <button
-                        onClick={handleLogout}
-                        className={styles.logoutButton}
-                    >
-                        Logout
-                    </button>
-                )}
-                
-                {error && !loading && (
-                    <button 
-                        onClick={fetchProfileData}
-                        className={styles.retryButton}
-                    >
-                        Retry
-                    </button>
+                    <div className={styles.bookingsTab}>
+                        <div className={styles.header}>
+                            <h1 className={styles.title}>My Bookings</h1>
+                            <button 
+                                onClick={fetchUserBookings}
+                                className={styles.refreshButton}
+                            >
+                                Refresh
+                            </button>
+                        </div>
+                        
+                        {bookingsError && (
+                            <div className={styles.errorMessage}>
+                                {bookingsError}
+                                <button 
+                                    onClick={fetchUserBookings} 
+                                    className={styles.retryButton}
+                                >
+                                    Retry
+                                </button>
+                            </div>
+                        )}
+                        
+                        {bookingsLoading ? (
+                            <div className={styles.loadingContainer}>
+                                <div className={styles.spinner}></div>
+                                <div>Loading your bookings...</div>
+                            </div>
+                        ) : bookings.length === 0 ? (
+                            <div className={styles.emptyState}>
+                                <p>You don't have any bookings yet.</p>
+                                <Link to="/events" className={styles.browseEventsButton}>
+                                    Browse Events
+                                </Link>
+                            </div>
+                        ) : (
+                            <div className={styles.bookingsList}>
+                                {bookings.map((booking) => (
+                                    <div key={booking.cartId} className={styles.bookingCard}>
+                                        {booking.eventImage && (
+                                            <div className={styles.bookingImageContainer}>
+                                                <img 
+                                                    src={booking.eventImage} 
+                                                    alt={booking.eventTitle} 
+                                                    className={styles.bookingImage} 
+                                                />
+                                            </div>
+                                        )}
+                                        
+                                        <div className={styles.bookingDetails}>
+                                            <h3 className={styles.bookingTitle}>{booking.eventTitle}</h3>
+                                            
+                                            <div className={styles.bookingInfo}>
+                                                <p className={styles.bookingDate}>
+                                                    <span className={styles.infoIcon}>📅</span> 
+                                                    {formatDate(booking.date)}
+                                                </p>
+                                                <p className={styles.bookingTime}>
+                                                    <span className={styles.infoIcon}>⏰</span> 
+                                                    {booking.timeStart} - {booking.timeEnd}
+                                                </p>
+                                                <p className={styles.bookingVenue}>
+                                                    <span className={styles.infoIcon}>🏟️</span> 
+                                                    {booking.stadiumName}
+                                                </p>
+                                            </div>
+                                            
+                                            <div className={styles.bookingMeta}>
+                                                <div className={styles.bookingTickets}>
+                                                    <span className={styles.ticketCount}>
+                                                        {booking.numberOfTicket} {booking.numberOfTicket === 1 ? 'ticket' : 'tickets'}
+                                                    </span>
+                                                    <span className={styles.bookingPrice}>
+                                                        ${booking.totalPrice.toFixed(2)}
+                                                    </span>
+                                                </div>
+                                                
+                                                <div className={styles.bookingActions}>
+                                                    <span className={`${styles.bookingStatus} ${
+                                                        booking.status === 'paid' ? styles.statusPaid :
+                                                        booking.status === 'unPaid' ? styles.statusUnpaid :
+                                                        styles.statusCancelled
+                                                    }`}>
+                                                        {booking.status === 'unPaid' ? 'Unpaid' : 
+                                                         booking.status === 'paid' ? 'Paid' : 'Cancelled'}
+                                                    </span>
+                                                    
+                                                    <Link 
+                                                        to={`/bookings/${booking.cartId}`}
+                                                        className={styles.viewDetailsButton}
+                                                    >
+                                                        View Details
+                                                    </Link>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
                 )}
             </div>
         </div>

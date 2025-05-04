@@ -29,7 +29,8 @@ const Event = () => {
     }, []);
 
     const handleEventClick = (eventId: number) => {
-        navigate(`/events/${eventId}`);
+        // Navigate directly to schedules page instead of event detail
+        navigate(`/schedules/event/${eventId}`);
     };
 
     if (loading) {
@@ -110,7 +111,7 @@ const Event = () => {
                                         variant="primary"
                                         size="small"
                                         className={styles.bookButton}
-                                        to={`/events/${event.id}`}
+                                        to={`/schedules/event/${event.id}`}
                                     >
                                         Book Now
                                     </Button>

@@ -1,3 +1,7 @@
+/* Added global font family */
+* {
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif !important;
+}
 .userActions {
     display: flex;
     align-items: center;
@@ -61,7 +65,8 @@
     color: #00B4D8;
 }
 
-.cartButton {
+/* Remove the cart button styling if it exists */
+/* .cartButton {
     background: none;
     border: none;
     cursor: pointer;
@@ -74,7 +79,7 @@
 .cartButton:hover {
     color: #00B4D8;
     transform: translateY(-1px);
-}
+} */
 
 @media (max-width: 768px) {
     .userActions {

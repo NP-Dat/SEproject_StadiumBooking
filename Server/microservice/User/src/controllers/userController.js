@@ -23,12 +23,6 @@ class UserController {
   
       let updatedData = { fullname, phonenumber, address, email };
   
-      // if (typeof password === 'string' && password.trim() !== '') {
-      //   const saltRounds = 10;
-      //   const hashedPassword = await bcrypt.hash(password, saltRounds);
-      //   updatedData.password = hashedPassword;
-      // }
-  
       const success = await UserModel.updateProfile(userId, updatedData);
   
       if (success) {

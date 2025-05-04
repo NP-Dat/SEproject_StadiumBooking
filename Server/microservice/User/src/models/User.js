@@ -12,8 +12,7 @@ class UserModel {
   }
 
   static async updateProfile(id, profileData) {
-    const { fullname, phonenumber, address, birth, email, password, username } = profileData;
-    
+    const { fullname, phonenumber, address, birth, email, username } = profileData;
     
     const [result] = await pool.query(
       `UPDATE Customers 

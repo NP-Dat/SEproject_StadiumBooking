@@ -1,106 +1,144 @@
-import { useState } from "react";
-import style from "./Stadium.module.css";
+import React, { useState } from 'react';
+import styles from './Stadium.module.css';
+import { TicketType } from '../../types/ticketType';
 
-interface Seat {
-    id: string;
-    price: number;
+interface StadiumProps {
+  zones: TicketType[];
+  scheduleId: number;
+  onZoneSelect?: (zoneId: number) => void;
 }
 
-const Stadium = () => {
-    const [selectedSeat, setSelectedSeat] = useState<Seat | null>(null);
+const Stadium: React.FC<StadiumProps> = ({ zones, scheduleId, onZoneSelect }) => {
+  const [selectedZone, setSelectedZone] = useState<number | null>(null);
+  
+  // Group zones by their location (North, South, East, West)
+  // This assumes your zone names contain location indicators
+  const getZoneByLocation = (location: string) => {
+    return zones.find(zone => 
+      zone.name.toLowerCase().includes(location.toLowerCase())
+    );
+  };
 
-    const handleSeatClick = (seat: Seat) => {
-        setSelectedSeat(seat);
-    };
+  const northZone = getZoneByLocation('north');
+  const southZone = getZoneByLocation('south');
+  const eastZone = getZoneByLocation('east');
+  const westZone = getZoneByLocation('west');
 
-    const createSeatButton = (id: string) => (
-        <button
-            key={id}
-            className={`${style.seat} ${selectedSeat?.id === id ? style.selected : ''}`}
-            onClick={() => handleSeatClick({ id, price: 50 + Math.floor(Math.random() * 50) })}
+  // Get availability color class based on available seats
+  const getAvailabilityColorClass = (zone?: TicketType) => {
+    if (!zone) return styles.unavailable;
+    
+    if (zone.availableSeats <= 0) return styles.soldOut;
+    if (zone.availableSeats < 5) return styles.lowAvailability;
+    if (zone.availableSeats < 20) return styles.mediumAvailability;
+    return styles.highAvailability;
+  };
+
+  // Handle zone click
+  const handleZoneClick = (zone?: TicketType) => {
+    if (!zone || zone.availableSeats <= 0) return;
+    
+    setSelectedZone(zone.id);
+    if (onZoneSelect) {
+      onZoneSelect(zone.id);
+    }
+  };
+
+  return (
+    <div className={styles.stadiumContainer}>
+      <h3 className={styles.stadiumTitle}>Stadium Seating Map</h3>
+      <p className={styles.instructions}>Click on a zone to select it</p>
+      
+      <div className={styles.stadium}>
+        {/* North Zone */}
+        <div 
+          className={`${styles.zone} ${styles.northZone} ${getAvailabilityColorClass(northZone)} ${selectedZone === northZone?.id ? styles.selected : ''}`}
+          onClick={() => handleZoneClick(northZone)}
         >
-            {id}
-        </button>
-    );
-
-    // Create arrays for North section (N1-N20 split into rows of 10)
-    const northSeatsRow1 = Array.from({ length: 10 }, (_, i) => createSeatButton(`N${i + 1}`));
-    const northSeatsRow2 = Array.from({ length: 10 }, (_, i) => createSeatButton(`N${i + 11}`));
-
-    // Create arrays for South section (S40-S54 split into rows of 10)
-    const southSeatsRow1 = Array.from({ length: 10 }, (_, i) => createSeatButton(`S${i + 40}`));
-    const southSeatsRow2 = Array.from({ length: 5 }, (_, i) => createSeatButton(`S${i + 50}`));
-
-    return (
-        <div className={style.stadium}>
-            <div className={style.container}>
-                <div className={style.stadiumContainer}>
-                    <h2 className={style.title}>Stadium Seating Map</h2>
-                    
-                    <div className={style.seatingLayout}>
-                        {/* North Section - Two rows of 10 seats */}
-                        <div className={style.northSection}>
-                            <div className={style.northRow}>
-                                {northSeatsRow1}
-                            </div>
-                            <div className={style.northRow}>
-                                {northSeatsRow2}
-                            </div>
-                        </div>
-
-                        <div className={style.middleSection}>
-                            {/* West Side - Two columns */}
-                            <div className={style.westSection}>
-                                <div className={style.sideColumn}>
-                                    {Array.from({ length: 6 }, (_, i) => createSeatButton(`W${i + 28}`))}
-                                </div>
-                                <div className={style.sideColumn}>
-                                    {Array.from({ length: 6 }, (_, i) => createSeatButton(`W${i + 34}`))}
-                                </div>
-                            </div>
-
-                            {/* Field */}
-                            <div className={style.field}>
-                                <span>Field</span>
-                            </div>
-
-                            {/* East Side - Two columns */}
-                            <div className={style.eastSection}>
-                                <div className={style.sideColumn}>
-                                    {Array.from({ length: 6 }, (_, i) => createSeatButton(`E${i + 16}`))}
-                                </div>
-                                <div className={style.sideColumn}>
-                                    {Array.from({ length: 6 }, (_, i) => createSeatButton(`E${i + 22}`))}
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* South Section - One row of 10 seats and one row of remaining seats */}
-                        <div className={style.southSection}>
-                            <div className={style.southRow}>
-                                {southSeatsRow1}
-                            </div>
-                            <div className={style.southRow}>
-                                {southSeatsRow2}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className={style.seatInfo}>
-                    <h2>Seat Information</h2>
-                    {selectedSeat ? (
-                        <div>
-                            <p><strong>Seat Number:</strong> {selectedSeat.id}</p>
-                            <p><strong>Price:</strong> ${selectedSeat.price}</p>
-                        </div>
-                    ) : (
-                        <p>Please select a seat to view details</p>
-                    )}
-                </div>
-            </div>
+          <div className={styles.zoneContent}>
+            <span className={styles.zoneName}>NORTH</span>
+            {northZone && (
+              <div className={styles.zoneDetails}>
+                <div>${northZone.price}</div>
+                <div>{northZone.availableSeats} seats</div>
+              </div>
+            )}
+          </div>
         </div>
-    );
+        
+        {/* South Zone */}
+        <div 
+          className={`${styles.zone} ${styles.southZone} ${getAvailabilityColorClass(southZone)} ${selectedZone === southZone?.id ? styles.selected : ''}`}
+          onClick={() => handleZoneClick(southZone)}
+        >
+          <div className={styles.zoneContent}>
+            <span className={styles.zoneName}>SOUTH</span>
+            {southZone && (
+              <div className={styles.zoneDetails}>
+                <div>${southZone.price}</div>
+                <div>{southZone.availableSeats} seats</div>
+              </div>
+            )}
+          </div>
+        </div>
+        
+        {/* East Zone */}
+        <div 
+          className={`${styles.zone} ${styles.eastZone} ${getAvailabilityColorClass(eastZone)} ${selectedZone === eastZone?.id ? styles.selected : ''}`}
+          onClick={() => handleZoneClick(eastZone)}
+        >
+          <div className={styles.zoneContent}>
+            <span className={styles.zoneName}>EAST</span>
+            {eastZone && (
+              <div className={styles.zoneDetails}>
+                <div>${eastZone.price}</div>
+                <div>{eastZone.availableSeats} seats</div>
+              </div>
+            )}
+          </div>
+        </div>
+        
+        {/* West Zone */}
+        <div 
+          className={`${styles.zone} ${styles.westZone} ${getAvailabilityColorClass(westZone)} ${selectedZone === westZone?.id ? styles.selected : ''}`}
+          onClick={() => handleZoneClick(westZone)}
+        >
+          <div className={styles.zoneContent}>
+            <span className={styles.zoneName}>WEST</span>
+            {westZone && (
+              <div className={styles.zoneDetails}>
+                <div>${westZone.price}</div>
+                <div>{westZone.availableSeats} seats</div>
+              </div>
+            )}
+          </div>
+        </div>
+        
+        {/* Field */}
+        <div className={styles.field}>FIELD</div>
+      </div>
+
+      {/* Legend */}
+      <div className={styles.legend}>
+        <div className={styles.legendItem}>
+          <span className={`${styles.legendColor} ${styles.highAvailability}`}></span>
+          <span>Good Availability</span>
+        </div>
+        <div className={styles.legendItem}>
+          <span className={`${styles.legendColor} ${styles.mediumAvailability}`}></span>
+          <span>Limited</span>
+        </div>
+        <div className={styles.legendItem}>
+          <span className={`${styles.legendColor} ${styles.lowAvailability}`}></span>
+          <span>Almost Full</span>
+        </div>
+        <div className={styles.legendItem}>
+          <span className={`${styles.legendColor} ${styles.soldOut}`}></span>
+          <span>Sold Out</span>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default Stadium;

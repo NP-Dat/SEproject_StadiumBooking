@@ -38,7 +38,8 @@ const Events = () => {
             setSelectedEventId(eventId);
             setShowLoginModal(true);
         } else {
-            navigate(`/events/${eventId}`);
+            // Navigate directly to schedules instead of event detail
+            navigate(`/schedules/event/${eventId}`);
         }
     };
 
@@ -130,4 +131,4 @@ const Events = () => {
     );
 };
 
-export default Events; 
+export default Events;

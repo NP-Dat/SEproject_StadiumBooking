@@ -1,3 +1,8 @@
+
+/* Added global font family */
+* {
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif !important;
+}
 .header {
     background-color: rgba(255, 255, 255, 0.95);
     color: #1e293b;
@@ -25,7 +30,7 @@
 }
 
 .logoText {
-    font-size: 1.75rem;
+    font-size: 2.5rem;
     font-weight: 800;
     cursor: pointer;
     background: linear-gradient(135deg, #00B4D8, #0096C7);
@@ -60,7 +65,7 @@
     border-radius: 6px;
     transition: all 0.3s ease;
     position: relative;
-    font-size: 0.95rem;
+    font-size: 1.5rem;
 }
 
 .navLink::after {
@@ -94,7 +99,7 @@
 
 .searchContainer {
     position: relative;
-    width: 300px;
+    width: 400px;
 }
 
 .searchForm {
@@ -237,21 +242,6 @@
 .menuItem:hover {
     background: rgba(0, 180, 216, 0.1);
     color: #00B4D8;
-}
-
-.cartButton {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0.5rem;
-    color: #1e293b;
-    transition: all 0.2s;
-    position: relative;
-}
-
-.cartButton:hover {
-    color: #00B4D8;
-    transform: translateY(-1px);
 }
 
 .loginButton,
