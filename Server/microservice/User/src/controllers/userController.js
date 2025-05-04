@@ -5,7 +5,7 @@ class UserController {
   
   static async getProfile(req, res) {
     try {
-      const profile = await UserModel.findById(req.body.userId);
+      const profile = await UserModel.findById(req.query.userId);
       if (!profile) {
         return res.status(404).json({ message: 'Profile not found' });
       }
@@ -18,16 +18,16 @@ class UserController {
 
   static async updateProfile(req, res) {
     try {
-      const { userId, fullname, phonenumber, address, email, password } = req.body;
+      const { userId, fullname, phonenumber, address, email } = req.body;
       // const userId = req.body.userId;
   
       let updatedData = { fullname, phonenumber, address, email };
   
-      if (typeof password === 'string' && password.trim() !== '') {
-        const saltRounds = 10;
-        const hashedPassword = await bcrypt.hash(password, saltRounds);
-        updatedData.password = hashedPassword;
-      }
+      // if (typeof password === 'string' && password.trim() !== '') {
+      //   const saltRounds = 10;
+      //   const hashedPassword = await bcrypt.hash(password, saltRounds);
+      //   updatedData.password = hashedPassword;
+      // }
   
       const success = await UserModel.updateProfile(userId, updatedData);
   
@@ -50,6 +50,7 @@ class UserController {
       } else {
         res.status(404).json({ message: 'Profile not found' });
       }
+      console.log('userId:', req.body.userId);
     } catch (error) {
       console.error('Delete profile error:', error);
       res.status(500).json({ message: 'Internal server error' });

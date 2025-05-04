@@ -14,22 +14,15 @@ class UserModel {
   static async updateProfile(id, profileData) {
     const { fullname, phonenumber, address, birth, email, password, username } = profileData;
     
-    let hashedPassword = password;
-    // only hash the password if it's provided
-    if (password) {
-      const saltRounds = 10;
-      hashedPassword = await bcrypt.hash(password, saltRounds);
-    }
     
     const [result] = await pool.query(
       `UPDATE Customers 
        SET fullName = ?, 
            phoneNumber = ?, 
            address = ?,
-           email = ?,
-           passWord = ?
+           email = ?
        WHERE id = ?`,
-      [fullname, phonenumber, address, email, hashedPassword, id]
+      [fullname, phonenumber, address, email, id]
     );
     
     return result.affectedRows > 0;
