@@ -4,7 +4,7 @@ class TicketModel {
     async getBookedTickets(userId) {
         try {
             const query = `
-                SELECT u.fullname, el.name AS eventName, es.date, es.timeStart, s.name AS stadiumName, s.address, st.seat_number
+                SELECT u.fullname, el.name AS eventName, DATE_FORMAT(es.date, '%Y-%m-%d') AS date, es.timeStart, s.name AS stadiumName, s.address, st.seat_number
                 FROM Tickets t
                 JOIN Customers u ON t.userID = u.id
                 JOIN EventSchedules es ON t.scheduleID = es.id
