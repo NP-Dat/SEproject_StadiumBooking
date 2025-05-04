@@ -17,7 +17,7 @@ app.get('/health', (req, res) => {
   res.json({ status: 'OK', message: 'Payment service is running' });
 });
 
-const PORT = process.env.PORT || 8004;
+const PORT = process.env.PORT || 8006;
 app.listen(PORT, () => {
   console.log(`Payment service running on port ${PORT}`);
 });

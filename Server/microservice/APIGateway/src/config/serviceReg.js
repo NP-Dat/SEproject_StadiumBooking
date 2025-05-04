@@ -39,7 +39,7 @@ const services = {
       ]
     },
     payments: {
-      url: process.env.PAYMENT_SERVICE_URL || 'http://localhost:8005',
+      url: process.env.PAYMENT_SERVICE_URL || 'http://localhost:8006',
       routes: [
         '/api/payments'
       ]
