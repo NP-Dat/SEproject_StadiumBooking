@@ -1,4 +1,8 @@
 const BookingModel = require('../models/bookingModel');
+const axios = require('axios'); // Import axios
+
+
+const PAYMENT_SERVICE_URL = process.env.PAYMENT_SERVICE_URL || 'http://localhost:8006'; // Replace with your actual Payment Service URL or use environment variables
 
 
 class BookingController {
