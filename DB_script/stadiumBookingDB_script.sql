@@ -16,6 +16,7 @@ CREATE TABLE EventList (  -- Renamed from Events
     name VARCHAR(255) NOT NULL,
     date DATE NOT NULL,
     owner VARCHAR(255) NOT NULL,  -- Consider a separate 'Owners' table
+    description VARCHAR(255),
     PRIMARY KEY (id)
 );
 
