@@ -56,19 +56,26 @@ class BookingModel {
   /**
    * Insert multiple tickets with incrementing seatIDs
    * @param {number} userID - User ID for the tickets
-   * @param {number} startSeatID - Starting seat ID (will increment from this value)
    * @param {number} scheduleID - Schedule ID for the tickets
    * @param {number} zoneID - Zone ID for the tickets
    * @param {number} cartID - Cart ID for the tickets
    * @param {number} count - Number of tickets to insert
    * @returns {Promise<Array>} - Array of inserted ticket IDs
    */
-  async insertMultipleTickets(userID, startSeatID, scheduleID, zoneID, cartID, count) {
+  async insertMultipleTickets(userID, scheduleID, zoneID, cartID, count) {
     try {
+      const highestSeatID = await this.getBiggestSeatID(scheduleID, zoneID);
+      const zone = await this.getStartAndEndOfZone(zoneID);
+
+      const startSeatID = highestSeatID; // Use the highest seat ID as the starting point
+      if (startSeatID + count > zone.end){
+        throw new Error(`Not enough seats available in zone ${zoneID}. Only ${zone.end - startSeatID} seats left.`);
+      }
       const insertedTicketIds = [];
       
       // Begin transaction
       await pool.query('START TRANSACTION');
+      
       
       for (let i = 0; i < count; i++) {
         const currentSeatID = startSeatID + i + 1; // Increment from the starting seat ID
@@ -146,6 +153,45 @@ class BookingModel {
       // Rollback transaction in case of error
       await pool.query('ROLLBACK');
       console.error('Error creating cart:', error);
+      throw error;
+    }
+  }
+
+  async updateCartStatus(cartID, status) {
+    try {
+      const query = `
+        UPDATE Carts
+        SET status = ?
+        WHERE id = ?
+      `;
+      
+      const [result] = await pool.query(query, [status, cartID]);
+
+      if (result.affectedRows === 0) {
+        throw new Error(`Cart with ID ${cartID} not found`);
+      }
+      return result.affectedRows;
+    } catch (error) {
+      console.error('Error updating cart status:', error);
+      throw error;
+    }
+
+  }
+
+  async deleteCart(cartID) {
+    try {
+      const query = `
+        DELETE FROM Carts
+        WHERE id = ?
+      `;
+      
+      const [result] = await pool.query(query, [cartID]);
+      if (result.affectedRows === 0) {
+        throw new Error(`Cart with ID ${cartID} not found for deletion`);
+      }
+      return result.affectedRows;
+    } catch (error) {
+      console.error('Error deleting cart:', error);
       throw error;
     }
   }
