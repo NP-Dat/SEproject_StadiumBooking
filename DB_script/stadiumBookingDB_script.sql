@@ -102,6 +102,10 @@ CREATE TABLE Tickets (
     zoneID INT NOT NULL,
     cartID INT NOT NULL,
     PRIMARY KEY (id),
+    
+    -- Add the UNIQUE constraint here. There will be no duplicate ticket
+    UNIQUE KEY uq_Tickets_seatID_scheduleID (seatID, scheduleID), 
+    
     FOREIGN KEY (userID) REFERENCES Customers(id) ON DELETE CASCADE,  -- Use new name
     FOREIGN KEY (scheduleID) REFERENCES EventSchedules(id) ON DELETE CASCADE,  -- Use new name
     FOREIGN KEY (seatID) REFERENCES Seats(id) ON DELETE CASCADE,
