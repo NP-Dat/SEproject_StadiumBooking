@@ -8,11 +8,40 @@ class UserModel {
       [id]
     );
     if (!users.length) return null;
-    return users[0];
+    const user = users[0];
+
+    const [tickets] = await pool.query(
+      `SELECT 
+         t.id AS ticketId,
+         el.name AS eventName,
+         es.date AS eventDate,
+         es.timeStart,
+         es.timeEnd,
+         s.name AS stadiumName,
+         ez.name AS zoneName,
+         ez.price AS ticketPrice,
+         se.seat_number AS seatNumber,
+         c.status AS cartStatus
+       FROM Tickets t
+       JOIN EventSchedules es ON t.scheduleID = es.id
+       JOIN EventList el ON es.eventID = el.id
+       JOIN Stadiums s ON es.stadiumID = s.id
+       JOIN eventZone ez ON t.zoneID = ez.id
+       JOIN Seats se ON t.seatID = se.id
+       JOIN Carts c ON t.cartID = c.id
+       WHERE t.userID = ?`,
+      [id]
+    );
+
+    // Combine user profile with tickets
+    return {
+      ...user,
+      tickets: tickets
+    };
   }
 
   static async updateProfile(id, profileData) {
-    const { fullname, phonenumber, address, birth, email, username } = profileData;
+    const { fullname, phonenumber, address, email} = profileData;
     
     const [result] = await pool.query(
       `UPDATE Customers 
@@ -26,19 +55,6 @@ class UserModel {
     
     return result.affectedRows > 0;
   }
-
-  // method to verify passwords if user is updating password
-  // static async verifyPassword(userId, password) {
-  //   const [users] = await pool.query(
-  //     'SELECT passWord FROM Customers WHERE id = ?',
-  //     [userId]
-  //   );
-    
-  //   if (!users.length) return false;
-  //   console.log('Hashed password:', users[0].passWord);
-  //   const hashedPassword = users[0].passWord;
-  //   return await bcrypt.compare(password, hashedPassword);
-  // }
 
   static async deleteProfile(userId) {
     const [result] = await pool.query(
