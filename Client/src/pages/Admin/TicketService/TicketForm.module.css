@@ -1,0 +1,120 @@
+.form {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.form h3 {
+    margin: 0 0 1.5rem;
+    color: #1e293b;
+    font-size: 1.5rem;
+    font-weight: 600;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.formGroup {
+    margin-bottom: 1.5rem;
+}
+
+.formGroup label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #475569;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.formGroup input,
+.formGroup select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: #1e293b;
+    transition: all 0.3s ease;
+    background-color: #f8fafc;
+}
+
+.formGroup input:focus,
+.formGroup select:focus {
+    outline: none;
+    border-color: #00B4D8;
+    box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.1);
+    background-color: white;
+}
+
+.formGroup input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+.formGroup input[type="number"]::-webkit-outer-spin-button,
+.formGroup input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.submitButton {
+    width: 100%;
+    padding: 0.875rem;
+    background: linear-gradient(135deg, #00B4D8, #0096C7);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.submitButton:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 180, 216, 0.2);
+}
+
+.submitButton:disabled {
+    background: #94a3b8;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.error {
+    padding: 1rem;
+    background-color: #fee2e2;
+    color: #dc2626;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+    border-left: 4px solid #dc2626;
+}
+
+@media (max-width: 768px) {
+    .form {
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+
+    .form h3 {
+        font-size: 1.25rem;
+    }
+
+    .formGroup label {
+        font-size: 0.9rem;
+    }
+
+    .formGroup input,
+    .formGroup select {
+        padding: 0.625rem;
+        font-size: 0.9rem;
+    }
+
+    .submitButton {
+        padding: 0.75rem;
+        font-size: 0.95rem;
+    }
+} 

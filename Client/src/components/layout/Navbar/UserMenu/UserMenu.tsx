@@ -44,6 +44,12 @@ const UserMenu = ({ showProfileMenu, setShowProfileMenu }: UserMenuProps) => {
                         }} className={styles.menuItem}>
                             Profile
                         </button>
+                        <button onClick={() => {
+                            navigate('/admin/tickets');
+                            setShowProfileMenu(false);
+                        }} className={styles.menuItem}>
+                            Ticket Management
+                        </button>
                         <button onClick={handleLogout} className={styles.menuItem}>
                             Logout
                         </button>
