@@ -1,22 +1,44 @@
-const jwt = require('jsonwebtoken');
+const { verifyToken } = require("../utils/jwtUtils");
+const AuthModel = require('../models/AuthModel'); // Assuming you have a User model to interact with your database
 
-const authenticateToken = (req, res, next) => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
 
-  if (!token) {
-    return res.status(401).json({ message: 'Access token is required' });
-  }
-
-  jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key', (err, user) => {
-    if (err) {
-      return res.status(403).json({ message: 'Invalid or expired token' });
+const authenticate = async (req, res, next) => {
+  try {
+    const authHeader = req.headers.authorization;
+    
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({
+        success: false,
+        message: 'Access denied. No token provided.'
+      });
     }
+    
+    const token = authHeader.split(' ')[1];
+    const decoded = verifyToken(token);
+    
+    // Get user from database
+    const user = await AuthModel.findById(decoded.id);
+    
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: 'Invalid token. User not found.'
+      });
+    }
+    
+    // Attach user to request object
     req.user = user;
     next();
-  });
+  } catch (error) {
+    return res.status(401).json({
+      success: false,
+      message: 'Invalid token',
+      error: error.message
+    });
+  }
 };
 
+
 module.exports = {
-  authenticateToken
+  authenticate
 };

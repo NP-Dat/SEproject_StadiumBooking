@@ -5,7 +5,7 @@ class UserController {
   
   static async getProfile(req, res) {
     try {
-      const profile = await UserModel.findById(req.query.userId);
+      const profile = await UserModel.findById(req.user.userId);
       if (!profile) {
         return res.status(404).json({ message: 'Profile not found' });
       }

@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const AuthModel = require('../models/AuthModel');
+const { generateToken, verifyToken } = require('../utils/jwtUtils');
 
 class AuthController {
   static async register(req, res) {
@@ -44,26 +45,19 @@ class AuthController {
       }
       // const role = await AuthModel.getRole(user.id);
 
-      // Fix: Change email to username since we're using username for login
+      
       const hashedPassword = await AuthModel.findPasswordByUsername(username);
       const validPassword = await AuthModel.verifyPassword(password, hashedPassword);
       if (!validPassword) {
         return res.status(401).json({ message: 'Invalid credentials' });
       }
 
-      // const token = jwt.sign(
-      //   { userId: user.id, email: user.email },
-      //   process.env.JWT_SECRET || 'default_secret_key',
-      //   { expiresIn: '1h' }
-      // );
-
-      // Decode token to get expiration time
-      // const decoded = jwt.decode(token);
-      // const expiresAt = new Date(decoded.exp * 1000);
+      const token = generateToken(user);
+      // res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'Strict' });
 
       res.json({
         message: 'Login successful',
-        userId: user.id
+        token: token
       });
     } catch (error) {
       console.error('Login error:', error);
@@ -72,22 +66,10 @@ class AuthController {
   }
 
 
-  static async verifyToken(req, res) {
-    const {token} = req.body;
+  static async verifyToken(req, res) {    
+    // Token is valid and user ID matches
+    res.json({ message: 'Valid token', userId: req.user.id });
     
-    if (!token) {
-      return res.status(403).json({ message: 'No token provided' });
-    }
-
-    // Verify the token 
-    jwt.verify(token, process.env.JWT_SECRET || 'default_secret_key', (err, decoded) => {
-      if (err) {
-        return res.status(401).json({ message: 'Unauthorized' });
-      }      
-
-      // Token is valid and user ID matches
-      res.json({ message: 'Valid token', userId: decoded.userId});
-    });
   }
 }
 
