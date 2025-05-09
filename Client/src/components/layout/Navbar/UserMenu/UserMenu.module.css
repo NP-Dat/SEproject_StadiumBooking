@@ -47,8 +47,9 @@
     border: 1px solid rgba(0, 180, 216, 0.1);
 }
 
+/* Add or update these styles for better appearance */
 .menuItem {
-    display: block;
+    display: flex;
     width: 100%;
     padding: 0.75rem 1rem;
     text-align: left;
@@ -58,11 +59,19 @@
     font-size: 0.95rem;
     cursor: pointer;
     transition: all 0.2s;
+    align-items: center;
 }
 
 .menuItem:hover {
     background: rgba(0, 180, 216, 0.1);
     color: #00B4D8;
+}
+
+/* Add this if you want to include icons with menu items */
+.menuItem svg {
+    margin-right: 0.5rem;
+    width: 16px;
+    height: 16px;
 }
 
 /* Remove the cart button styling if it exists */

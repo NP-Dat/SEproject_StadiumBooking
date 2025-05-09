@@ -74,6 +74,10 @@ const UserBookings: React.FC = () => {
               <p className={styles.venueInfo}>
                 <span className={styles.infoIcon}>🏟️</span> {booking.stadiumName}
               </p>
+              {/* Add zone information here */}
+              <p className={styles.zoneInfo}>
+                <span className={styles.infoIcon}>🎫</span> Zone: {booking.zoneName || 'Standard'}
+              </p>
               
               <div className={styles.bookingDetails}>
                 <div className={styles.ticketInfo}>

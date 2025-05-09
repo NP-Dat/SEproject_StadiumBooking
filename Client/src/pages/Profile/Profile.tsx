@@ -142,11 +142,22 @@ const Profile = () => {
                 return;
             }
             
+            console.log('Fetching bookings for userId:', userId);
+            
+            // Call the updated getUserBookings method
             const bookingsData = await BookingService.getUserBookings(parseInt(userId));
+            
+            console.log('Bookings data received:', bookingsData);
+            
+            // Set the bookings data
             setBookings(bookingsData);
+            
+            if (bookingsData.length === 0) {
+                console.log('No bookings found for this user');
+            }
         } catch (err) {
             console.error('Error fetching bookings:', err);
-            setBookingsError('Failed to load your booking history');
+            setBookingsError('Failed to load your booking history. Please try again.');
         } finally {
             setBookingsLoading(false);
         }
@@ -501,25 +512,25 @@ const Profile = () => {
                             </div>
                         ) : (
                             <div className={styles.bookingsList}>
-                                {bookings.map((booking) => (
-                                    <div key={booking.cartId} className={styles.bookingCard}>
+                                {bookings.map((booking, index) => (
+                                    <div key={booking.cartId || `booking-${index}`} className={styles.bookingCard}>
                                         {booking.eventImage && (
                                             <div className={styles.bookingImageContainer}>
                                                 <img 
                                                     src={booking.eventImage} 
-                                                    alt={booking.eventTitle} 
+                                                    alt={booking.eventTitle || 'Event'} 
                                                     className={styles.bookingImage} 
                                                 />
                                             </div>
                                         )}
                                         
                                         <div className={styles.bookingDetails}>
-                                            <h3 className={styles.bookingTitle}>{booking.eventTitle}</h3>
+                                            <h3 className={styles.bookingTitle}>{booking.eventTitle || 'Unnamed Event'}</h3>
                                             
                                             <div className={styles.bookingInfo}>
                                                 <p className={styles.bookingDate}>
                                                     <span className={styles.infoIcon}>📅</span> 
-                                                    {formatDate(booking.date)}
+                                                    {booking.date ? formatDate(booking.date) : 'Date not available'}
                                                 </p>
                                                 <p className={styles.bookingTime}>
                                                     <span className={styles.infoIcon}>⏰</span> 
@@ -528,6 +539,10 @@ const Profile = () => {
                                                 <p className={styles.bookingVenue}>
                                                     <span className={styles.infoIcon}>🏟️</span> 
                                                     {booking.stadiumName}
+                                                </p>
+                                                <p className={styles.bookingZone}>
+                                                    <span className={styles.infoIcon}>🎫</span> 
+                                                    {booking.zoneName || 'Standard Zone'}
                                                 </p>
                                             </div>
                                             
@@ -551,12 +566,7 @@ const Profile = () => {
                                                          booking.status === 'paid' ? 'Paid' : 'Cancelled'}
                                                     </span>
                                                     
-                                                    <Link 
-                                                        to={`/bookings/${booking.cartId}`}
-                                                        className={styles.viewDetailsButton}
-                                                    >
-                                                        View Details
-                                                    </Link>
+                                                    {/* Remove the View Details button */}
                                                 </div>
                                             </div>
                                         </div>

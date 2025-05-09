@@ -1,4 +1,3 @@
-
 /* Added global font family */
 * {
   font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif !important;
@@ -109,7 +108,7 @@
 .ticketPrice {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #2c7be5;
+  color: #0096c7; /* Match your app's color scheme */
 }
 
 .bookingActions {
@@ -153,6 +152,14 @@
 
 .detailsButton:hover {
   background-color: #1a68d1;
+}
+
+.zoneInfo {
+  margin: 0.25rem 0;
+  color: #555;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
 }
 
 @media (max-width: 768px) {

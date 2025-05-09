@@ -4,6 +4,7 @@ import { useContext } from 'react';
 import { AuthContext } from '../contexts/AuthContextDef';
 
 const API_URL = 'http://localhost:8001/api/auth';
+const PAYMENT_API_URL = 'http://localhost:8006/api/payment';
 
 interface ErrorResponse {
     message: string;
@@ -19,6 +20,22 @@ export class AuthService {
             throw new Error('useAuth must be used within an AuthProvider');
         }
         return context;
+    }
+
+    // New method to create wallet
+    static async createWallet(userId: string, initialBalance: number = 0): Promise<boolean> {
+        try {
+            const response = await axios.post(`${PAYMENT_API_URL}/createWallet`, {
+                userID: parseInt(userId),
+                initialBalance
+            });
+            
+            console.log('Wallet created successfully:', response.data);
+            return true;
+        } catch (error) {
+            console.error('Error creating wallet:', error);
+            return false;
+        }
     }
 
     static async login(credentials: LoginCredentials): Promise<AuthState> {
@@ -50,7 +67,7 @@ export class AuthService {
                 return {
                     message: 'Login successful',
                     user: this.user,
-                    token: null, // Set token to null 
+                    token: null, 
                     isAuthenticated: true,
                     loading: false,
                     error: null
@@ -78,10 +95,29 @@ export class AuthService {
             
             if (response.data.message === 'User registered successfully') {
                 // After successful registration, log in automatically
-                return await this.login({
+                const loginResult = await this.login({
                     username: credentials.username,
                     password: credentials.password
                 });
+                
+                // If login was successful, create a wallet for the user
+                if (loginResult.isAuthenticated && loginResult.user) {
+                    const walletCreated = await this.createWallet(loginResult.user.id);
+                    
+                    if (!walletCreated) {
+                        console.warn('User registered and logged in, but wallet creation failed');
+                        // We still return success since the user is registered and logged in
+                        return {
+                            ...loginResult,
+                            message: 'Registration successful, but wallet creation failed'
+                        };
+                    }
+                }
+                
+                return {
+                    ...loginResult,
+                    message: 'Registration and wallet setup successful'
+                };
             }
             
             throw new Error('Registration failed: ' + (response.data.message || 'Unknown error'));
