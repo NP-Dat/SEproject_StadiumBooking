@@ -2,4 +2,5 @@
 Server/microservice/Booking/src/models/db.txt
 /.vscode
 Server/microservice/Auth/.env
+.cursor
 
