@@ -9,9 +9,9 @@ import Terms from '../pages/Support/Terms'
 import Privacy from '../pages/Support/Privacy'
 import Refund from '../pages/Support/Refund'
 import Accessibility from '../pages/Support/Accessibility'
-import Stadium from '../pages/Stadium/Stadium'
 import SchedulePage from '../pages/ScheduleEvent/Schedule'
-// import Stadium from '../pages/Stadium/Stadium'
+import Stadium from '../pages/Stadium/Stadium'
+import EventListByStadium from '../pages/Stadium/EventListByStadium'
 
 export const publicRoutes: RouteType[] = [
   {
@@ -33,6 +33,14 @@ export const publicRoutes: RouteType[] = [
   {
     path: '/about',
     element: <About />
+  },
+  {
+    path: '/stadium',
+    element: <Stadium />
+  },
+  {
+    path: '/eventsbystadium/:id',
+    element: <EventListByStadium />
   },
   /*Support & Legal*/
   {
@@ -61,8 +69,8 @@ export const publicRoutes: RouteType[] = [
   },
 
   // This is for testing the stadium seat page
-  {
-     path: '/stadium',
-    element: <Stadium zones={[]} scheduleId={0} />
-  },
+  // {
+  //    path: '/stadium',
+  //   element: <Stadium_map zones={[]} scheduleId={0} />
+  // },
 ]

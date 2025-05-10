@@ -110,6 +110,9 @@ const Navbar = () => {
                         <NavLink to="/events" className={({ isActive }) => `${styles.navLink} ${isActive ? styles.navLinkActive : ''}`}>
                             Events
                         </NavLink>
+                        <NavLink to="/stadium" className={({ isActive }) => `${styles.navLink} ${isActive ? styles.navLinkActive : ''}`}>
+                            Stadium
+                        </NavLink>
                         <NavLink to="/about" className={({ isActive }) => `${styles.navLink} ${isActive ? styles.navLinkActive : ''}`}>
                             About
                         </NavLink>

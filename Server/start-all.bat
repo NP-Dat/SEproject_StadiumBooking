@@ -43,6 +43,13 @@ call npm install
 start "Ticket Service (Port 8005)" cmd /k npm run dev
 cd ../..
 
+REM Start Payment Service
+echo Starting Payment Service...
+cd microservice/tempPayment
+call npm install
+start "tempPayment Service (Port 8006)" cmd /k npm run dev
+cd ../..
+
 @REM REM Start Event Owner Service
 @REM echo Starting Event Owner Service...
 @REM cd microservice/event_owner
