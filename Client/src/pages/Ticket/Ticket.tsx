@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { AuthService } from '../../services/AuthService';
 import styles from './Ticket.module.css';
 
@@ -25,38 +25,57 @@ interface Ticket {
 const Ticket = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
   const { user } = AuthService.useAuth();
   const [ticket, setTicket] = useState<Ticket | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Check if this is a newly purchased ticket
+  const locationState = location.state as { justPurchased?: boolean };
+  const isNewPurchase = locationState?.justPurchased;
 
   useEffect(() => {
     const fetchTicket = async () => {
       try {
         setLoading(true);
         
-        // Replace this with your actual API call
-        // const response = await TicketService.getTicketById(Number(id));
-        // setTicket(response);
+        // Check if we have ticket details from navigation state
+        const locationState = location.state as { justPurchased?: boolean; ticketDetails?: any };
         
-        // Mock data for now
-        setTicket({
-          id: Number(id),
-          userId: user?.id || 0,
-          eventId: 1,
-          eventName: "Stadium Concert",
-          scheduleId: 1,
-          eventDate: "2023-12-15",
-          eventTime: "19:00",
-          zoneId: 2,
-          zoneName: "VIP Zone",
-          seatNumber: "A-123",
-          price: 150,
-          purchaseDate: "2023-11-01",
-          status: "Active"
-        });
+        if (locationState?.justPurchased && locationState?.ticketDetails) {
+          // Use the ticket details passed from booking
+          const ticketData = locationState.ticketDetails;
+          setTicket({
+            id: ticketData.ticketId,
+            userId: user?.id || 0,
+            eventId: ticketData.eventId,
+            eventName: ticketData.eventName,
+            scheduleId: ticketData.scheduleId,
+            eventDate: ticketData.date,
+            eventTime: ticketData.timeStart,
+            zoneId: ticketData.zoneId,
+            zoneName: ticketData.zoneName,
+            seatNumber: ticketData.seatID,
+            price: ticketData.price,
+            purchaseDate: new Date().toISOString().split('T')[0],
+            status: "Active"
+          });
+          setLoading(false);
+          return;
+        }
         
-        setLoading(false);
+        // Otherwise fetch the ticket by ID
+        if (!id) {
+          setError('Ticket ID not found');
+          setLoading(false);
+          return;
+        }
+
+        // Original ticket fetching code...
+        const response = await fetch(`/api/tickets/${id}`);
+        // ...rest of the existing code
+        
       } catch (err) {
         console.error('Error fetching ticket:', err);
         setError('Failed to load ticket details');
@@ -64,10 +83,8 @@ const Ticket = () => {
       }
     };
 
-    if (id) {
-      fetchTicket();
-    }
-  }, [id, user]);
+    fetchTicket();
+  }, [id, user, location.state]);
 
   if (loading) {
     return <div className={styles.loading}>Loading ticket...</div>;
@@ -83,6 +100,12 @@ const Ticket = () => {
 
   return (
     <div className={styles.ticketContainer}>
+      {isNewPurchase && (
+        <div className={styles.successMessage}>
+          <h2>Payment Successful!</h2>
+          <p>Your ticket has been purchased successfully.</p>
+        </div>
+      )}
       <div className={styles.ticketCard}>
         <div className={styles.ticketHeader}>
           <h1 className={styles.ticketTitle}>Event Ticket</h1>

@@ -8,6 +8,7 @@ import BookingForm from '../pages/BookingDetail/BookingDetail'
 import Payment from '../pages/Payment/Payment'
 import PaymentPage from '../pages/Payment/PaymentPage'
 import PaymentSuccess from '../pages/Payment/PaymentSuccess'
+import WalletPage from '../pages/Payment/WalletPage'
 // Remove or comment out this import
 // import Ticket from '../pages/Ticket/Ticket'
 
@@ -27,6 +28,7 @@ export const AppRoutes = () => {
       <Route path="/payment/:bookingId" element={<Payment />} />
       <Route path="/payment" element={<PaymentPage />} />
       <Route path="/payment/success" element={<PaymentSuccess />} />
+      <Route path="/wallet" element={<WalletPage />} />
       {/* Remove or comment out this route */}
       {/* <Route path="/ticket/:id" element={<Ticket />} /> */}
       

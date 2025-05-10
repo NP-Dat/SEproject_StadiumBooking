@@ -22,6 +22,8 @@ const ZoneSelection: React.FC = () => {
   const [isBooking, setIsBooking] = useState(false);
   const [numberOfTickets, setNumberOfTickets] = useState(1);
   const [price, setPrice] = useState(150.00); // You might fetch this dynamically
+  // Add this state to track showing the payment confirmation
+  const [showPaymentConfirmation, setShowPaymentConfirmation] = useState(false);
 
   useEffect(() => {
     const fetchZones = async () => {
@@ -63,7 +65,7 @@ const ZoneSelection: React.FC = () => {
     setTicketQuantity(parseInt(e.target.value));
   };
 
-  // Update the handleConfirmBooking function
+  // Modify the handleConfirmBooking function
   const handleConfirmBooking = async () => {
     if (!isAuthenticated) {
       navigate('/login', { state: { from: location.pathname } });
@@ -81,7 +83,7 @@ const ZoneSelection: React.FC = () => {
         return;
       }
       
-      // Create a booking first
+      // Create a booking and process payment in one step
       const bookingResult = await BookingService.createBooking(
         parseInt(userId),
         scheduleId,
@@ -89,24 +91,9 @@ const ZoneSelection: React.FC = () => {
         ticketQuantity
       );
       
-      // Check for both possible response formats (bookingId or id)
-      const bookingId = bookingResult?.bookingId || bookingResult?.id;
-      
-      if (bookingId) {
-        // Store booking data in localStorage for the payment page to use
-        const bookingData = {
-          eventId: eventId || '',
-          zoneName: selectedZone.name,
-          quantity: ticketQuantity,
-          price: Number(selectedZone.price),
-          total: (Number(selectedZone.price) * ticketQuantity).toFixed(2),
-          cartId: bookingId
-        };
-        
-        localStorage.setItem('currentBooking', JSON.stringify(bookingData));
-        
-        // Navigate to payment page
-        navigate(`/payment/${bookingId}`);
+      if (bookingResult.success) {
+        // Show the payment success dialog
+        setShowPaymentConfirmation(true);
       } else {
         setError('Failed to create booking');
       }
@@ -230,7 +217,66 @@ const ZoneSelection: React.FC = () => {
           </>
         )}
       </div>
+      {showPaymentConfirmation && (
+        <PaymentComplete 
+          eventId={eventId} 
+          onClose={() => setShowPaymentConfirmation(false)} 
+        />
+      )}
     </section>
+  );
+};
+
+const PaymentComplete: React.FC<{eventId?: string, onClose: () => void}> = ({ eventId, onClose }) => {
+  const navigate = useNavigate();
+  
+  // Add this useEffect to add a class to the body when overlay is shown
+  React.useEffect(() => {
+    // Add class to body when component mounts
+    document.body.classList.add('overlay-active');
+    
+    // Remove class when component unmounts
+    return () => {
+      document.body.classList.remove('overlay-active');
+    };
+  }, []);
+
+  const handleViewEvent = () => {
+    onClose();
+    if (eventId) {
+      navigate(`/events/${eventId}`);
+    }
+  };
+
+  const handleViewBookings = () => {
+    onClose();
+    navigate('/profile', { state: { activeTab: 'bookings' } });
+  };
+
+  return (
+    <div className={styles.paymentOverlay}>
+      <div className={styles.paymentConfirmation}>
+        <div className={styles.paymentHeader}>
+          <h2>Payment Successful</h2>
+          <div className={styles.paymentIcon}>✓</div>
+        </div>
+        
+        <div className={styles.paymentActions}>
+          <button 
+            className={styles.eventButton}
+            onClick={handleViewEvent}
+          >
+            Back to Event
+          </button>
+          <button 
+            className={styles.bookingsButton}
+            onClick={handleViewBookings}
+          >
+            View My Bookings
+          </button>
+        </div>
+      </div>
+    </div>
   );
 };
 

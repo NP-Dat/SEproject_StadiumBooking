@@ -19,6 +19,8 @@ export interface UserBooking {
   eventTitle: string;
   eventImage: string;
   stadiumName: string;
+  // Add zone name field
+  zoneName: string;
 }
 
 export interface BookingTicket {

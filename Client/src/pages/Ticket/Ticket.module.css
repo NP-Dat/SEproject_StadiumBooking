@@ -168,6 +168,26 @@
   text-align: center;
 }
 
+.successMessage {
+  background-color: #e6f7e6;
+  color: #2e7d32;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  border-left: 4px solid #2e7d32;
+}
+
+.successMessage h2 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+}
+
+.successMessage p {
+  margin: 0;
+}
+
 @media print {
   .ticketActions {
     display: none;
