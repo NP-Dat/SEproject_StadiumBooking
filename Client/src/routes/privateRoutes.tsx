@@ -1,32 +1,49 @@
+import Profile from '../pages/user/Profile/Profile'
+import UserBookings from '../pages/user/UserBookings/UserBookings'
+import Booking from '../pages/booking/Booking/Booking'
+import ZoneSelection from '../pages/booking/ZoneSelection/ZoneSelection'
+import Payment from '../pages/booking/Payment/Payment'
+import Cart from '../pages/booking/Cart/Cart'
+import Confirmation from '../pages/booking/Confirmation/Confirmation'
+import Ticket from '../pages/user/Ticket/Ticket'
 import { RouteType } from '../types/routes'
-import Profile from '../pages/Profile/Profile'
-import UserBookings from '../pages/UserBookings/UserBookings'
-import BookingDetail from '../pages/BookingDetail/BookingDetail'
-import { TicketManagement } from '../pages/Admin/TicketService/TicketManagement'
+import { TicketManagement } from '../pages/admin/Admin/TicketService/TicketManagement'
 
 export const privateRoutes: RouteType[] = [
     {
         path: '/profile',
-        element: (
-                <Profile />
-        )
+        element: <Profile />
     },
     {
         path: '/bookings',
-        element: (
-                <UserBookings />
-        )
+        element: <UserBookings />
     },
     {
-        path: '/bookings/:cartId',
-        element: (
-                <BookingDetail />
-        )
+        path: '/booking',
+        element: <Booking />
+    },
+    {
+        path: '/zone-selection',
+        element: <ZoneSelection />
+    },
+    {
+        path: '/payment',
+        element: <Payment />
+    },
+    {
+        path: '/cart',
+        element: <Cart />
+    },
+    {
+        path: '/confirmation',
+        element: <Confirmation />
+    },
+    {
+        path: '/ticket',
+        element: <Ticket />
     },
     {
         path: '/admin/tickets',
-        element: (
-                <TicketManagement />
-        )
+        element: <TicketManagement />
     }
 ]

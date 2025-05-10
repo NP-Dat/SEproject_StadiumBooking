@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AuthService } from '../../../../services/AuthService';
+import { useAuth } from '../../../../contexts/AuthContext';
 import styles from './UserMenu.module.css';
 
 interface UserMenuProps {
@@ -9,7 +9,7 @@ interface UserMenuProps {
 }
 
 const UserMenu: React.FC<UserMenuProps> = ({ showProfileMenu, setShowProfileMenu }) => {
-    const { user, logout } = AuthService.useAuth();
+    const { user, logout } = useAuth();
     const navigate = useNavigate();
 
     const handleLogout = () => {

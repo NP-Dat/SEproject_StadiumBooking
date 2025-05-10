@@ -1,15 +1,18 @@
 export interface User {
     id: string;
     username: string;
+    email?: string;
+    fullname?: string;
+    birth?: string;
+    phonenumber?: string;
+    address?: string;
 }
 
 export interface AuthState {
-    message: string;
-    user: User | null;
-    token: string | null;
     isAuthenticated: boolean;
-    loading: boolean;
-    error: string | null;
+    isAdmin: boolean;
+    user: User | null;
+    error?: string;
 }
 
 export interface LoginCredentials {
@@ -19,15 +22,21 @@ export interface LoginCredentials {
 
 export interface RegisterCredentials {
     username: string;
+    email: string;
     password: string;
     fullname: string;
     birth: string;
     phonenumber: string;
-    email: string;
     address: string;
 }
 
 export interface AuthResponse {
     message: string;
     userId?: string;
+}
+
+export interface LoginResult {
+    success: boolean;
+    message: string;
+    error?: string;
 }

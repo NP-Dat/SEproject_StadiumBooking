@@ -1,14 +1,10 @@
 import { createContext } from 'react';
-import { User } from '../types/auth';
-
-interface LoginResult {
-    success: boolean;
-    message: string;
-}
+import { User, LoginResult } from '../types/auth';
 
 export interface AuthContextType {
     user: User | null;
     isAuthenticated: boolean;
+    isAdmin: boolean;
     login: (username: string, password: string) => Promise<LoginResult>;
     register: (
         username: string, 
@@ -25,6 +21,7 @@ export interface AuthContextType {
 export const AuthContext = createContext<AuthContextType>({
     user: null,
     isAuthenticated: false,
+    isAdmin: false,
     login: async () => ({ success: false, message: 'Not implemented' }),
     register: async () => ({ success: false, message: 'Not implemented' }),
     logout: () => {}

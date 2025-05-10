@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, NavLink } from 'react-router-dom';
-import { AuthService } from '../../../services/AuthService';
+import { useAuth } from '../../../contexts/AuthContext';
 import { EventService } from '../../../services/EventService';
 import { Event } from '../../../types/event';
 import styles from './Navbar.module.css';
-import Login from '../../../pages/Auth/Login/Login';
-import Register from '../../../pages/Auth/Register/Register';
+import Login from '../../../pages/core/Auth/Login/Login';
+import Register from '../../../pages/core/Auth/Register/Register';
 import UserMenu from './UserMenu/UserMenu';
 
 const Navbar = () => {
     const navigate = useNavigate();
-    const { user, isAuthenticated, login, register } = AuthService.useAuth();
+    const { user, isAuthenticated, login, register } = useAuth();
     const [loginModalOpen, setLoginModalOpen] = useState(false);
     const [registerModalOpen, setRegisterModalOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');

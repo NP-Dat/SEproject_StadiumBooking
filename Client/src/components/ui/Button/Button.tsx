@@ -1,5 +1,5 @@
 import React, { CSSProperties } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import styles from './Button.module.css'
 
 interface ButtonProps {
@@ -32,8 +32,6 @@ const Button = ({
   isLoading = false,
   style
 }: ButtonProps) => {
-  const navigate = useNavigate()
-  
   const buttonClasses = [
     styles.button,
     styles[variant],
@@ -45,15 +43,7 @@ const Button = ({
   // Handle combined navigation and onClick
   const handleClick = (e: React.MouseEvent) => {
     if (disabled || isLoading) return
-    
-    if (onClick) {
-      onClick()
-    }
-    
-    if (to && !external) {
-      e.preventDefault()
-      navigate(to, { replace })
-    }
+    if (onClick) onClick()
   }
   
   // Loading indicator
