@@ -8,15 +8,11 @@ import Login from '../pages/core/Auth/Login/Login'
 import Register from '../pages/core/Auth/Register/Register'
 
 // Booking Pages
-import Booking from '../pages/booking/Booking/Booking'
 import ZoneSelection from '../pages/booking/ZoneSelection/ZoneSelection'
 import Payment from '../pages/booking/Payment/Payment'
-import Cart from '../pages/booking/Cart/Cart'
-import Confirmation from '../pages/booking/Confirmation/Confirmation'
 
 // User Pages
 import Profile from '../pages/user/Profile/Profile'
-import UserBookings from '../pages/user/UserBookings/UserBookings'
 import Ticket from '../pages/user/Ticket/Ticket'
 
 // Admin Pages
@@ -76,13 +72,10 @@ export function AppRoutes() {
       {isAuthenticated && (
         <>
           <Route path="/profile" element={<Profile />} />
-          <Route path="/bookings" element={<UserBookings />} />
           <Route path="/ticket" element={<Ticket />} />
-          <Route path="/booking" element={<Booking />} />
           <Route path="/zone-selection" element={<ZoneSelection />} />
           <Route path="/payment" element={<Payment />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/confirmation" element={<Confirmation />} />
+          
         </>
       )}
 
