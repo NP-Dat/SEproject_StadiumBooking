@@ -1,382 +1,51 @@
-
-/* Added global font family */
-* {
-  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif !important;
-}
-.stadium {
-    padding: 2rem;
-    background: #e5f3f6;
-    min-height: 100vh;
-    position: relative;
-    width: 100%;
-    height: 400px;
-    background-color: #1a2538;
-    border-radius: 50%;
-    margin-bottom: 30px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
 .container {
-    max-width: 87.5rem;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 2rem;
+  padding: 2rem;
 }
 
-@media (min-width: 48rem) {
-    .container {
-        grid-template-columns: 2fr 1fr;
-    }
+.heading {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  text-align: center;
 }
 
-.stadiumContainer {
-    background: linear-gradient(135deg, #0f172a, #1e293b);
-    border-radius: 0.75rem;
-    padding: 2rem;
-    position: relative;
-    aspect-ratio: 16/9;
-    max-height: 40rem;
-    width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
+.grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
 }
 
-.stadiumTitle {
-    text-align: center;
-    margin-bottom: 8px;
-    font-size: 1.5rem;
-    color: #333;
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
-.instructions {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #666;
-    font-size: 0.9rem;
+.card {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
 }
 
-.title {
-    color: #fff;
-    font-size: 1.5rem;
-    margin-bottom: 2rem;
-    text-align: center;
+.card h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
 }
 
-.seatingLayout {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.card p {
+  font-size: 0.875rem;
+  color: #4b5563;
 }
 
-/* Field styling */
-.field {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 40%;
-    height: 60%;
-    background-color: #4CAF50;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: bold;
-    box-shadow: inset 0 0 0 4px rgba(255, 255, 255, 0.3);
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+.card ul {
+  margin-top: 0.25rem;
+  list-style: disc inside;
+  font-size: 0.875rem;
 }
 
-/* North section - Arc arrangement */
-.northSection, .southSection {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    width: 70%;
-    position: relative;
-    z-index: 2;
-}
-
-.northSection {
-    margin-top: 3%;
-}
-
-.southSection {
-    margin-bottom: 3%;
-}
-
-.northRow, .southRow {
-    display: flex;
-    justify-content: center;
-    gap: 0.75rem;
-    width: 100%;
-    flex-wrap: wrap;
-}
-
-/* Ensure spacing between rows */
-.southRow + .southRow {
-    margin-top: 0.75rem;
-}
-
-/* Middle section with columns */
-.middleSection {
-    width: 100%;
-    height: 70%; /* Increased to give more space for the larger field */
-    position: relative;
-    display: flex;
-    justify-content: space-between;
-    align-items: center; /* Added alignment */
-    padding: 0 5%; /* Adjusted padding */
-}
-
-.westColumn, .eastColumn {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 0.75rem;
-    z-index: 2;
-}
-
-.westSection, .eastSection {
-    position: absolute;
-    display: flex;
-    gap: 1.5rem;
-    z-index: 2;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.westSection {
-    left: 8%;
-}
-
-.eastSection {
-    right: 8%;
-}
-
-.sideColumn {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 1rem;
-}
-
-/* South section - Two rows in an arc */
-.southRows {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.75rem;
-    width: 60%;
-    margin-bottom: 5%;
-    position: relative;
-    z-index: 2;
-}
-
-.southUpperRow {
-    display: flex;
-    gap: 0.75rem;
-    justify-content: center;
-}
-
-.southLowerRow {
-    display: flex;
-    gap: 0.75rem;
-    justify-content: center;
-    margin-top: 0.75rem;
-}
-
-/* Seat styling */
-.seat {
-    width: 2.5rem;
-    height: 2.5rem;
-    background: #1e293b;
-    border: none;
-    border-radius: 0.25rem;
-    color: #94a3b8;
-    font-size: 0.75rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.seat:hover {
-    background: #3b82f6;
-    color: #fff;
-    transform: scale(1.1);
-}
-
-.selected {
-    background: #3b82f6;
-    color: #fff;
-    box-shadow: inset 0 0 0 4px rgba(255, 255, 255, 0.9);
-    filter: brightness(1.1);
-}
-
-/* Stadium outline - More oval shaped */
-.seatingLayout::before {
-    content: '';
-    position: absolute;
-    top: 2%;
-    left: 4%;
-    right: 4%;
-    bottom: 2%;
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    border-radius: 60%/40%;
-}
-
-/* Info panel */
-.seatInfo {
-    background: linear-gradient(135deg, #0f172a, #1e293b);
-    padding: 1.5rem;
-    border-radius: 0.75rem;
-    color: #fff;
-}
-
-@media (min-width: 48rem) {
-    .seatInfo {
-        position: sticky;
-        top: 2rem;
-    }
-}
-
-.seatInfo h2 {
-    font-size: 1.25rem;
-    color: #3b82f6;
-    margin-bottom: 1rem;
-}
-
-.seatInfo p {
-    margin: 0.5rem 0;
-    color: #94a3b8;
-}
-
-.seatInfo strong {
-    color: #fff;
-    margin-right: 0.5rem;
-}
-
-.zone {
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    text-align: center;
-    padding: 10px;
-    box-sizing: border-box;
-}
-
-.zone:hover:not(.soldOut):not(.unavailable) {
-    filter: brightness(1.1);
-    transform: scale(1.02);
-    z-index: 10;
-}
-
-.northZone {
-    top: 0;
-    left: 20%;
-    width: 60%;
-    height: 20%;
-    border-radius: 90px 90px 0 0;
-}
-
-.southZone {
-    bottom: 0;
-    left: 20%;
-    width: 60%;
-    height: 20%;
-    border-radius: 0 0 90px 90px;
-}
-
-.eastZone {
-    top: 20%;
-    right: 0;
-    width: 20%;
-    height: 60%;
-    border-radius: 0 90px 90px 0;
-}
-
-.westZone {
-    top: 20%;
-    left: 0;
-    width: 20%;
-    height: 60%;
-    border-radius: 90px 0 0 90px;
-}
-
-.zoneContent {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-}
-
-.zoneName {
-    font-size: 1.3rem;
-    margin-bottom: 5px;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
-}
-
-.zoneDetails {
-    font-size: 0.9rem;
-    line-height: 1.4;
-}
-
-.highAvailability {
-    background-color: #52c41a;
-}
-
-.mediumAvailability {
-    background-color: #faad14;
-}
-
-.lowAvailability {
-    background-color: #ff4d4f;
-}
-
-.soldOut {
-    background-color: #8c8c8c;
-    cursor: not-allowed;
-}
-
-.unavailable {
-    background-color: #333;
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-.legend {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 15px;
-    margin-top: 20px;
-}
-
-.legendItem {
-    display: flex;
-    align-items: center;
-    font-size: 0.85rem;
-}
-
-.legendColor {
-    width: 16px;
-    height: 16px;
-    display: inline-block;
-    margin-right: 6px;
-    border-radius: 3px;
+.underline {
+  text-decoration: underline;
+  font-weight: 500;
 }

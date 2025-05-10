@@ -1,144 +1,73 @@
-import React, { useState } from 'react';
+import { Stadium } from '../../types/stadium';
+import { useEffect, useState } from 'react';
+import { StadiumService } from '../../services/StadiumService';
 import styles from './Stadium.module.css';
-import { TicketType } from '../../types/ticketType';
+import { useNavigate } from 'react-router-dom';
 
-interface StadiumProps {
-  zones: TicketType[];
-  scheduleId: number;
-  onZoneSelect?: (zoneId: number) => void;
-}
+const StadiumList = () => {
+  const [stadiums, setStadiums] = useState<Stadium[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-const Stadium: React.FC<StadiumProps> = ({ zones, scheduleId, onZoneSelect }) => {
-  const [selectedZone, setSelectedZone] = useState<number | null>(null);
-  
-  // Group zones by their location (North, South, East, West)
-  // This assumes your zone names contain location indicators
-  const getZoneByLocation = (location: string) => {
-    return zones.find(zone => 
-      zone.name.toLowerCase().includes(location.toLowerCase())
-    );
-  };
+  const handleCardClick = (id: number) => {
+    navigate(`/eventsbystadium/${id}`);  
+  }
 
-  const northZone = getZoneByLocation('north');
-  const southZone = getZoneByLocation('south');
-  const eastZone = getZoneByLocation('east');
-  const westZone = getZoneByLocation('west');
+  useEffect(() => {
+    const fetchStadiums = async () => {
+      try {
+        const fetchedStadiums = await StadiumService.fetchStadiums();
+        setStadiums(fetchedStadiums);
+      } catch (err) {
+        console.error('Failed to fetch stadiums:', err);
+        setError('Failed to fetch stadiums');
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  // Get availability color class based on available seats
-  const getAvailabilityColorClass = (zone?: TicketType) => {
-    if (!zone) return styles.unavailable;
-    
-    if (zone.availableSeats <= 0) return styles.soldOut;
-    if (zone.availableSeats < 5) return styles.lowAvailability;
-    if (zone.availableSeats < 20) return styles.mediumAvailability;
-    return styles.highAvailability;
-  };
+    fetchStadiums();
+  }, []);
 
-  // Handle zone click
-  const handleZoneClick = (zone?: TicketType) => {
-    if (!zone || zone.availableSeats <= 0) return;
-    
-    setSelectedZone(zone.id);
-    if (onZoneSelect) {
-      onZoneSelect(zone.id);
-    }
-  };
+  if (loading) return <div style={{ textAlign: 'center', marginTop: '2rem' }}>Loading stadiums...</div>;
+  if (error) return <div style={{ color: 'red', textAlign: 'center', marginTop: '2rem' }}>{error}</div>;
 
   return (
-    <div className={styles.stadiumContainer}>
-      <h3 className={styles.stadiumTitle}>Stadium Seating Map</h3>
-      <p className={styles.instructions}>Click on a zone to select it</p>
-      
-      <div className={styles.stadium}>
-        {/* North Zone */}
-        <div 
-          className={`${styles.zone} ${styles.northZone} ${getAvailabilityColorClass(northZone)} ${selectedZone === northZone?.id ? styles.selected : ''}`}
-          onClick={() => handleZoneClick(northZone)}
-        >
-          <div className={styles.zoneContent}>
-            <span className={styles.zoneName}>NORTH</span>
-            {northZone && (
-              <div className={styles.zoneDetails}>
-                <div>${northZone.price}</div>
-                <div>{northZone.availableSeats} seats</div>
-              </div>
-            )}
+    <div className={styles.container}>
+      <h1 className={styles.heading}>Stadium List</h1>
+      <div className={styles.grid}>
+        {stadiums.map((stadium) => (
+          <div
+            key={stadium.id}
+            className={styles.card}
+            onClick={() => handleCardClick(stadium.id)}
+            style={{ cursor: 'pointer' }}
+          >
+            <h2>{stadium.name}</h2>
+            <p>Size: {stadium.size}</p>
+            <p>Status: {stadium.status}</p>
+            <p className="mb-3">Address: {stadium.address}</p>
+            <div>
+              <h3 className={styles.underline}>Scheduled Events:</h3>
+              {stadium.events.length === 0 ? (
+                <p>No events scheduled</p>
+              ) : (
+                <ul>
+                  {stadium.events.map((event) => (
+                    <li key={event.scheduleId}>
+                      <span style={{ fontWeight: '600' }}>{event.eventName}</span> –{' '}
+                      {new Date(event.date).toLocaleDateString()} ({event.timeStart} to {event.timeEnd})
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
           </div>
-        </div>
-        
-        {/* South Zone */}
-        <div 
-          className={`${styles.zone} ${styles.southZone} ${getAvailabilityColorClass(southZone)} ${selectedZone === southZone?.id ? styles.selected : ''}`}
-          onClick={() => handleZoneClick(southZone)}
-        >
-          <div className={styles.zoneContent}>
-            <span className={styles.zoneName}>SOUTH</span>
-            {southZone && (
-              <div className={styles.zoneDetails}>
-                <div>${southZone.price}</div>
-                <div>{southZone.availableSeats} seats</div>
-              </div>
-            )}
-          </div>
-        </div>
-        
-        {/* East Zone */}
-        <div 
-          className={`${styles.zone} ${styles.eastZone} ${getAvailabilityColorClass(eastZone)} ${selectedZone === eastZone?.id ? styles.selected : ''}`}
-          onClick={() => handleZoneClick(eastZone)}
-        >
-          <div className={styles.zoneContent}>
-            <span className={styles.zoneName}>EAST</span>
-            {eastZone && (
-              <div className={styles.zoneDetails}>
-                <div>${eastZone.price}</div>
-                <div>{eastZone.availableSeats} seats</div>
-              </div>
-            )}
-          </div>
-        </div>
-        
-        {/* West Zone */}
-        <div 
-          className={`${styles.zone} ${styles.westZone} ${getAvailabilityColorClass(westZone)} ${selectedZone === westZone?.id ? styles.selected : ''}`}
-          onClick={() => handleZoneClick(westZone)}
-        >
-          <div className={styles.zoneContent}>
-            <span className={styles.zoneName}>WEST</span>
-            {westZone && (
-              <div className={styles.zoneDetails}>
-                <div>${westZone.price}</div>
-                <div>{westZone.availableSeats} seats</div>
-              </div>
-            )}
-          </div>
-        </div>
-        
-        {/* Field */}
-        <div className={styles.field}>FIELD</div>
-      </div>
-
-      {/* Legend */}
-      <div className={styles.legend}>
-        <div className={styles.legendItem}>
-          <span className={`${styles.legendColor} ${styles.highAvailability}`}></span>
-          <span>Good Availability</span>
-        </div>
-        <div className={styles.legendItem}>
-          <span className={`${styles.legendColor} ${styles.mediumAvailability}`}></span>
-          <span>Limited</span>
-        </div>
-        <div className={styles.legendItem}>
-          <span className={`${styles.legendColor} ${styles.lowAvailability}`}></span>
-          <span>Almost Full</span>
-        </div>
-        <div className={styles.legendItem}>
-          <span className={`${styles.legendColor} ${styles.soldOut}`}></span>
-          <span>Sold Out</span>
-        </div>
+        ))}
       </div>
     </div>
   );
 };
 
-export default Stadium;
+export default StadiumList;
