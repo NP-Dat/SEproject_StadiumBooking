@@ -134,7 +134,9 @@ const BookingDetail: React.FC = () => {
               <div className={styles.ticketBody}>
                 <div className={styles.ticketInfo}>
                   <span className={styles.infoLabel}>Seat</span>
-                  <span className={styles.infoValue}>{ticket.seatID}</span>
+                  <span className={styles.infoValue}>
+                    {ticket.seat_number || `${ticket.seatID}`}
+                  </span>
                 </div>
                 <div className={styles.ticketInfo}>
                   <span className={styles.infoLabel}>Zone</span>

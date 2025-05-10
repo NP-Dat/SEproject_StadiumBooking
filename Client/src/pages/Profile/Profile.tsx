@@ -25,6 +25,8 @@ const Profile = () => {
         timeStart: string;
         timeEnd: string;
         stadiumName: string;
+        zoneName?: string;
+        seat_number?: string; // Add this line
         numberOfTicket: number;
         totalPrice: number;
         status: 'paid' | 'unPaid' | 'cancelled';
@@ -544,6 +546,12 @@ const Profile = () => {
                                                     <span className={styles.infoIcon}>🎫</span> 
                                                     {booking.zoneName || 'Standard Zone'}
                                                 </p>
+                                                {booking.seat_number && (
+                                                    <p className={styles.bookingZone}>
+                                                        <span className={styles.infoIcon}>🪑</span> 
+                                                        Seat: {booking.seat_number}
+                                                    </p>
+                                                )}
                                             </div>
                                             
                                             <div className={styles.bookingMeta}>

@@ -9,23 +9,23 @@ export interface Cart {
 
 export interface UserBooking {
   cartId: number;
-  numberOfTicket: number;
-  totalPrice: number;
-  status: string;
-  createdAt: string;
+  eventTitle: string;
+  eventImage: string;
   date: string;
   timeStart: string;
   timeEnd: string;
-  eventTitle: string;
-  eventImage: string;
   stadiumName: string;
-  // Add zone name field
+  numberOfTicket: number;
+  totalPrice: number;
+  status: string;
   zoneName: string;
+  seat_number: string; // Add this field
 }
 
 export interface BookingTicket {
   ticketId: number;
   seatID: number;
+  seat_number: string; // Add this field
   zoneName: string;
   price: number;
   date: string;

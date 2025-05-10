@@ -130,8 +130,8 @@ export class BookingService {
             numberOfTicket: ticket.numberOfTicket || 1,
             totalPrice: price,
             status: ticket.status || 'paid',
-            // Add zone name
-            zoneName: ticket.zoneName || ticket.zone || 'Standard'
+            zoneName: ticket.zoneName || ticket.zone || 'Standard',
+            seat_number: ticket.seat_number || '' // Ensure this line exists
           };
         });
       }
@@ -187,7 +187,10 @@ export class BookingService {
               totalPrice: data.totalPrice || 0,
               numberOfTicket: data.numberOfTicket || 1
             },
-            tickets: Array.isArray(data.tickets) ? data.tickets : []
+            tickets: Array.isArray(data.tickets) ? data.tickets.map((ticket: any) => ({
+              ...ticket,
+              seat_number: ticket.seat_number || '' // Ensure seat_number is included
+            })) : []
           };
         }
       } catch (e) {

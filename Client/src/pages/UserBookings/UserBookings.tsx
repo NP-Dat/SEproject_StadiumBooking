@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BookingService } from '../../services/BookingService';
-import { UserBooking } from '../../types/booking';
+import { UserBooking as UserBookingType } from '../../types/booking';
 import styles from './UserBookings.module.css';
 
 const UserBookings: React.FC = () => {
-  const [bookings, setBookings] = useState<UserBooking[]>([]);
+  const [bookings, setBookings] = useState<UserBookingType[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -78,6 +78,11 @@ const UserBookings: React.FC = () => {
               <p className={styles.zoneInfo}>
                 <span className={styles.infoIcon}>🎫</span> Zone: {booking.zoneName || 'Standard'}
               </p>
+              {booking.seat_number && (
+                <p className={styles.zoneInfo}>
+                  <span className={styles.infoIcon}>🪑</span> Seat: {booking.seat_number}
+                </p>
+              )}
               
               <div className={styles.bookingDetails}>
                 <div className={styles.ticketInfo}>
