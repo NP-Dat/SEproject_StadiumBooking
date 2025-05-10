@@ -1,57 +1,91 @@
-import { type FC } from 'react';
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styles from "./Event.module.css";
-import Button from "../../../../../components/ui/Button/Button";
-import { EventService } from "../../../../../services/EventService";
-import type { Event } from "../../../../../types/event";
+import { useCallback, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import styles from './Event.module.css'
+import Button from '../../../../../components/ui/Button/Button'
+import { eventAPI } from '../../../../../apis/services'
+import type { Event } from '../../../../../types/event'
 
-const EventSection: FC = () => {
-    const [events, setEvents] = useState<Event[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-    const navigate = useNavigate();
+function EventSection() {
+    const [events, setEvents] = useState<Event[]>([])
+    const [isLoading, setIsLoading] = useState(true)
+    const [error, setError] = useState<string | null>(null)
+    const navigate = useNavigate()
+
+    const fetchEvents = useCallback(async () => {
+        try {
+            setIsLoading(true)
+            setError(null)
+            const response = await eventAPI.getAll()
+            if (response.success && response.data) {
+                // Take only the first 6 upcoming events
+                const upcomingEvents = response.data
+                    .filter(event => event.status === 'upcoming')
+                    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+                    .slice(0, 6)
+                setEvents(upcomingEvents)
+            } else {
+                setError('Failed to load events')
+            }
+        } catch (err) {
+            console.error('Error fetching events:', err)
+            setError(err instanceof Error ? err.message : 'Failed to load events')
+        } finally {
+            setIsLoading(false)
+        }
+    }, [])
 
     useEffect(() => {
-        const fetchEvents = async () => {
-            try {
-                const eventsData = await EventService.getEvents();
-                // Take only the first 5 events for preview
-                setEvents(eventsData.slice(0, 6));
-            } catch (err) {
-                console.error('Error fetching events:', err);
-                setError(err instanceof Error ? err.message : 'Failed to load events');
-            } finally {
-                setLoading(false);
-            }
-        };
+        fetchEvents()
+    }, [fetchEvents])
 
-        fetchEvents();
-    }, []);
+    const handleEventClick = useCallback((eventId: number) => {
+        navigate(`/schedules/event/${eventId}`)
+    }, [navigate])
 
-    const handleEventClick = (eventId: number): void => {
-        // Navigate directly to schedules page instead of event detail
-        navigate(`/schedules/event/${eventId}`);
-    };
+    const formatDate = useCallback((dateString: string) => {
+        const date = new Date(dateString)
+        return date.toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        })
+    }, [])
 
-    if (loading) {
+    if (isLoading) {
         return (
             <section className={styles.events}>
                 <div className={styles.container}>
-                    <div className={styles.loading}>Loading featured events...</div>
+                    <div className={styles.loading} role="status">
+                        <span>Loading featured events...</span>
+                    </div>
                 </div>
             </section>
-        );
+        )
     }
 
     if (error) {
         return (
             <section className={styles.events}>
                 <div className={styles.container}>
-                    <div className={styles.error}>Error: {error}</div>
+                    <div className={styles.error} role="alert">
+                        {error}
+                    </div>
                 </div>
             </section>
-        );
+        )
+    }
+
+    if (events.length === 0) {
+        return (
+            <section className={styles.events}>
+                <div className={styles.container}>
+                    <div className={styles.empty} role="status">
+                        <span>No upcoming events found</span>
+                    </div>
+                </div>
+            </section>
+        )
     }
 
     return (
@@ -70,11 +104,18 @@ const EventSection: FC = () => {
                             key={event.id}
                             className={styles.eventCard}
                             onClick={() => handleEventClick(event.id)}
+                            role="button"
+                            tabIndex={0}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter' || e.key === ' ') {
+                                    handleEventClick(event.id)
+                                }
+                            }}
                         >
                             <div className={styles.eventContent}>
                                 <h3 className={styles.eventTitle}>{event.name}</h3>
                                 <div className={styles.eventDate}>
-                                    {EventService.formatDate(event.date)}
+                                    {formatDate(event.date)}
                                 </div>
                                 {event.description && (
                                     <p className={styles.eventDescription}>
@@ -84,13 +125,14 @@ const EventSection: FC = () => {
                                     </p>
                                 )}
                                 <div className={styles.eventDetails}>
-                                    {event.venue && (
+                                    {event.stadium && (
                                         <div className={styles.eventLocation}>
                                             <svg
-                                                className="w-4 h-4"
+                                                className={styles.locationIcon}
                                                 fill="none"
                                                 stroke="currentColor"
                                                 viewBox="0 0 24 24"
+                                                aria-hidden="true"
                                             >
                                                 <path
                                                     strokeLinecap="round"
@@ -105,14 +147,17 @@ const EventSection: FC = () => {
                                                     d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                                                 />
                                             </svg>
-                                            {event.venue}
+                                            {event.stadium.name}
                                         </div>
                                     )}
                                     <Button
                                         variant="primary"
                                         size="small"
                                         className={styles.bookButton}
-                                        to={`/schedules/event/${event.id}`}
+                                        onClick={(e: React.MouseEvent) => {
+                                            e.stopPropagation()
+                                            handleEventClick(event.id)
+                                        }}
                                     >
                                         Book Now
                                     </Button>
@@ -123,7 +168,7 @@ const EventSection: FC = () => {
                 </div>
             </div>
         </section>
-    );
-};
+    )
+}
 
-export default EventSection;
+export default EventSection

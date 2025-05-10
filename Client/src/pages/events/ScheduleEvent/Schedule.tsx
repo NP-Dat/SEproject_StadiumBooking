@@ -1,269 +1,157 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';  
-import { ScheduleService } from '../../../services/ScheduleService';
-import { TicketTypeService } from '../../../services/TicketTypeService';
-import { BookingService } from '../../../services/BookingService'; 
-import { useAuth } from '../../../contexts/AuthContext';
-import { Schedule } from '../../../types/schedule';
-import { TicketType } from '../../../types/ticketType';
-import styles from './Schedule.module.css';
+import { useState, useEffect } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
+import { useAuth } from '../../../contexts/AuthContext'
+import { eventService } from '../../../apis/services'
+import type { Event, EventSchedule, EventZone } from '../../../types/event'
+import styles from './Schedule.module.css'
+import { Login } from '../../core/Auth/Login/Login'
+import { Register } from '../../core/Auth/Register/Register'
 
-const SchedulePage: React.FC = () => {
-  const { eventId } = useParams<{ eventId: string }>();
-  const navigate = useNavigate();
-  const [schedules, setSchedules] = useState<Schedule[]>([]);
-  const [ticketTypes, setTicketTypes] = useState<TicketType[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const { isAuthenticated } = useAuth();
-  
-  // Track which schedule has the zones showing
-  const [showZonesForScheduleId, setShowZonesForScheduleId] = useState<number | null>(null);
-  // Track loading state for the ticket types
-  const [ticketLoading, setTicketLoading] = useState(false);
-  // Track selected zone and quantity
-  const [selectedZoneId, setSelectedZoneId] = useState<number | null>(null);
-  const [ticketQuantity, setTicketQuantity] = useState<number>(1);
+function Schedule() {
+    const { id } = useParams<{ id: string }>()
+    const navigate = useNavigate()
+    const { isAuthenticated } = useAuth()
+    const [event, setEvent] = useState<Event | null>(null)
+    const [schedules, setSchedules] = useState<EventSchedule[]>([])
+    const [selectedSchedule, setSelectedSchedule] = useState<EventSchedule | null>(null)
+    const [zones, setZones] = useState<EventZone[]>([])
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState<string | null>(null)
+    const [showLoginModal, setShowLoginModal] = useState(false)
+    const [showRegisterModal, setShowRegisterModal] = useState(false)
 
-  useEffect(() => {
-    const fetchSchedules = async () => {
-      try {
-        if (eventId) {
-          const response = await ScheduleService.getSchedulesByEventId(eventId);
-          setSchedules(response);
+    useEffect(() => {
+        async function fetchEventAndSchedules() {
+            if (!id) return
+            setLoading(true)
+            try {
+                const eventResponse = await eventService.getEventById(Number(id))
+                if (eventResponse.success && eventResponse.data) {
+                    const eventData = Array.isArray(eventResponse.data) ? eventResponse.data[0] : eventResponse.data
+                    setEvent(eventData)
+                } else {
+                    setError(eventResponse.error || 'Failed to fetch event details')
+                    setLoading(false)
+                    return
+                }
+
+                const schedulesResponse = await eventService.getEventSchedules(Number(id))
+                if (schedulesResponse.success && schedulesResponse.data) {
+                    const schedulesData = Array.isArray(schedulesResponse.data) ? schedulesResponse.data : [schedulesResponse.data]
+                    setSchedules(schedulesData)
+                    if (schedulesData.length > 0) {
+                        setSelectedSchedule(schedulesData[0])
+                    }
+                } else {
+                    setError(schedulesResponse.error || 'Failed to fetch schedules')
+                }
+            } catch (err) {
+                setError(err instanceof Error ? err.message : 'An error occurred while fetching data')
+            } finally {
+                setLoading(false)
+            }
         }
-      } catch (err) {
-        console.error('Error fetching schedules:', err);
-        setError('Failed to load schedules');
-      } finally {
-        setLoading(false);
-      }
-    };
+        fetchEventAndSchedules()
+    }, [id])
 
-    fetchSchedules();
-  }, [eventId]);
-
-  const handleBookNow = async (scheduleId: number) => {
-    // Navigate to the event details page
-    navigate(`/events/${eventId}`);
-  };
-
-  const handleZoneSelect = (zoneId: number) => {
-    setSelectedZoneId(zoneId);
-  };
-
-  const handleQuantityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setTicketQuantity(parseInt(e.target.value));
-  };
-
-  const handleBooking = async () => {
-    try {
-      if (!isAuthenticated) {
-        setError('Please log in to book tickets');
-        navigate('/login');
-        return;
-      }
-      
-      if (!selectedZoneId || !showZonesForScheduleId) {
-        setError('Please select a zone and schedule');
-        return;
-      }
-      
-      const userId = localStorage.getItem('userId');
-      if (!userId) {
-        navigate('/login');
-        return;
-      }
-      
-      const response = await BookingService.createBooking(
-        parseInt(userId),
-        showZonesForScheduleId,
-        selectedZoneId,
-        ticketQuantity
-      );
-      
-      if (response.success) {
-        const selectedZone = ticketTypes.find(zone => zone.id === selectedZoneId);
-        if (!selectedZone) {
-          setError('Selected zone not found');
-          return;
+    useEffect(() => {
+        async function fetchZones() {
+            if (!selectedSchedule) return
+            try {
+                const zonesResponse = await eventService.getEventZones(selectedSchedule.id)
+                if (zonesResponse.success && zonesResponse.data) {
+                    const zonesData = Array.isArray(zonesResponse.data) ? zonesResponse.data : [zonesResponse.data]
+                    setZones(zonesData)
+                } else {
+                    setError(zonesResponse.error || 'Failed to fetch zones')
+                }
+            } catch (err) {
+                setError(err instanceof Error ? err.message : 'An error occurred while fetching zones')
+            }
         }
-        
-        const bookingData = {
-          eventId: eventId,
-          zoneName: selectedZone.name,
-          quantity: ticketQuantity,
-          price: selectedZone.price,
-          total: (Number(selectedZone.price) * ticketQuantity).toFixed(2),
-          cartId: response.bookingId
-        };
-        
-        localStorage.setItem('currentBooking', JSON.stringify(bookingData));
-        navigate('/payment');
-      } else {
-        setError('Failed to create booking');
-      }
-    } catch (error) {
-      console.error('Error processing booking:', error);
-      setError('An error occurred while processing your booking');
+        fetchZones()
+    }, [selectedSchedule])
+
+    function handleScheduleSelect(schedule: EventSchedule) {
+        setSelectedSchedule(schedule)
     }
-  };
 
-  // Find the selected zone object
-  const selectedZone = ticketTypes.find(zone => zone.id === selectedZoneId);
+    function handleBookZone(zoneId: number) {
+        if (!isAuthenticated) {
+            setShowLoginModal(true)
+        } else {
+            navigate(`/booking/create`, { state: { eventId: id, scheduleId: selectedSchedule?.id, zoneId } })
+        }
+    }
 
-  // Format date function
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  };
+    function handleLoginSuccess() {
+        setShowLoginModal(false)
+        if (selectedSchedule && zones.length > 0) {
+            navigate(`/booking/create`, { state: { eventId: id, scheduleId: selectedSchedule.id, zoneId: zones[0].id } })
+        }
+    }
 
-  if (loading) return <div className={styles.loading}>Loading schedules...</div>;
-  if (error) return <div className={styles.error}>{error}</div>;
+    function handleRegisterSuccess() {
+        setShowRegisterModal(false)
+        if (selectedSchedule && zones.length > 0) {
+            navigate(`/booking/create`, { state: { eventId: id, scheduleId: selectedSchedule.id, zoneId: zones[0].id } })
+        }
+    }
 
-  return (
-    <section className={styles.schedulePage}>
-      <div className={styles.container}>
-        <header className={styles.header}>
-          <h2 className={styles.title}>Available Event Schedules</h2>
-          <p className={styles.subtitle}>Choose a schedule that fits your availability and book now!</p>
-        </header>
+    if (loading) return <div className={styles.loading}>Loading schedules...</div>
+    if (error) return <div className={styles.error}>Error: {error}</div>
+    if (!event) return <div className={styles.error}>Event not found</div>
 
-        {schedules.length === 0 ? (
-          <p className={styles.noSchedules}>No schedules available for this event.</p>
-        ) : (
-          <div className={styles.scheduleList}>
-            {schedules.map((schedule) => (
-              <div key={schedule.id} className={styles.scheduleCard}>
-                <div className={styles.scheduleInfo}>
-                  <h3 className={styles.scheduleDate}>{formatDate(schedule.date)}</h3>
-                  <div className={styles.scheduleDetails}>
-                    <p className={styles.scheduleTime}>
-                      <span className={styles.infoIcon}>⏱</span>
-                      {schedule.timeStart} - {schedule.timeEnd}
-                    </p>
-                    <p className={styles.scheduleLocation}>
-                      <span className={styles.infoIcon}>🏟️</span>
-                      {schedule.stadiumName}
-                    </p>
-                    <p className={styles.scheduleEvent}>
-                      <span className={styles.infoIcon}>🎭</span>
-                      {schedule.eventName}
-                    </p>
-                  </div>
-                </div>
-                <button
-                  className={`${styles.bookButton}`}
-                  onClick={() => navigate(`/events/${eventId}`)}
-                >
-                  Select
-                </button>
-                
-                {/* Zones Section - Clean and Modern Design */}
-                {showZonesForScheduleId === schedule.id && (
-                  <div className={styles.zonesContainer}>
-                    {ticketLoading ? (
-                      <div className={styles.loadingZones}>
-                        <div className={styles.loadingSpinner}></div>
-                        <p>Loading available zones...</p>
-                      </div>
-                    ) : (
-                      <>
-                        <h3 className={styles.zoneSelectionTitle}>Select a Zone</h3>
-                        
-                        {/* Zones Availability Cards */}
-                        <div className={styles.zoneGrid}>
-                          {ticketTypes.map(zone => (
-                            <div 
-                              key={zone.id} 
-                              className={`${styles.zoneCard} ${selectedZoneId === zone.id ? styles.selectedZoneCard : ''} ${zone.availableSeats <= 0 ? styles.soldOutCard : ''}`}
-                              onClick={() => zone.availableSeats > 0 ? handleZoneSelect(zone.id) : null}
-                            >
-                              <div className={styles.zoneHeader}>
-                                <h4 className={styles.zoneName}>{zone.name}</h4>
-                              </div>
-                              
-                              <div className={styles.zoneBody}>
-                                <div className={styles.zonePrice}>
-                                  ${Number(zone.price).toFixed(2)}
-                                </div>
-                                
-                                {zone.availableSeats > 0 ? (
-                                  <div className={styles.zoneAvailability}>
-                                    <span className={styles.availabilityLabel}>Available Seats</span>
-                                    <span className={styles.availabilityCount}>
-                                      {zone.availableSeats}
-                                    </span>
-                                  </div>
-                                ) : (
-                                  <span className={styles.soldOutBadge}>Sold Out</span>
-                                )}
-                              </div>
-                            </div>
-                          ))}
+    return (
+        <div className={styles.scheduleContainer}>
+            <div className={styles.header}>
+                <h1 className={styles.title}>{event.name}</h1>
+                <p className={styles.description}>{event.description}</p>
+            </div>
+            <div className={styles.schedulesSection}>
+                <h2>Available Schedules</h2>
+                <div className={styles.schedulesList}>
+                    {schedules.map(schedule => (
+                        <div
+                            key={schedule.id}
+                            className={`${styles.scheduleCard} ${selectedSchedule?.id === schedule.id ? styles.selected : ''}`}
+                            onClick={() => handleScheduleSelect(schedule)}
+                        >
+                            <p>Date: {new Date(schedule.date).toLocaleDateString()}</p>
+                            <p>Time: {schedule.timeStart} - {schedule.timeEnd}</p>
                         </div>
-
-                        {/* Booking Form - Below the Zones */}
-                        {selectedZone && (
-                          <div className={styles.bookingForm}>
-                            <h3 className={styles.bookingFormTitle}>Complete Your Booking</h3>
-                            <div className={styles.bookingDetails}>
-                              <div className={styles.bookingDetail}>
-                                <span className={styles.detailLabel}>Selected Zone:</span>
-                                <strong className={styles.detailValue}>{selectedZone.name}</strong>
-                              </div>
-                              <div className={styles.bookingDetail}>
-                                <span className={styles.detailLabel}>Price per Ticket:</span>
-                                <strong className={styles.detailValue}>${selectedZone.price}</strong>
-                              </div>
-                              <div className={styles.bookingDetail}>
-                                <span className={styles.detailLabel}>Available Seats:</span>
-                                <strong className={styles.detailValue}>{selectedZone.availableSeats}</strong>
-                              </div>
-                              <div className={styles.bookingDetail}>
-                                <label htmlFor="quantity" className={styles.detailLabel}>Number of Tickets:</label>
-                                <select 
-                                  id="quantity" 
-                                  value={ticketQuantity}
-                                  onChange={handleQuantityChange}
-                                  className={styles.quantitySelect}
+                    ))}
+                </div>
+            </div>
+            {selectedSchedule && (
+                <div className={styles.zonesSection}>
+                    <h2>Available Zones</h2>
+                    <div className={styles.zonesList}>
+                        {zones.map(zone => (
+                            <div key={zone.id} className={styles.zoneCard}>
+                                <h3>{zone.name}</h3>
+                                <p>Price: ${zone.price}</p>
+                                <p>Available Seats: {zone.size}</p>
+                                <button
+                                    className={styles.bookButton}
+                                    onClick={() => handleBookZone(zone.id)}
+                                    disabled={zone.status === 'sold_out'}
                                 >
-                                  {Array.from({ length: Math.min(10, selectedZone.availableSeats) }, (_, i) => (
-                                    <option key={i + 1} value={i + 1}>{i + 1}</option>
-                                  ))}
-                                </select>
-                              </div>
+                                    {zone.status === 'sold_out' ? 'Sold Out' : 'Book Now'}
+                                </button>
                             </div>
-                            
-                            <div className={styles.totalSection}>
-                              <span className={styles.totalLabel}>Total Price:</span>
-                              <span className={styles.totalAmount}>${(Number(selectedZone.price) * ticketQuantity).toFixed(2)}</span>
-                            </div>
-                            
-                            <button 
-                              className={styles.checkoutButton}
-                              onClick={handleBooking}
-                            >
-                              Proceed to Checkout
-                            </button>
-                          </div>
-                        )}
-                      </>
-                    )}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </section>
-  );
-};
+                        ))}
+                    </div>
+                </div>
+            )}
+            {showLoginModal && (
+                <Login onClose={() => setShowLoginModal(false)} onSwitchToRegister={() => { setShowLoginModal(false); setShowRegisterModal(true) }} onLogin={handleLoginSuccess} />
+            )}
+            {showRegisterModal && (
+                <Register onClose={() => setShowRegisterModal(false)} onSwitchToLogin={() => { setShowRegisterModal(false); setShowLoginModal(true) }} onRegister={handleRegisterSuccess} />
+            )}
+        </div>
+    )
+}
 
-export default SchedulePage;
+export default Schedule

@@ -8,7 +8,6 @@ import ErrorBoundary from './components/ErrorBoundary'
 import styles from './App.module.css'
 
 function App() {
-  console.log('App component rendering')
   
   return (
     <ErrorBoundary>
@@ -19,7 +18,9 @@ function App() {
             <div className={styles.background}></div>
             <Navbar />
             <main className={styles.main}>
-              <AppRoutes />
+              <ErrorBoundary>
+                <AppRoutes />
+              </ErrorBoundary>
             </main>
             <Footer />
           </div>

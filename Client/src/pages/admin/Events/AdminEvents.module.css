@@ -1,0 +1,125 @@
+.container {
+    padding: 2rem;
+    min-height: 100vh;
+    background-color: #f5f5f5;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.header h1 {
+    margin: 0;
+    color: #333;
+    font-size: 2rem;
+}
+
+.addButton {
+    background-color: #10b981;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.addButton:hover {
+    background-color: #059669;
+}
+
+.error {
+    background-color: #fee2e2;
+    color: #dc2626;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+}
+
+.loading {
+    text-align: center;
+    color: #666;
+    padding: 2rem;
+}
+
+.tableContainer {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.table th {
+    background-color: #f8fafc;
+    font-weight: 600;
+    color: #64748b;
+}
+
+.table tr:last-child td {
+    border-bottom: none;
+}
+
+.table tr:hover {
+    background-color: #f8fafc;
+}
+
+.actionButton {
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-right: 0.5rem;
+}
+
+.actionButton:hover {
+    background-color: #2563eb;
+}
+
+.deleteButton {
+    background-color: #ef4444;
+}
+
+.deleteButton:hover {
+    background-color: #dc2626;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+
+    .header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+
+    .tableContainer {
+        overflow-x: auto;
+    }
+
+    .table th,
+    .table td {
+        padding: 0.75rem;
+    }
+} 

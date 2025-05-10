@@ -1,35 +1,55 @@
 export interface Event {
     id: number;
     name: string;
+    description: string;
     date: string;
     owner: string;
-    description?: string;
-    venue?: string;
-    capacity?: number;
-    price?: number;
-    ticketDetails?: TicketDetails;
-    benefits?: Benefit[];
+    stadium: {
+        id: number;
+        name: string;
+        address: string;
+    };
+    status: 'upcoming' | 'ongoing' | 'completed' | 'cancelled';
+    createdAt: string;
+    updatedAt: string;
 }
 
-export interface TicketDetails {
-    types: TicketType[];
-    notice: string[];
+export interface EventSchedule {
+    id: number;
+    eventId: number;
+    date: string;
+    timeStart: string;
+    timeEnd: string;
+    status: 'available' | 'sold_out' | 'cancelled';
+    createdAt: string;
+    updatedAt: string;
 }
 
-export interface TicketType {
+export interface EventZone {
+    id: number;
+    scheduleId: number;
     name: string;
     price: number;
-    benefits: string[];
-    available: number;
-}
-
-export interface Benefit {
-    title: string;
-    items: string[];
+    size: number;
+    status: 'available' | 'sold_out';
+    createdAt: string;
+    updatedAt: string;
 }
 
 export interface EventResponse {
     success: boolean;
-    data: Event | Event[];
-    message?: string;
+    data?: Event | Event[];
+    error?: string;
+}
+
+export interface EventScheduleResponse {
+    success: boolean;
+    data?: EventSchedule | EventSchedule[];
+    error?: string;
+}
+
+export interface EventZoneResponse {
+    success: boolean;
+    data?: EventZone | EventZone[];
+    error?: string;
 } 

@@ -1,95 +1,137 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
-
-// Core Pages
 import Home from '../pages/core/Home/Home'
 import About from '../pages/core/About/About'
-import Login from '../pages/core/Auth/Login/Login'
-import Register from '../pages/core/Auth/Register/Register'
-
-// Booking Pages
+import { Login } from '../pages/core/Auth/Login/Login'
+import { Register } from '../pages/core/Auth/Register/Register'
 import ZoneSelection from '../pages/booking/ZoneSelection/ZoneSelection'
 import Payment from '../pages/booking/Payment/Payment'
-
-// User Pages
 import Profile from '../pages/user/Profile/Profile'
 import Ticket from '../pages/user/Ticket/Ticket'
-
-// Admin Pages
-import AdminPanel from '../pages/admin/AdminPanel/AdminPanel'
-
-// Event Pages
+import { AdminDashboard } from '../pages/admin/Admin/AdminDashboard'
+import { AdminUsers } from '../pages/admin/Users/AdminUsers'
+import { AdminEvents } from '../pages/admin/Events/AdminEvents'
+import { AdminReports } from '../pages/admin/Reports/AdminReports'
+import { AdminVenues } from '../pages/admin/Venues/AdminVenues'
+import { AdminScheduleEvent } from '../pages/admin/ScheduleEvent/AdminScheduleEvent'
+import { TicketManagement } from '../pages/admin/Tickets/TicketManagement'
 import Events from '../pages/events/Events/Events'
 import Stadium from '../pages/events/Stadium/Stadium'
-import Venues from '../pages/events/Venues/Venues'
-import ScheduleEvent from '../pages/events/ScheduleEvent/ScheduleEvent'
-
-// Support Pages
 import Support from '../pages/support/Support/Support'
-
-// Error Pages
 import NotFound from '../pages/core/NotFound/NotFound'
 
 function LoadingSpinner() {
-  return (
-    <div style={{
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      minHeight: '200px'
-    }}>
-      <div style={{
-        width: '40px',
-        height: '40px',
-        border: '4px solid #f3f3f3',
-        borderTop: '4px solid #3498db',
-        borderRadius: '50%',
-        animation: 'spin 1s linear infinite'
-      }} />
-    </div>
-  )
+    return (
+        <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh',
+            width: '100%'
+        }}>
+            <div>Loading...</div>
+        </div>
+    )
+}
+
+function AdminRoute({ children }: { children: React.ReactNode }) {
+    const { isAdmin, isLoading, isAuthenticated } = useAuth()
+
+    if (isLoading) return <LoadingSpinner />
+    if (!isAuthenticated) return <Navigate to="/login" replace />
+    if (!isAdmin) return <Navigate to="/" replace />
+
+    return <>{children}</>
+}
+
+function ProtectedRoute({ children }: { children: React.ReactNode }) {
+    const { isAuthenticated, isLoading } = useAuth()
+
+    if (isLoading) return <LoadingSpinner />
+    if (!isAuthenticated) return <Navigate to="/login" replace />
+
+    return <>{children}</>
 }
 
 export function AppRoutes() {
-  const { isAuthenticated, isAdmin, isLoading } = useAuth()
+    const { isLoading } = useAuth()
 
-  if (isLoading) {
-    return <LoadingSpinner />
-  }
+    if (isLoading) {
+        return <LoadingSpinner />
+    }
 
-  return (
-    <Routes>
-      {/* Public Routes */}
-      <Route path="/" element={<Home />} />
-      <Route path="/about" element={<About />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/events" element={<Events />} />
-      <Route path="/stadium" element={<Stadium />} />
-      <Route path="/support" element={<Support />} />
+    return (
+        <Routes>
+            {/* Public Routes */}
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/events" element={<Events />} />
+            <Route path="/stadium/:id" element={<Stadium />} />
+            <Route path="/support" element={<Support />} />
 
-      {/* Protected Routes */}
-      {isAuthenticated && (
-        <>
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/ticket" element={<Ticket />} />
-          <Route path="/zone-selection" element={<ZoneSelection />} />
-          <Route path="/payment" element={<Payment />} />
-          
-        </>
-      )}
+            {/* Protected User Routes */}
+            <Route path="/profile" element={
+                <ProtectedRoute>
+                    <Profile />
+                </ProtectedRoute>
+            } />
+            <Route path="/ticket/:id" element={
+                <ProtectedRoute>
+                    <Ticket />
+                </ProtectedRoute>
+            } />
+            <Route path="/events/:id/zones" element={
+                <ProtectedRoute>
+                    <ZoneSelection />
+                </ProtectedRoute>
+            } />
+            <Route path="/payment" element={
+                <ProtectedRoute>
+                    <Payment />
+                </ProtectedRoute>
+            } />
 
-      {/* Admin Routes */}
-      {isAdmin && (
-        <>
-          <Route path="/admin" element={<AdminPanel />} />
-          <Route path="/venues" element={<Venues />} />
-          <Route path="/schedule-event" element={<ScheduleEvent />} />
-        </>
-      )}
+            {/* Admin Routes */}
+            <Route path="/admin" element={
+                <AdminRoute>
+                    <AdminDashboard />
+                </AdminRoute>
+            } />
+            <Route path="/admin/users" element={
+                <AdminRoute>
+                    <AdminUsers />
+                </AdminRoute>
+            } />
+            <Route path="/admin/events" element={
+                <AdminRoute>
+                    <AdminEvents />
+                </AdminRoute>
+            } />
+            <Route path="/admin/reports" element={
+                <AdminRoute>
+                    <AdminReports />
+                </AdminRoute>
+            } />
+            <Route path="/admin/venues" element={
+                <AdminRoute>
+                    <AdminVenues />
+                </AdminRoute>
+            } />
+            <Route path="/admin/schedules" element={
+                <AdminRoute>
+                    <AdminScheduleEvent />
+                </AdminRoute>
+            } />
+            <Route path="/admin/tickets" element={
+                <AdminRoute>
+                    <TicketManagement />
+                </AdminRoute>
+            } />
 
-      {/* Catch-all route */}
-      <Route path="*" element={<NotFound />} />
-    </Routes>
-  )
+            {/* 404 Route */}
+            <Route path="*" element={<NotFound />} />
+        </Routes>
+    )
 }

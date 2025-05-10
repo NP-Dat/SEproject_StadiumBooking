@@ -1,3 +1,34 @@
+export interface Booking {
+  id: number;
+  userId: number;
+  eventId: number;
+  scheduleId: number;
+  zoneId: number;
+  quantity: number;
+  totalPrice: number;
+  status: 'pending' | 'confirmed' | 'cancelled' | 'completed';
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface BookingResponse {
+  success: boolean;
+  data?: Booking | Booking[];
+  error?: string;
+}
+
+export interface CreateBookingRequest {
+  eventId: number;
+  scheduleId: number;
+  zoneId: number;
+  quantity: number;
+}
+
+export interface UpdateBookingRequest {
+  status?: 'pending' | 'confirmed' | 'cancelled' | 'completed';
+  quantity?: number;
+}
+
 export interface Cart {
   id: number;
   userID: number;
@@ -19,7 +50,6 @@ export interface UserBooking {
   eventTitle: string;
   eventImage: string;
   stadiumName: string;
-  // Add zone name field
   zoneName: string;
 }
 

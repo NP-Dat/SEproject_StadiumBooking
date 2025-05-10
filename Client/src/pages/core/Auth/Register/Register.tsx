@@ -1,55 +1,98 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../../../contexts/AuthContext';
-import styles from './Register.module.css';
-import Button from '../../../../components/ui/Button/Button';
-import Input from '../../../../components/ui/Input/Input';
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { useAuth } from '../../../../contexts/AuthContext'
+import styles from './Register.module.css'
+import Button from '../../../../components/ui/Button/Button'
+import Input from '../../../../components/ui/Input/Input'
+import { SuccessMessage } from './SuccessMessage'
+import type { RegisterCredentials } from '../../../../types/auth'
 
-const Register: React.FC = () => {
-    const { register: authRegister } = useAuth();
-    const navigate = useNavigate();
-    const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [fullname, setFullname] = useState('');
-    const [birth, setBirth] = useState('');
-    const [phonenumber, setPhonenumber] = useState('');
-    const [address, setAddress] = useState('');
-    const [error, setError] = useState('');
-    const [loading, setLoading] = useState(false);
+interface RegisterProps {
+    onClose?: () => void
+    onSwitchToLogin?: () => void
+    onRegister?: () => void
+}
+
+export function Register({ onClose, onSwitchToLogin, onRegister }: RegisterProps) {
+    const { register } = useAuth()
+    const navigate = useNavigate()
+    const [credentials, setCredentials] = useState<RegisterCredentials>({
+        userName: '',
+        email: '',
+        passWord: '',
+        fullName: '',
+        birth: '',
+        phoneNumber: '',
+        address: ''
+    })
+    const [confirmPassword, setConfirmPassword] = useState('')
+    const [error, setError] = useState('')
+    const [loading, setLoading] = useState(false)
+    const [success, setSuccess] = useState(false)
 
     const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setError('');
-        setLoading(true);
+        e.preventDefault()
+        setError('')
+        setLoading(true)
 
-        if (!username || !email || !password || !confirmPassword || !fullname || !birth || !phonenumber || !address) {
-            setError('Please fill in all fields');
-            setLoading(false);
-            return;
+        if (!credentials.userName || !credentials.email || !credentials.passWord || 
+            !confirmPassword || !credentials.fullName || !credentials.birth || 
+            !credentials.phoneNumber || !credentials.address) {
+            setError('Please fill in all fields')
+            setLoading(false)
+            return
         }
 
-        if (password !== confirmPassword) {
-            setError('Passwords do not match');
-            setLoading(false);
-            return;
+        if (credentials.passWord !== confirmPassword) {
+            setError('Passwords do not match')
+            setLoading(false)
+            return
         }
 
         try {
-            const result = await authRegister(username, email, password, fullname, birth, phonenumber, address);
-            if (result.success) {
-                navigate('/login');
+            const result = await register(credentials)
+            if (result.success && result.data?.user) {
+                setSuccess(true)
+                if (onRegister) onRegister()
+                if (onClose) onClose()
+                setTimeout(() => {
+                    navigate('/login')
+                }, 2000)
             } else {
-                setError(result.message);
+                setError(result.error || 'Registration failed')
             }
-        } catch (err: unknown) {
-            console.error('Registration error:', err);
-            setError(err instanceof Error ? err.message : 'An unexpected error occurred');
+        } catch (err) {
+            console.error('Registration error:', err)
+            setError(err instanceof Error ? err.message : 'An unexpected error occurred')
         } finally {
-            setLoading(false);
+            setLoading(false)
         }
-    };
+    }
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target
+        if (name === 'confirmPassword') {
+            setConfirmPassword(value)
+        } else {
+            setCredentials(prev => ({
+                ...prev,
+                [name]: value
+            }))
+        }
+    }
+
+    if (success) {
+        return (
+            <div className={styles.modalOverlay}>
+                <div className={styles.modalContent}>
+                    <SuccessMessage>
+                        <h2>Registration Successful!</h2>
+                        <p>Redirecting to login page...</p>
+                    </SuccessMessage>
+                </div>
+            </div>
+        )
+    }
 
     return (
         <div className={styles.modalOverlay}>
@@ -62,73 +105,81 @@ const Register: React.FC = () => {
                 <form onSubmit={handleSubmit} className={styles.form}>
                     <div className={styles.inputGroup}>
                         <Input
-                            id="username"
+                            id="userName"
+                            name="userName"
                             label="Username"
                             type="text"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            value={credentials.userName}
+                            onChange={handleInputChange}
                             placeholder="Choose a username"
                             required
                         />
                         <Input
-                            id="fullname"
+                            id="fullName"
+                            name="fullName"
                             label="Full Name"
                             type="text"
-                            value={fullname}
-                            onChange={(e) => setFullname(e.target.value)}
+                            value={credentials.fullName}
+                            onChange={handleInputChange}
                             placeholder="Enter your full name"
                             required
                         />
                         <Input
                             id="email"
+                            name="email"
                             label="Email"
                             type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            value={credentials.email}
+                            onChange={handleInputChange}
                             placeholder="Enter your email"
                             required
                         />
                         <Input
                             id="birth"
+                            name="birth"
                             label="Date of Birth"
                             type="date"
-                            value={birth}
-                            onChange={(e) => setBirth(e.target.value)}
+                            value={credentials.birth}
+                            onChange={handleInputChange}
                             required
                         />
                         <Input
-                            id="phonenumber"
+                            id="phoneNumber"
+                            name="phoneNumber"
                             label="Phone Number"
                             type="tel"
-                            value={phonenumber}
-                            onChange={(e) => setPhonenumber(e.target.value)}
+                            value={credentials.phoneNumber}
+                            onChange={handleInputChange}
                             placeholder="Enter your phone number"
                             required
                         />
                         <Input
                             id="address"
+                            name="address"
                             label="Address"
                             type="text"
-                            value={address}
-                            onChange={(e) => setAddress(e.target.value)}
+                            value={credentials.address}
+                            onChange={handleInputChange}
                             placeholder="Enter your address"
                             required
                         />
                         <Input
-                            id="password"
+                            id="passWord"
+                            name="passWord"
                             label="Password"
                             type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            value={credentials.passWord}
+                            onChange={handleInputChange}
                             placeholder="Create a password"
                             required
                         />
                         <Input
                             id="confirmPassword"
+                            name="confirmPassword"
                             label="Confirm Password"
                             type="password"
                             value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            onChange={handleInputChange}
                             placeholder="Confirm your password"
                             required
                         />
@@ -147,15 +198,16 @@ const Register: React.FC = () => {
                     </div>
                     <Button
                         variant="outline"
-                        onClick={() => navigate('/login')}
+                        onClick={onSwitchToLogin ? onSwitchToLogin : () => navigate('/login')}
                         className={styles.switchButton}
                     >
                         Sign In Instead
                     </Button>
                 </form>
+                {onClose && (
+                    <button className={styles.closeButton} onClick={onClose} aria-label="Close">×</button>
+                )}
             </div>
         </div>
-    );
-};
-
-export default Register;
+    )
+}

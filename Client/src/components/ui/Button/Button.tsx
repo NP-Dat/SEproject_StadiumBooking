@@ -6,7 +6,7 @@ interface ButtonProps {
   children: React.ReactNode
   variant?: 'primary' | 'secondary' | 'outline'
   size?: 'small' | 'medium' | 'large'
-  onClick?: () => void
+  onClick?: (e: React.MouseEvent) => void
   disabled?: boolean
   className?: string
   type?: 'button' | 'submit' | 'reset'
@@ -43,7 +43,7 @@ const Button = ({
   // Handle combined navigation and onClick
   const handleClick = (e: React.MouseEvent) => {
     if (disabled || isLoading) return
-    if (onClick) onClick()
+    if (onClick) onClick(e)
   }
   
   // Loading indicator

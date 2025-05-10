@@ -2,14 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './Payment.module.css';
 import { useAuth } from '../../../contexts/AuthContext';
-import PaymentService from '../../../services/PaymentService';
-
-interface Wallet {
-  id: number;
-  userID: number;
-  balance: string;
-  status: string | null;
-}
+import { paymentAPI } from '../../../apis/services';
 
 interface Transaction {
   id: number;
@@ -22,7 +15,7 @@ interface Transaction {
 const WalletPage: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const [wallet, setWallet] = useState<Wallet | null>(null);
+  const [balance, setBalance] = useState(0);
   const [addAmount, setAddAmount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -37,17 +30,18 @@ const WalletPage: React.FC = () => {
         }
         
         setLoading(true);
-        const response = await PaymentService.getWalletBalance(parseInt(user.id));
+        const response = await paymentAPI.getBalance();
         
-        if (response.success) {
-          setWallet({
-            id: parseInt(user.id),
-            userID: parseInt(user.id),
-            balance: response.balance.toString(),
-            status: 'active'
-          });
+        if (response.success && response.data) {
+          setBalance(response.data.balance);
         } else {
-          throw new Error(response.message || 'Failed to fetch wallet data');
+          throw new Error(response.error || 'Failed to fetch wallet data');
+        }
+        
+        // Fetch transactions
+        const transactionsResponse = await paymentAPI.getTransactions();
+        if (transactionsResponse.success && transactionsResponse.data) {
+          setTransactions(transactionsResponse.data as unknown as Transaction[]);
         }
         
       } catch (err) {
@@ -69,23 +63,30 @@ const WalletPage: React.FC = () => {
       }
       
       setLoading(true);
-      const response = await PaymentService.addFundsToWallet(parseInt(user.id), addAmount);
+      const response = await paymentAPI.addFunds(addAmount);
       
       if (response.success) {
-        setWallet(prev => prev ? {
-          ...prev,
-          balance: response.balance.toString()
-        } : null);
+        // Refresh balance
+        const balanceResponse = await paymentAPI.getBalance();
+        if (balanceResponse.success && balanceResponse.data) {
+          setBalance(balanceResponse.data.balance);
+        }
         
         setSuccess(`Successfully added $${addAmount.toFixed(2)} to your wallet`);
         setAddAmount(0);
         
-        // Refresh wallet data
+        // Refresh transactions
+        const transactionsResponse = await paymentAPI.getTransactions();
+        if (transactionsResponse.success && transactionsResponse.data) {
+          setTransactions(transactionsResponse.data as unknown as Transaction[]);
+        }
+        
+        // Clear success message after 3 seconds
         setTimeout(() => {
           setSuccess(null);
         }, 3000);
       } else {
-        throw new Error(response.message || 'Failed to add funds');
+        throw new Error(response.error || 'Failed to add funds');
       }
       
     } catch (err) {
@@ -96,7 +97,7 @@ const WalletPage: React.FC = () => {
     }
   };
 
-  if (loading && !wallet) {
+  if (loading && balance === 0) {
     return (
       <div className={styles.loaderContainer}>
         <div className={styles.loader}></div>
@@ -137,7 +138,7 @@ const WalletPage: React.FC = () => {
           <div className={styles.balanceRow}>
             <span className={styles.balanceLabel}>Current Balance:</span>
             <span className={styles.balanceValue}>
-              ${wallet ? parseFloat(wallet.balance).toFixed(2) : '0.00'}
+              ${balance.toFixed(2)}
             </span>
           </div>
         </div>

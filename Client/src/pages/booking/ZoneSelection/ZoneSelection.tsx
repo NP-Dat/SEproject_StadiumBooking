@@ -1,28 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ScheduleService } from '../../../services/ScheduleService';
-import { TicketTypeService } from '../../../services/TicketTypeService';
-import { BookingService } from '../../../services/BookingService';
+import { scheduleAPI, bookingAPI } from '../../../apis/services';
 import { useAuth } from '../../../contexts/AuthContext';
-import { TicketType } from '../../../types/ticketType';
+import type { EventSchedule } from '../../../types/event';
+import type { TicketType } from '../../../types/ticketType';
+import type { Booking } from '../../../types/booking';
 import styles from './ZoneSelection.module.css';
 
-const ZoneSelection: React.FC = () => {
+function ZoneSelection() {
   const { eventId } = useParams<{ eventId: string }>();
   const navigate = useNavigate();
   const [ticketTypes, setTicketTypes] = useState<TicketType[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [scheduleId, setScheduleId] = useState<number | null>(null);
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   
   // State for selected zone and quantity
   const [selectedZone, setSelectedZone] = useState<TicketType | null>(null);
   const [ticketQuantity, setTicketQuantity] = useState<number>(1);
   const [isBooking, setIsBooking] = useState(false);
-  const [numberOfTickets, setNumberOfTickets] = useState(1);
-  const [price, setPrice] = useState(150.00); // You might fetch this dynamically
-  // Add this state to track showing the payment confirmation
   const [showPaymentConfirmation, setShowPaymentConfirmation] = useState(false);
 
   useEffect(() => {
@@ -32,16 +29,40 @@ const ZoneSelection: React.FC = () => {
         
         // First fetch the schedules for this event to get a scheduleId
         if (eventId) {
-          const schedules = await ScheduleService.getSchedulesByEventId(eventId);
+          const response = await scheduleAPI.getByEventId(parseInt(eventId));
           
-          if (schedules && schedules.length > 0) {
+          if (response.success && response.data && response.data.length > 0) {
             // Use the first available schedule
-            const firstSchedule = schedules[0];
+            const firstSchedule = response.data[0];
             setScheduleId(firstSchedule.id);
             
             // Now fetch ticket types for this schedule
-            const zoneData = await TicketTypeService.getTicketTypesByScheduleId(firstSchedule.id);
-            setTicketTypes(zoneData);
+            // TODO: Implement ticket type fetching with the new API
+            // For now, using mock data
+            setTicketTypes([
+              {
+                id: 1,
+                name: 'VIP Zone',
+                price: '150.00',
+                availableSeats: 20,
+                startSeatID: 1,
+                endSeatID: 20,
+                size: 20,
+                eventScheduleID: firstSchedule.id,
+                status: 'available'
+              },
+              {
+                id: 2,
+                name: 'Standard Zone',
+                price: '100.00',
+                availableSeats: 50,
+                startSeatID: 21,
+                endSeatID: 70,
+                size: 50,
+                eventScheduleID: firstSchedule.id,
+                status: 'available'
+              }
+            ]);
           }
         }
       } catch (err) {
@@ -65,35 +86,46 @@ const ZoneSelection: React.FC = () => {
     setTicketQuantity(parseInt(e.target.value));
   };
 
-  // Modify the handleConfirmBooking function
   const handleConfirmBooking = async () => {
     if (!isAuthenticated) {
       navigate('/login', { state: { from: location.pathname } });
       return;
     }
 
-    if (!selectedZone || !scheduleId) return;
+    if (!selectedZone || !scheduleId || !eventId || !user?.id) return;
     
     try {
       setIsBooking(true);
-      const userId = localStorage.getItem('userId');
       
-      if (!userId) {
-        navigate('/login');
-        return;
-      }
-      
-      // Create a booking and process payment in one step
-      const bookingResult = await BookingService.createBooking(
-        parseInt(userId),
+      // Create a booking
+      const booking: Omit<Booking, 'id'> = {
+        userId: user.id,
+        eventId: parseInt(eventId),
         scheduleId,
-        selectedZone.id,
-        ticketQuantity
-      );
+        zoneId: selectedZone.id,
+        quantity: ticketQuantity,
+        totalPrice: parseFloat(selectedZone.price) * ticketQuantity,
+        status: 'pending',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
       
-      if (bookingResult.success) {
-        // Show the payment success dialog
-        setShowPaymentConfirmation(true);
+      const bookingResult = await bookingAPI.create(booking);
+      
+      if (bookingResult.success && bookingResult.data) {
+        // Store booking details for payment
+        const price = parseFloat(selectedZone.price);
+        localStorage.setItem('currentBooking', JSON.stringify({
+          eventId,
+          zoneName: selectedZone.name,
+          quantity: ticketQuantity,
+          price,
+          total: (price * ticketQuantity).toFixed(2),
+          cartId: bookingResult.data.id
+        }));
+        
+        // Navigate to payment page
+        navigate('/payment');
       } else {
         setError('Failed to create booking');
       }
@@ -108,14 +140,6 @@ const ZoneSelection: React.FC = () => {
   const closeSelection = () => {
     setSelectedZone(null);
   };
-
-  const handleTicketChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const quantity = parseInt(e.target.value);
-    setNumberOfTickets(quantity);
-  };
-  
-  // Calculate total price
-  const totalPrice = price * numberOfTickets;
   
   if (loading) return <div className={styles.loading}>Loading zones...</div>;
   if (error) return <div className={styles.error}>{error}</div>;
@@ -142,7 +166,7 @@ const ZoneSelection: React.FC = () => {
                   
                   <div className={styles.selectedZoneBody}>
                     <div className={styles.selectedZonePrice}>
-                      ${Number(selectedZone.price).toFixed(2)}
+                      ${selectedZone.price}
                     </div>
                     
                     <div className={styles.quantitySection}>
@@ -164,7 +188,7 @@ const ZoneSelection: React.FC = () => {
                     <div className={styles.totalSection}>
                       <p className={styles.totalLabel}>Total:</p>
                       <p className={styles.totalAmount}>
-                        ${(Number(selectedZone.price) * ticketQuantity).toFixed(2)}
+                        ${(parseFloat(selectedZone.price) * ticketQuantity).toFixed(2)}
                       </p>
                     </div>
                     
@@ -192,7 +216,7 @@ const ZoneSelection: React.FC = () => {
                     
                     <div className={styles.zoneBody}>
                       <div className={styles.zonePrice}>
-                        ${Number(zone.price).toFixed(2)}
+                        ${zone.price}
                       </div>
                       
                       {zone.availableSeats > 0 ? (
@@ -217,67 +241,8 @@ const ZoneSelection: React.FC = () => {
           </>
         )}
       </div>
-      {showPaymentConfirmation && (
-        <PaymentComplete 
-          eventId={eventId} 
-          onClose={() => setShowPaymentConfirmation(false)} 
-        />
-      )}
     </section>
   );
-};
-
-const PaymentComplete: React.FC<{eventId?: string, onClose: () => void}> = ({ eventId, onClose }) => {
-  const navigate = useNavigate();
-  
-  // Add this useEffect to add a class to the body when overlay is shown
-  React.useEffect(() => {
-    // Add class to body when component mounts
-    document.body.classList.add('overlay-active');
-    
-    // Remove class when component unmounts
-    return () => {
-      document.body.classList.remove('overlay-active');
-    };
-  }, []);
-
-  const handleViewEvent = () => {
-    onClose();
-    if (eventId) {
-      navigate(`/events/${eventId}`);
-    }
-  };
-
-  const handleViewBookings = () => {
-    onClose();
-    navigate('/profile', { state: { activeTab: 'bookings' } });
-  };
-
-  return (
-    <div className={styles.paymentOverlay}>
-      <div className={styles.paymentConfirmation}>
-        <div className={styles.paymentHeader}>
-          <h2>Payment Successful</h2>
-          <div className={styles.paymentIcon}>✓</div>
-        </div>
-        
-        <div className={styles.paymentActions}>
-          <button 
-            className={styles.eventButton}
-            onClick={handleViewEvent}
-          >
-            Back to Event
-          </button>
-          <button 
-            className={styles.bookingsButton}
-            onClick={handleViewBookings}
-          >
-            View My Bookings
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
+}
 
 export default ZoneSelection;

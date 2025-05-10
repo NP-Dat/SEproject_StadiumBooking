@@ -1,211 +1,169 @@
 .ticketContainer {
-  display: flex;
-  justify-content: center;
-  padding: 2rem;
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
 }
 
-.ticketCard {
+.ticket {
   background: white;
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  width: 100%;
-  max-width: 550px;
-  padding: 1.5rem;
 }
 
 .ticketHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px dashed #e0e0e0;
-}
-
-.ticketTitle {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin: 0;
-  color: #333;
-}
-
-.ticketId {
-  font-size: 1rem;
-  color: #666;
-  font-weight: 500;
-}
-
-.eventDetails {
-  margin-bottom: 1.5rem;
+  background: linear-gradient(135deg, #1a237e, #0d47a1);
+  color: white;
+  padding: 2rem;
   text-align: center;
 }
 
-.eventName {
+.ticketHeader h1 {
+  margin: 0;
   font-size: 1.8rem;
-  margin: 0 0 1rem 0;
-  color: #222;
   font-weight: 600;
 }
 
-.eventDateTime {
-  display: flex;
-  justify-content: center;
-  gap: 1.5rem;
-  margin-top: 0.5rem;
+.ticketId {
+  margin: 0.5rem 0 0;
+  font-size: 1rem;
+  opacity: 0.9;
 }
 
-.eventDate, .eventTime {
-  background: #f8f8f8;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  font-weight: 500;
+.ticketContent {
+  padding: 2rem;
 }
 
-.ticketDetails {
-  background: #f9f9f9;
-  border-radius: 8px;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
+.eventDetails,
+.purchaseDetails {
+  margin-bottom: 2rem;
 }
 
-.ticketRow {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 0.8rem;
-  padding-bottom: 0.8rem;
-  border-bottom: 1px solid #eee;
+.eventDetails h2,
+.purchaseDetails h2 {
+  color: #1a237e;
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e0e0e0;
 }
 
-.ticketRow:last-child {
-  margin-bottom: 0;
-  padding-bottom: 0;
-  border-bottom: none;
-}
-
-.ticketLabel {
-  color: #666;
-  font-weight: 500;
-}
-
-.ticketValue {
-  font-weight: 600;
+.eventDetails p,
+.purchaseDetails p {
+  margin: 0.5rem 0;
+  font-size: 1.1rem;
   color: #333;
 }
 
-.ticketStatus {
-  font-weight: 600;
-  padding: 0.3rem 0.7rem;
-  border-radius: 4px;
-}
-
-.active {
-  background: #e6f7e6;
-  color: #2e7d32;
-}
-
-.used {
-  background: #e3f2fd;
-  color: #1565c0;
-}
-
-.cancelled {
-  background: #ffebee;
-  color: #c62828;
+.eventDetails strong,
+.purchaseDetails strong {
+  color: #1a237e;
+  margin-right: 0.5rem;
 }
 
 .ticketActions {
   display: flex;
-  justify-content: space-between;
   gap: 1rem;
-  margin-top: 1.5rem;
+  margin-top: 2rem;
 }
 
-.downloadButton, .backButton {
-  flex: 1;
-  padding: 0.8rem;
+.downloadButton,
+.backButton {
+  padding: 0.8rem 1.5rem;
   border: none;
-  border-radius: 4px;
-  font-weight: 600;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.2s, transform 0.1s;
+  transition: all 0.2s ease;
 }
 
 .downloadButton {
-  background: #1976d2;
+  background: #1a237e;
   color: white;
+  flex: 2;
 }
 
 .downloadButton:hover {
-  background: #1565c0;
+  background: #0d47a1;
 }
 
 .backButton {
-  background: #f5f5f5;
+  background: #e0e0e0;
   color: #333;
+  flex: 1;
 }
 
 .backButton:hover {
-  background: #e0e0e0;
+  background: #bdbdbd;
 }
 
 .loading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 300px;
+  text-align: center;
+  padding: 2rem;
   font-size: 1.2rem;
   color: #666;
 }
 
 .error {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 300px;
-  font-size: 1.2rem;
+  text-align: center;
+  padding: 2rem;
   color: #d32f2f;
-  text-align: center;
-}
-
-.successMessage {
-  background-color: #e6f7e6;
-  color: #2e7d32;
-  padding: 1rem;
+  font-size: 1.2rem;
+  background: #ffebee;
   border-radius: 8px;
-  margin-bottom: 1.5rem;
-  text-align: center;
-  border-left: 4px solid #2e7d32;
-}
-
-.successMessage h2 {
-  margin-top: 0;
-  margin-bottom: 0.5rem;
-  font-size: 1.25rem;
-}
-
-.successMessage p {
-  margin: 0;
+  margin: 2rem auto;
+  max-width: 600px;
 }
 
 @media print {
+  .ticketContainer {
+    margin: 0;
+    padding: 0;
+  }
+
+  .ticket {
+    box-shadow: none;
+  }
+
   .ticketActions {
     display: none;
   }
-  
-  body * {
-    visibility: hidden;
+}
+
+@media (max-width: 600px) {
+  .ticketContainer {
+    margin: 1rem auto;
   }
-  
-  .ticketCard, .ticketCard * {
-    visibility: visible;
+
+  .ticketHeader {
+    padding: 1.5rem;
   }
-  
-  .ticketCard {
-    position: absolute;
-    left: 0;
-    top: 0;
+
+  .ticketHeader h1 {
+    font-size: 1.5rem;
+  }
+
+  .ticketContent {
+    padding: 1.5rem;
+  }
+
+  .eventDetails h2,
+  .purchaseDetails h2 {
+    font-size: 1.2rem;
+  }
+
+  .eventDetails p,
+  .purchaseDetails p {
+    font-size: 1rem;
+  }
+
+  .ticketActions {
+    flex-direction: column;
+  }
+
+  .downloadButton,
+  .backButton {
     width: 100%;
-    box-shadow: none;
   }
 }

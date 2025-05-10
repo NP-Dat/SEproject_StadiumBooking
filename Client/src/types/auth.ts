@@ -1,38 +1,46 @@
 export interface User {
-    id: string;
-    username: string;
-    email?: string;
-    fullname?: string;
-    birth?: string;
-    phonenumber?: string;
-    address?: string;
+    id: number;
+    userName: string;
+    passWord: string;
+    fullName: string;
+    birth: string;
+    phoneNumber: string;
+    address: string;
+    email: string;
+    role: 'user' | 'admin';
+    createdAt: string;
+    updatedAt: string;
 }
 
 export interface AuthState {
-    isAuthenticated: boolean;
-    isAdmin: boolean;
-    user: User | null;
+    success: boolean;
+    data?: {
+        user: User;
+        token?: string;
+    };
     error?: string;
 }
 
 export interface LoginCredentials {
-    username: string;
-    password: string;
+    userName: string;
+    passWord: string;
 }
 
 export interface RegisterCredentials {
-    username: string;
-    email: string;
-    password: string;
-    fullname: string;
+    userName: string;
+    passWord: string;
+    fullName: string;
     birth: string;
-    phonenumber: string;
+    phoneNumber: string;
     address: string;
+    email: string;
 }
 
 export interface AuthResponse {
-    message: string;
-    userId?: string;
+    success: boolean;
+    user: User;
+    message?: string;
+    error?: string;
 }
 
 export interface LoginResult {
