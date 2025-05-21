@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthService } from '../../../services/AuthService';
 import styles from './Login.module.css';
 import Button from '../../../components/ui/Button/Button';
@@ -17,11 +17,24 @@ const Login: React.FC<LoginProps> = ({ onClose, onSwitchToRegister, onLogin }) =
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
     
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');  // Clear previous errors
         setLoading(true);
+        
+        // Admin login bypass
+        if (username === 'admin' && password === 'admin123') {
+            localStorage.setItem('isAdmin', 'true');
+            localStorage.setItem('userId', 'admin');
+            localStorage.setItem('token', 'admin-token');
+            localStorage.setItem('userName', 'Administrator');
+            
+            // Navigate to admin dashboard
+            navigate('/admin/dashboard');
+            return;
+        }
         
         if (!username) {
             setError('Please enter your username');
@@ -35,6 +48,7 @@ const Login: React.FC<LoginProps> = ({ onClose, onSwitchToRegister, onLogin }) =
         }
 
         try {
+            // Regular user login
             const result = await authLogin(username, password);
             
             if (result.success) {

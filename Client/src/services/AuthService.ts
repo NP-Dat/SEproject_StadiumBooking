@@ -158,4 +158,28 @@ export class AuthService {
         localStorage.removeItem('userId');
         localStorage.removeItem('username');
     }
+
+    static verifyAdminAccess(): boolean {
+        const isAdmin = localStorage.getItem('isAdmin') === 'true';
+        if (!isAdmin) {
+            throw new Error('Unauthorized access');
+        }
+        return true;
+    }
 }
+
+export const AuthServiceContext = {
+    ...AuthService,
+    useAuth: () => {
+        const auth = AuthService.useAuth();
+        
+        const isAdmin = () => {
+            return localStorage.getItem('isAdmin') === 'true';
+        };
+        
+        return {
+            ...auth,
+            isAdmin: isAdmin(),
+        };
+    },
+};
