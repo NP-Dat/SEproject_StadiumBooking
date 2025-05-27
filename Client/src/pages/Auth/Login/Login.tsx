@@ -31,6 +31,9 @@ const Login: React.FC<LoginProps> = ({ onClose, onSwitchToRegister, onLogin }) =
             localStorage.setItem('token', 'admin-token');
             localStorage.setItem('userName', 'Administrator');
             
+            // Close the modal before navigating
+            onClose(); // Add this line
+            
             // Navigate to admin dashboard
             navigate('/admin/dashboard');
             return;

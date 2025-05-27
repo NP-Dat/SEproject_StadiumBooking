@@ -315,10 +315,22 @@ const AdminDashboard = () => {
       }
       
       if (Array.isArray(stadiumData)) {
-        setStadiums(stadiumData);
+        // Transform the data to ensure required fields
+        const transformedData = stadiumData.map(stadium => ({
+          ...stadium,
+          // Map the fields correctly
+          location: stadium.location || stadium.address || '',
+          capacity: stadium.capacity || stadium.size || 0
+        }));
+        setStadiums(transformedData);
       } else if (stadiumData && typeof stadiumData === 'object') {
-        // If it's a single stadium object, put it in an array
-        setStadiums([stadiumData]);
+        // If it's a single stadium object, transform and put it in an array
+        const transformedStadium = {
+          ...stadiumData,
+          location: stadiumData.location || stadiumData.address || '',
+          capacity: stadiumData.capacity || stadiumData.size || 0
+        };
+        setStadiums([transformedStadium]);
       } else {
         console.warn('Unexpected stadium data format:', stadiumData);
         setStadiums([]); // Set empty array as fallback
@@ -396,6 +408,15 @@ const AdminDashboard = () => {
     return `${STADIUM_SERVICE_URL}${savedEndpoint}`;
   };
 
+  // Add these helper functions after getStadiumEndpoint()
+  const getEventEndpoint = () => {
+    return `${EVENT_SERVICE_URL}/api/events`;
+  };
+
+  const getScheduleEndpoint = () => {
+    return `${EVENT_SERVICE_URL}/api/schedules`;
+  };
+
   // Stadium CRUD operations
   const handleAddStadium = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -416,19 +437,22 @@ const AdminDashboard = () => {
     if (!selectedStadium?.id) return;
     
     try {
-      await axios.put(`${STADIUM_SERVICE_URL}/stadiums/${selectedStadium.id}`, selectedStadium, getAuthHeaders());
+      console.log("Updating stadium with data:", selectedStadium);
+      await axios.put(`${getStadiumEndpoint()}/${selectedStadium.id}`, selectedStadium, getAuthHeaders());
       setMessage({ text: 'Stadium updated successfully', isError: false });
       fetchStadiums();
       setSelectedStadium(null);
     } catch (error) {
       console.error('Error updating stadium:', error);
-      setMessage({ text: 'Failed to update stadium', isError: true });
+      // More specific error message
+      const errorMsg = error.response?.data?.message || 'Failed to update stadium';
+      setMessage({ text: `Error: ${errorMsg}`, isError: true });
     }
   };
 
   const handleDeleteStadium = async (id: number) => {
     try {
-      await axios.delete(`${STADIUM_SERVICE_URL}/stadiums/${id}`, getAuthHeaders());
+      await axios.delete(`${getStadiumEndpoint()}/${id}`, getAuthHeaders());
       setStadiums(stadiums.filter(stadium => stadium.id !== id));
       setMessage({ text: 'Stadium deleted successfully', isError: false });
     } catch (error) {
@@ -441,7 +465,8 @@ const AdminDashboard = () => {
   const handleAddEvent = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${EVENT_SERVICE_URL}/events`, newEvent);
+      // Add getAuthHeaders() here
+      const response = await axios.post(getEventEndpoint(), newEvent, getAuthHeaders());
       setEvents([...events, response.data.data || response.data]);
       setNewEvent({ name: '', date: '', owner: '' });
       setMessage({ text: 'Event added successfully', isError: false });
@@ -457,23 +482,87 @@ const AdminDashboard = () => {
     if (!selectedEvent?.id) return;
     
     try {
-      await axios.put(`${EVENT_SERVICE_URL}/events/${selectedEvent.id}`, selectedEvent);
+      // Create a properly formatted event object
+      const formattedEvent = {
+        id: selectedEvent.id,
+        name: selectedEvent.name,
+        owner: selectedEvent.owner,
+        // Format date more consistently
+        date: new Date(selectedEvent.date).toISOString().split('T')[0]
+      };
+      
+      console.log("Sending event data:", formattedEvent);
+      
+      // Use standard Axios config with simpler headers
+      const response = await axios({
+        method: 'put',
+        url: `${EVENT_SERVICE_URL}/api/events/${selectedEvent.id}`,
+        data: formattedEvent,
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      console.log("Update response:", response);
       setMessage({ text: 'Event updated successfully', isError: false });
       fetchEvents();
       setSelectedEvent(null);
     } catch (error) {
       console.error('Error updating event:', error);
-      setMessage({ text: 'Failed to update event', isError: true });
+      // More detailed error logging
+      if (error.response) {
+        console.error('Response status:', error.response.status);
+        console.error('Response data:', error.response.data);
+      }
+      
+      // Try alternative endpoint format if first attempt fails
+      try {
+        const formattedEvent = {
+          id: selectedEvent.id,
+          name: selectedEvent.name,
+          owner: selectedEvent.owner,
+          date: new Date(selectedEvent.date).toISOString().split('T')[0]
+        };
+        
+        // Try PATCH method as an alternative
+        const response = await axios({
+          method: 'patch', // Try PATCH instead of PUT
+          url: `${EVENT_SERVICE_URL}/api/event/${selectedEvent.id}`, // Try singular endpoint
+          data: formattedEvent,
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        console.log("Update response (alternative):", response);
+        setMessage({ text: 'Event updated successfully', isError: false });
+        fetchEvents();
+        setSelectedEvent(null);
+      } catch (secondError) {
+        console.error('Error with alternative update approach:', secondError);
+        setMessage({ text: `Failed to update event: ${error.message}`, isError: true });
+      }
     }
   };
 
   const handleDeleteEvent = async (id: number) => {
     try {
-      await axios.delete(`${EVENT_SERVICE_URL}/events/${id}`);
+      // Fix the authorization headers issue
+      const headers = getAuthHeaders();
+      console.log('Deleting event with ID:', id, 'Using headers:', headers);
+    
+      await axios.delete(`${getEventEndpoint()}/${id}`, headers);
       setEvents(events.filter(event => event.id !== id));
       setMessage({ text: 'Event deleted successfully', isError: false });
     } catch (error) {
       console.error('Error deleting event:', error);
+      // Add more detailed error logging
+      if (error.response) {
+        console.error('Response data:', error.response.data);
+        console.error('Response status:', error.response.status);
+      }
       setMessage({ text: 'Failed to delete event', isError: true });
     }
   };
@@ -482,7 +571,8 @@ const AdminDashboard = () => {
   const handleAddSchedule = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${EVENT_SERVICE_URL}/schedules`, newSchedule);
+      // Fix endpoint path and add auth headers
+      const response = await axios.post(getScheduleEndpoint(), newSchedule, getAuthHeaders());
       setSchedules([...schedules, response.data.data || response.data]);
       setNewSchedule({ 
         stadiumID: 0, 
@@ -504,7 +594,17 @@ const AdminDashboard = () => {
     if (!selectedSchedule?.id) return;
     
     try {
-      await axios.put(`${EVENT_SERVICE_URL}/schedules/${selectedSchedule.id}`, selectedSchedule);
+      // Create a copy with properly formatted date
+      const formattedSchedule = {
+        ...selectedSchedule,
+        // Ensure date is in ISO format if it's not already
+        date: selectedSchedule.date.includes('T') ? 
+              selectedSchedule.date : 
+              `${selectedSchedule.date}T00:00:00.000Z`
+      };
+      
+      console.log("Sending schedule data:", formattedSchedule);
+      await axios.put(`${getScheduleEndpoint()}/${selectedSchedule.id}`, formattedSchedule, getAuthHeaders());
       setMessage({ text: 'Schedule updated successfully', isError: false });
       fetchSchedules();
       setSelectedSchedule(null);
@@ -516,7 +616,8 @@ const AdminDashboard = () => {
 
   const handleDeleteSchedule = async (id: number) => {
     try {
-      await axios.delete(`${EVENT_SERVICE_URL}/schedules/${id}`);
+      // Change this from '/schedules/' to use the endpoint function
+      await axios.delete(`${getScheduleEndpoint()}/${id}`, getAuthHeaders());
       setSchedules(schedules.filter(schedule => schedule.id !== id));
       setMessage({ text: 'Schedule deleted successfully', isError: false });
     } catch (error) {

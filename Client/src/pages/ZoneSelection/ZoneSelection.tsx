@@ -173,7 +173,7 @@ const ZoneSelection: React.FC = () => {
                       onClick={handleConfirmBooking}
                       disabled={isBooking}
                     >
-                      {isBooking ? 'Processing...' : 'Process Payment'}
+                      {isBooking ? 'Processing...' : 'CheckOut'}
                     </button>
                   </div>
                 </div>
