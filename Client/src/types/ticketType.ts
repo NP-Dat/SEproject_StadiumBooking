@@ -9,3 +9,10 @@ export interface TicketType {
     status: string;
     availableSeats: number;
   }
+
+export interface BookingData {
+  eventId: number;
+  zoneName: string;
+  quantity: number;
+  price: number
+}

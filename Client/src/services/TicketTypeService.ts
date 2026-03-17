@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { TicketType } from '../types/ticketType';
+import { TicketType, BookingData } from '../types/ticketType';
 
 export const TicketTypeService = {
   getTicketTypesByScheduleId: async (scheduleId: number): Promise<TicketType[]> => {
@@ -11,7 +11,7 @@ export const TicketTypeService = {
 const BASE_URL = 'http://localhost:8007/api/tickets';
 
 export const TicketService = {
-  generateTicket: async (userId: number, bookingData: any) => {
+  generateTicket: async (userId: number, bookingData: BookingData) => {
     try {
       const response = await axios.post(`${BASE_URL}/generate`, {
         userId,

@@ -10,17 +10,23 @@ interface ErrorResponse {
     message: string;
 }
 
+export function useAuth() {
+    const context = useContext(AuthContext);
+    
+    if (!context) {
+        throw new Error('useAuth must be used within an AuthProvider');
+    }
+
+    const isAdmin = localStorage.getItem('isAdmin') === 'true';
+
+    return {
+        ...context,
+        isAdmin,
+    };
+};
+
 export class AuthService {
     private static user: User | null = null;
-
-    // Hook for using auth context
-    static useAuth() {
-        const context = useContext(AuthContext);
-        if (context === undefined) {
-            throw new Error('useAuth must be used within an AuthProvider');
-        }
-        return context;
-    }
 
     // New method to create wallet
     static async createWallet(userId: string, initialBalance: number = 0): Promise<boolean> {
@@ -167,19 +173,3 @@ export class AuthService {
         return true;
     }
 }
-
-export const AuthServiceContext = {
-    ...AuthService,
-    useAuth: () => {
-        const auth = AuthService.useAuth();
-        
-        const isAdmin = () => {
-            return localStorage.getItem('isAdmin') === 'true';
-        };
-        
-        return {
-            ...auth,
-            isAdmin: isAdmin(),
-        };
-    },
-};

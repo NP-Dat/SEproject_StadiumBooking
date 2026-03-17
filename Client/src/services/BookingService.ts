@@ -1,9 +1,9 @@
-import { Booking } from '../types/booking';
+import type { BookingTicket } from '../types/booking';
 
 const API_URL = 'http://localhost:8004/api'; // Booking service API URL
 
 export class BookingService {
-  static async getBookingById(bookingId: string): Promise<Booking> {
+  static async getBookingById(bookingId: string): Promise<unknown> {
     try {
       const response = await fetch(`${API_URL}/bookings/${bookingId}`, {
         method: 'GET',
@@ -88,7 +88,7 @@ export class BookingService {
 
   // Update the getUserBookings method to correctly extract price data:
 
-  static async getUserBookings(userId: number): Promise<any[]> {
+  static async getUserBookings(userId: number): Promise<unknown> {
     try {
       const response = await fetch(`${API_URL}/bookings/getBookedTickets/${userId}`);
       
@@ -101,7 +101,7 @@ export class BookingService {
       
       if (data.success && Array.isArray(data.bookedTickets)) {
         // Process bookings at a higher level rather than individual tickets  
-        return data.bookedTickets.map((ticket: any) => {
+        return data.bookedTickets.map((ticket: BookingTicket) => {
           console.log("Processing ticket:", ticket);
           
           // Force convert price to number and handle different possible field names
@@ -120,7 +120,7 @@ export class BookingService {
           
           // Return the booking object with the extracted price and zone name
           return {
-            cartId: ticket.cartID || ticket.id || ticket.cartId,
+            cartId: ticket.cartID || ticket.id,
             eventTitle: ticket.eventName,
             eventImage: ticket.eventImage || '',
             date: ticket.date,
@@ -130,10 +130,10 @@ export class BookingService {
             numberOfTicket: ticket.numberOfTicket || 1,
             totalPrice: price,
             status: ticket.status || 'paid',
-            zoneName: ticket.zoneName || ticket.zone || 'Standard',
+            zoneName: ticket.zoneName || 'Standard',
             seat_number: ticket.seat_number || '' // Ensure this line exists
           };
-        });
+        });   
       }
       
       return [];
@@ -161,7 +161,7 @@ export class BookingService {
   }
 
   // Add the getBookingDetails method
-  static async getBookingDetails(bookingId: string | number): Promise<any> {
+  static async getBookingDetails(bookingId: string | number): Promise<unknown> {
     try {
       if (!bookingId || bookingId === 'undefined') {
         throw new Error('Invalid booking ID');
@@ -187,14 +187,18 @@ export class BookingService {
               totalPrice: data.totalPrice || 0,
               numberOfTicket: data.numberOfTicket || 1
             },
-            tickets: Array.isArray(data.tickets) ? data.tickets.map((ticket: any) => ({
+            tickets: Array.isArray(data.tickets) ? data.tickets.map((ticket: Partial<BookingTicket>) => ({
               ...ticket,
               seat_number: ticket.seat_number || '' // Ensure seat_number is included
             })) : []
           };
         }
-      } catch (e) {
-        console.log('First endpoint attempt failed, trying alternative');
+      } catch (error) {
+          if (error instanceof Error) {
+            console.log('First endpoint attempt failed, trying alternative:', error.message);
+          } else {
+            console.log('First endpoint attempt failed, trying alternative');
+  }
       }
       
       // Fallback to simulated booking details with minimal info
