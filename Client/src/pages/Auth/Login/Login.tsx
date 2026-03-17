@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { AuthService } from '../../../services/AuthService';
+import { useAuth } from '../../../services/AuthService';
 import styles from './Login.module.css';
 import Button from '../../../components/ui/Button/Button';
 import Input from '../../../components/ui/Input/Input';
@@ -12,7 +12,7 @@ interface LoginProps {
 }
 
 const Login: React.FC<LoginProps> = ({ onClose, onSwitchToRegister, onLogin }) => {
-    const { login: authLogin } = AuthService.useAuth();
+    const { login: authLogin } = useAuth();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
